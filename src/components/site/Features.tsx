@@ -1,24 +1,28 @@
 import { motion } from "framer-motion";
 import { Wand2, Zap, ImagePlus, Sparkles, Bot, ShieldCheck } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import { SectionHeader } from "./SectionHeader";
 
-const features = [
-  { icon: Wand2, title: "One-click generation", desc: "No prompts. No setup. Click and ship." },
-  { icon: Bot, title: "Realistic replacement", desc: "Your product, integrated with perfect lighting and scale." },
-  { icon: Sparkles, title: "Marketing-grade output", desc: "Cinematic visuals built for ads, not just demos." },
-  { icon: Zap, title: "Lightning-fast", desc: "Average 3.4s per generation. Burst up to 200/min." },
-  { icon: ImagePlus, title: "120+ ad templates", desc: "From luxury to lifestyle, hand-curated weekly." },
-  { icon: ShieldCheck, title: "Commercial-safe", desc: "Full IP rights, brand-safe outputs, audit logs." },
+const getFeatures = (t: any) => [
+  { icon: Wand2, title: t('feat_1_title'), desc: t('feat_1_desc') },
+  { icon: Bot, title: t('feat_2_title'), desc: t('feat_2_desc') },
+  { icon: Sparkles, title: t('feat_3_title'), desc: t('feat_3_desc') },
+  { icon: Zap, title: t('feat_4_title'), desc: t('feat_4_desc') },
+  { icon: ImagePlus, title: t('feat_5_title'), desc: t('feat_5_desc') },
+  { icon: ShieldCheck, title: t('feat_6_title'), desc: t('feat_6_desc') },
 ];
 
 export function Features() {
+  const { t } = useTranslation();
+  const features = getFeatures(t);
+  
   return (
     <section id="features" className="relative py-32">
       <div className="mx-auto max-w-7xl px-4 sm:px-6">
         <SectionHeader
-          eyebrow="Built for modern brands"
-          title="Studio-quality ads, on autopilot."
-          description="Everything a growth team needs to ship creative at the speed of thought."
+          eyebrow={t('feat_eyebrow')}
+          title={t('feat_title')}
+          description={t('feat_desc')}
         />
 
         <div className="mt-16 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">

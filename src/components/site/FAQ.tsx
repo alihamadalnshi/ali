@@ -1,22 +1,25 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { Plus } from "lucide-react";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { SectionHeader } from "./SectionHeader";
 
-const faqs = [
-  { q: "How does Lumen generate ads?", a: "Our diffusion model swaps your product into curated ad templates while preserving lighting, perspective and scale automatically." },
-  { q: "Do I own the rights to the output?", a: "Yes. All generations are commercial-use, royalty-free, and yours forever." },
-  { q: "What file types do you support?", a: "PNG, JPG and WebP up to 25MB. Transparent PNGs work best for clean replacements." },
-  { q: "Can I use my own templates?", a: "On Studio and Scale plans you can upload brand templates and presets that are reusable across your team." },
-  { q: "Is there a free trial?", a: "Yes — 5 free generations, no credit card required." },
+const getFaqs = (t: any) => [
+  { q: t('faq_1_q'), a: t('faq_1_a') },
+  { q: t('faq_2_q'), a: t('faq_2_a') },
+  { q: t('faq_3_q'), a: t('faq_3_a') },
+  { q: t('faq_4_q'), a: t('faq_4_a') },
+  { q: t('faq_5_q'), a: t('faq_5_a') },
 ];
 
 export function FAQ() {
+  const { t } = useTranslation();
   const [open, setOpen] = useState<number | null>(0);
+  const faqs = getFaqs(t);
   return (
     <section id="faq" className="relative py-32">
       <div className="mx-auto max-w-3xl px-4 sm:px-6">
-        <SectionHeader eyebrow="FAQ" title="Questions, answered." />
+        <SectionHeader eyebrow={t('faq_eyebrow')} title={t('faq_title')} />
 
         <div className="mt-12 divide-y divide-white/5 ring-border-gradient glass rounded-2xl">
           {faqs.map((f, i) => {

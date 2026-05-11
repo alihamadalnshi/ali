@@ -1,7 +1,9 @@
 import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 export function CTA() {
+  const { t } = useTranslation();
   return (
     <section id="cta" className="relative overflow-hidden py-32">
       <div className="pointer-events-none absolute inset-0">
@@ -16,9 +18,9 @@ export function CTA() {
           transition={{ duration: 0.7 }}
           className="text-balance text-5xl font-semibold leading-[1.05] tracking-tight sm:text-6xl md:text-7xl"
         >
-          <span className="text-gradient">Your next ad campaign,</span>
+          <span className="text-gradient">{t('cta_title_1')}</span>
           <br />
-          <span className="text-gradient-accent">starts in 30 seconds.</span>
+          <span className="text-gradient-accent">{t('cta_title_2')}</span>
         </motion.h2>
         <motion.p
           initial={{ opacity: 0, y: 20 }}
@@ -27,7 +29,7 @@ export function CTA() {
           transition={{ duration: 0.7, delay: 0.1 }}
           className="mx-auto mt-6 max-w-xl text-balance text-base text-muted-foreground sm:text-lg"
         >
-          Join 12,000+ modern brands replacing agencies with one button.
+          {t('cta_desc')}
         </motion.p>
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -40,32 +42,27 @@ export function CTA() {
             href="#"
             className="group inline-flex items-center gap-2 rounded-xl bg-accent-gradient px-6 py-3.5 text-sm font-medium text-primary-foreground shadow-glow transition-transform hover:scale-[1.02]"
           >
-            Start generating free
-            <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
-          </a>
-          <a
-            href="#pricing"
-            className="glass inline-flex items-center gap-2 rounded-xl px-6 py-3.5 text-sm font-medium hover:bg-white/10"
-          >
-            View pricing
+            {t('cta_btn_1')}
+            <ArrowRight className="h-4 w-4 transition-transform group-hover:rtl:-translate-x-0.5 group-hover:ltr:translate-x-0.5 rtl:rotate-180" />
           </a>
         </motion.div>
-        <p className="mt-4 text-xs text-muted-foreground">No credit card · 5 free generations</p>
+        <p className="mt-4 text-xs text-muted-foreground">{t('cta_no_cc')}</p>
       </div>
     </section>
   );
 }
 
 export function Footer() {
+  const { t } = useTranslation();
   return (
     <footer className="border-t border-white/5 py-10">
       <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-4 px-4 sm:flex-row sm:px-6">
-        <p className="text-xs text-muted-foreground">© 2026 Lumen Labs, Inc. All rights reserved.</p>
+        <p className="text-xs text-muted-foreground">{t('footer_copy')}</p>
         <div className="flex gap-5 text-xs text-muted-foreground">
-          <a href="#" className="hover:text-foreground">Privacy</a>
-          <a href="#" className="hover:text-foreground">Terms</a>
-          <a href="#" className="hover:text-foreground">Status</a>
-          <a href="#" className="hover:text-foreground">Twitter</a>
+          <a href="#" className="hover:text-foreground">{t('footer_privacy')}</a>
+          <a href="#" className="hover:text-foreground">{t('footer_terms')}</a>
+          <a href="#" className="hover:text-foreground">{t('footer_status')}</a>
+          <a href="#" className="hover:text-foreground">{t('footer_twitter')}</a>
         </div>
       </div>
     </footer>
