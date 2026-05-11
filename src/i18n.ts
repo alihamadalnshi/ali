@@ -20,9 +20,17 @@ i18n
   .init({
     resources,
     fallbackLng: 'en',
+    supportedLngs: ['en', 'ar'],
+    nonExplicitSupportedLngs: true,
     interpolation: {
       escapeValue: false, // react already safes from xss
     },
+    detection: {
+      order: ['querystring', 'cookie', 'localStorage', 'sessionStorage', 'navigator', 'htmlTag'],
+      caches: ['localStorage', 'cookie'],
+    },
   });
+
+console.log('i18n initialized');
 
 export default i18n;

@@ -1,11 +1,11 @@
-@import "tailwindcss" source(none);
+@import "tailwindcss";
 @source "../src";
 @import "tw-animate-css";
 
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
-  --font-sans: "Inter", "Inter Tight", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Inter", "Inter Tight", "Cairo", ui-sans-serif, system-ui, sans-serif;
   --font-display: "Instrument Serif", "Inter Tight", serif;
 
   --radius-sm: calc(var(--radius) - 4px);

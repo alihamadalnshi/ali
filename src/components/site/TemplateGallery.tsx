@@ -17,16 +17,16 @@ import t4 from "@/assets/template/4 (1).jpg";
 import t5 from "@/assets/template/5 (1).jpg";
 
 const getItems = (t: any) => [
-  { img: g1, title: "Neon Drop", category: t('cat_fashion'), span: "row-span-2" },
-  { img: t3, title: "Noir Elegance", category: t('cat_fashion'), span: "" },
-  { img: g2, title: "Botanic", category: t('cat_beauty'), span: "" },
-  { img: t1, title: "Forest Dew", category: t('cat_beauty'), span: "row-span-2" },
-  { img: g3, title: "Midnight Gold", category: t('cat_luxury'), span: "" },
-  { img: t4, title: "Desert Oud", category: t('cat_luxury'), span: "row-span-2" },
-  { img: g4, title: "Pulse", category: t('cat_tech'), span: "" },
-  { img: g5, title: "Soft Studio", category: t('cat_food'), span: "" },
-  { img: t5, title: "Stone Minimal", category: t('cat_lifestyle'), span: "" },
-  { img: g6, title: "Mirage", category: t('cat_lifestyle'), span: "" },
+  { id: "neon-drop", img: g1, title: t('tmpl_neon_drop'), category: t('cat_fashion'), span: "row-span-2" },
+  { id: "noir-elegance", img: t3, title: t('tmpl_noir_elegance'), category: t('cat_fashion'), span: "" },
+  { id: "botanic", img: g2, title: t('tmpl_botanic'), category: t('cat_beauty'), span: "" },
+  { id: "forest-dew", img: t1, title: t('tmpl_forest_dew'), category: t('cat_beauty'), span: "row-span-2" },
+  { id: "midnight-gold", img: g3, title: t('tmpl_midnight_gold'), category: t('cat_luxury'), span: "" },
+  { id: "desert-oud", img: t4, title: t('tmpl_desert_oud'), category: t('cat_luxury'), span: "row-span-2" },
+  { id: "pulse", img: g4, title: t('tmpl_pulse'), category: t('cat_tech'), span: "" },
+  { id: "soft-studio", img: g5, title: t('tmpl_soft_studio'), category: t('cat_food'), span: "" },
+  { id: "stone-minimal", img: t5, title: t('tmpl_stone_minimal'), category: t('cat_lifestyle'), span: "" },
+  { id: "mirage", img: g6, title: t('tmpl_mirage'), category: t('cat_lifestyle'), span: "" },
 ];
 
 const getCategories = (t: any) => [
@@ -146,7 +146,7 @@ Ultra realistic product photography.`,
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0 && selectedTemplate && !isProcessing) {
       const file = e.target.files[0];
-      const templateItem = items.find(it => it.title === selectedTemplate);
+      const templateItem = items.find(it => it.id === selectedTemplate);
       if (templateItem) {
         processGeneration(file, templateItem.img);
       }
@@ -159,7 +159,7 @@ Ultra realistic product photography.`,
     e.stopPropagation();
     if (e.dataTransfer.files && e.dataTransfer.files.length > 0 && selectedTemplate && !isProcessing) {
       const file = e.dataTransfer.files[0];
-      const templateItem = items.find(it => it.title === selectedTemplate);
+      const templateItem = items.find(it => it.id === selectedTemplate);
       if (templateItem) {
         processGeneration(file, templateItem.img);
       }
@@ -209,19 +209,19 @@ Ultra realistic product photography.`,
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-50px" }}
               transition={{ duration: 0.6, delay: i * 0.05 }}
-              onClick={() => setSelectedTemplate(selectedTemplate === it.title ? null : it.title)}
-              className={`group ring-border-gradient relative overflow-hidden rounded-2xl shadow-card cursor-pointer transition-all ${it.span} ${selectedTemplate === it.title ? 'ring-primary shadow-glow' : ''}`}
+              onClick={() => setSelectedTemplate(selectedTemplate === it.id ? null : it.id)}
+              className={`group ring-border-gradient relative overflow-hidden rounded-2xl shadow-card cursor-pointer transition-all ${it.span} ${selectedTemplate === it.id ? 'ring-primary shadow-glow' : ''}`}
             >
               <img
                 src={it.img}
                 alt={it.title}
                 loading="lazy"
-                className={`absolute inset-0 h-full w-full object-cover transition-all duration-[900ms] ease-out ${selectedTemplate === it.title ? 'scale-110 opacity-30 blur-md grayscale' : 'group-hover:scale-110'}`}
+                className={`absolute inset-0 h-full w-full object-cover transition-all duration-[900ms] ease-out ${selectedTemplate === it.id ? 'scale-110 opacity-30 blur-md grayscale' : 'group-hover:scale-110'}`}
               />
               <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-background/20 to-transparent opacity-90 pointer-events-none" />
 
               <AnimatePresence mode="wait">
-                {selectedTemplate === it.title ? (
+                {selectedTemplate === it.id ? (
                   <motion.div
                     key="upload-overlay"
                     initial={{ opacity: 0, scale: 0.95 }}
