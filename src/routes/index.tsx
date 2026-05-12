@@ -1,8 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Navbar } from "@/components/site/Navbar";
-import { Hero } from "@/components/site/Hero";
 import { TemplateGallery } from "@/components/site/TemplateGallery";
-import { CTA, Footer } from "@/components/site/CTA";
+import { Footer } from "@/components/site/CTA";
 
 export const Route = createFileRoute("/")({
   component: Index,
@@ -25,11 +24,9 @@ export const Route = createFileRoute("/")({
 
 function Index() {
   return (
-    <main className="relative min-h-screen overflow-x-hidden bg-background text-foreground">
+    <main id="top" className="relative min-h-screen overflow-x-hidden bg-background text-foreground">
       <Navbar />
-      <Hero />
       <TemplateGallery />
-      <CTA />
       <Footer />
     </main>
   );

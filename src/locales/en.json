@@ -49,7 +49,7 @@
   "result_template": "Template",
   "result_product": "Your Product",
   "result_final": "Final Result",
-  "result_generating": "Generating your masterpiece (~15s)...",
+  "result_generating": "Generating your masterpiece (~30-45s)...",
   "result_error": "Generation failed. Please check your API key.",
   "limit_remaining_n": "free generations remaining",
   "limit_remaining_1": "1 free generation remaining",

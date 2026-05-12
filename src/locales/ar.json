@@ -49,7 +49,7 @@
   "result_template": "القالب",
   "result_product": "منتجك",
   "result_final": "النتيجة النهائية",
-  "result_generating": "يتم توليد تحفتك الفنية (~15 ثانية)...",
+  "result_generating": "يتم توليد تحفتك الفنية (~30-45 ثانية)...",
   "result_error": "فشل التوليد. يرجى التحقق من مفتاح API الخاص بك.",
   "limit_remaining_n": "عمليات توليد مجانية متبقية",
   "limit_remaining_1": "بقيت عملية توليد واحدة مجانية",

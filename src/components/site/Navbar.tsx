@@ -45,13 +45,6 @@ export function Navbar() {
 
           <div className="flex items-center gap-2">
             <LanguageSwitcher />
-            <a
-              href="#cta"
-              className="group relative inline-flex items-center gap-1.5 rounded-lg bg-foreground px-3.5 py-1.5 text-sm font-medium text-background transition-transform hover:scale-[1.02]"
-            >
-              {t('nav_get_started')}
-              <span aria-hidden className="rtl:rotate-180 inline-block transition-transform">→</span>
-            </a>
           </div>
         </div>
       </div>

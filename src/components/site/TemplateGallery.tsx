@@ -76,6 +76,14 @@ export function TemplateGallery() {
     };
   }, []);
 
+  useEffect(() => {
+    if (resultData) {
+      setTimeout(() => {
+        document.getElementById('final-result')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }, 100);
+    }
+  }, [resultData]);
+
   const processGeneration = async (productFile: File, templateImgSrc: string) => {
     if (generationCount >= 5) {
       setShowLimitModal(true);
@@ -121,10 +129,6 @@ Ultra realistic product photography.`,
       sessionStorage.setItem("generation_count", newCount.toString());
 
       toast.success(t('gallery_upload_success'), { id: "gen-toast" });
-
-      setTimeout(() => {
-        document.getElementById('result-section')?.scrollIntoView({ behavior: 'smooth' });
-      }, 500);
 
     } catch (error: any) {
       console.error("Fal AI Generation Error:", error);
@@ -265,21 +269,10 @@ Ultra realistic product photography.`,
                     className="absolute inset-0 z-10 pointer-events-none"
                   >
                     {/* Centered Select Button */}
-                    <div className="absolute inset-0 flex items-center justify-center opacity-0 transition-opacity duration-300 group-hover:opacity-100 bg-background/20 backdrop-blur-[2px]">
-                      <span className="rounded-full bg-primary px-4 py-2 text-xs font-semibold text-primary-foreground shadow-elegant transform translate-y-4 transition-all duration-300 group-hover:translate-y-0">
-                        {t('gallery_select')}
-                      </span>
-                    </div>
+
 
                     {/* Bottom Info */}
-                    <div className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-2 p-4">
-                      <div>
-                        <p className="text-[10px] uppercase tracking-[0.18em] text-white/70">
-                          {it.category}
-                        </p>
-                        <p className="text-sm font-medium text-white">{it.title}</p>
-                      </div>
-                    </div>
+
                   </motion.div>
                 )}
               </AnimatePresence>
@@ -346,7 +339,7 @@ Ultra realistic product photography.`,
               </div>
 
               {/* Result */}
-              <div className="ring-border-gradient p-1 rounded-3xl relative shadow-[0_0_40px_var(--glow)] overflow-hidden group">
+              <div id="final-result" className="ring-border-gradient p-1 rounded-3xl relative shadow-[0_0_40px_var(--glow)] overflow-hidden group">
                 <div className="bg-background rounded-[22px] p-4 flex flex-col items-center h-full relative z-10">
                   <span className="text-[10px] text-primary font-bold mb-4 uppercase tracking-[0.2em] animate-pulse bg-primary/10 px-3 py-1 rounded-full">{t('result_final')}</span>
                   <img src={resultData.resultImg} className="rounded-2xl w-full aspect-[4/5] object-cover" />
