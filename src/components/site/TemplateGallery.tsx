@@ -18,8 +18,12 @@ const templateImageMap: Record<string, string> = {};
 Object.entries(templateModules).forEach(([path, module]: [string, any]) => {
   const match = path.match(/New folder - Copy \((\d+)\)/);
   if (match) {
-    const id = `template-${match[1]}`;
-    templateImageMap[id] = module.default || module;
+    const num = parseInt(match[1]);
+    // Map Copy (0) to template-1, Copy (1) to template-2, ..., Copy (18) to template-19
+    if (num >= 0 && num < 19) {
+      const id = `template-${num + 1}`;
+      templateImageMap[id] = module.default || module;
+    }
   }
 });
 
@@ -129,8 +133,8 @@ Ultra realistic product photography.`;
 
         inputPayload = {
           prompt: specificPrompt,
-          image_url: productUpload,
-          image_size: { width: 1080, height: 1350 },
+          image_urls: [productUpload],
+          aspect_ratio: "4:5",
           num_images: 1,
           output_format: "png",
           safety_tolerance: "2",
@@ -148,6 +152,7 @@ Maintain exact shadows, reflections, perspective, lighting,
 camera angle, and commercial advertising style.
 Ultra realistic product photography.`,
           image_urls: [templateUpload, productUpload],
+          aspect_ratio: "4:5",
           num_images: 1,
           output_format: "png",
           safety_tolerance: "2",
