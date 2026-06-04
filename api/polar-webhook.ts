@@ -344,14 +344,3 @@ export async function POST(request: Request) {
     headers: { 'Content-Type': 'application/json' },
   });
 }
-
-// Default export fallback that handles standard routing if needed
-export default async function handler(request: Request) {
-  if (request.method === 'POST') {
-    return POST(request);
-  }
-  return new Response(JSON.stringify({ error: 'Method not allowed' }), {
-    status: 405,
-    headers: { 'Content-Type': 'application/json' },
-  });
-}
