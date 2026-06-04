@@ -1,5 +1,5 @@
 import { motion, AnimatePresence } from "framer-motion";
-import { Upload, Loader2, Download, Lock, Sparkles, ChevronDown, ChevronUp } from "lucide-react";
+import { Upload, Loader2, Download, Lock, Sparkles, ChevronDown, ChevronUp, Heart } from "lucide-react";
 import { useState, useRef, useEffect } from "react";
 import { toast } from "sonner";
 import { fal } from "@fal-ai/client";
@@ -10,6 +10,8 @@ import t3 from "@/assets/template/3 (1).jpg";
 import t4 from "@/assets/template/4 (1).jpg";
 import t5 from "@/assets/template/5 (1).jpg";
 import { templatePrompts } from "@/data/templateData";
+import { useAuth } from "@/components/AuthProvider";
+import { saveGenerationToHistory } from "@/lib/storage";
 
 // Dynamic import for templates 1-19
 const templateModules = import.meta.glob("../../assets/template/1-19/**/*.{png,jpg,jpeg}", { eager: true });
@@ -68,16 +70,21 @@ fal.config({
 
 export function TemplateGallery() {
   const { t } = useTranslation();
+  const { user } = useAuth();
   const [active, setActive] = useState("All");
   const [selectedTemplate, setSelectedTemplate] = useState<string | null>(null);
   const [isProcessing, setIsProcessing] = useState(false);
   const [showAll, setShowAll] = useState(false);
   const [generationCount, setGenerationCount] = useState<number>(0);
   const [showLimitModal, setShowLimitModal] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
+  const [isSavedToHistory, setIsSavedToHistory] = useState(false);
   const [resultData, setResultData] = useState<{
     templateImg: string;
     productImg: string;
     resultImg: string;
+    templateId?: string;
+    prompt?: string;
   } | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -167,8 +174,11 @@ Ultra realistic product photography.`,
       setResultData({
         templateImg: templateImgSrc,
         productImg: productLocalUrl,
-        resultImg: result.data.images[0].url
+        resultImg: result.data.images[0].url,
+        templateId: selectedTemplate || undefined,
+        prompt: typeof inputPayload.prompt === 'string' ? inputPayload.prompt : undefined,
       });
+      setIsSavedToHistory(false);
 
       const newCount = generationCount + 1;
       setGenerationCount(newCount);
@@ -398,15 +408,55 @@ Ultra realistic product photography.`,
                   <span className="text-[10px] text-primary font-bold mb-4 uppercase tracking-[0.2em] animate-pulse bg-primary/10 px-3 py-1 rounded-full">{t('result_final')}</span>
                   <img src={resultData.resultImg} className="rounded-2xl w-full aspect-[4/5] object-cover" />
 
-                  <a
-                    href={resultData.resultImg}
-                    download="generated-ad.png"
-                    target="_blank"
-                    rel="noreferrer"
-                    className="absolute bottom-8 right-8 flex h-12 w-12 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-glow hover:scale-105 transition-transform"
-                  >
-                    <Download className="h-5 w-5" />
-                  </a>
+                  <div className="absolute bottom-8 right-8 flex items-center gap-2">
+                    {user && (
+                      <button
+                        onClick={async () => {
+                          if (!resultData || isSaving || isSavedToHistory) return;
+                          setIsSaving(true);
+                          try {
+                            await saveGenerationToHistory({
+                              userId: user.id,
+                              templateId: resultData.templateId || 'unknown',
+                              templateImageUrl: resultData.templateImg,
+                              productImageUrl: resultData.productImg,
+                              resultImageUrl: resultData.resultImg,
+                              prompt: resultData.prompt || '',
+                            });
+                            setIsSavedToHistory(true);
+                            toast.success(t('dash_toast_saved'));
+                          } catch (err) {
+                            console.error('Save failed:', err);
+                            toast.error(t('dash_toast_error'));
+                          } finally {
+                            setIsSaving(false);
+                          }
+                        }}
+                        disabled={isSaving || isSavedToHistory}
+                        className={`flex h-12 w-12 items-center justify-center rounded-full transition-all duration-300 ${
+                          isSavedToHistory
+                            ? 'bg-green-500 text-white shadow-[0_0_20px_rgba(34,197,94,0.4)]'
+                            : 'bg-white/20 text-white backdrop-blur-md hover:bg-primary hover:shadow-glow hover:scale-105'
+                        } disabled:opacity-70`}
+                        title={isSavedToHistory ? t('dash_saved') : t('gallery_save_to_history')}
+                      >
+                        {isSaving ? (
+                          <Loader2 className="h-5 w-5 animate-spin" />
+                        ) : (
+                          <Heart className={`h-5 w-5 ${isSavedToHistory ? 'fill-current' : ''}`} />
+                        )}
+                      </button>
+                    )}
+                    <a
+                      href={resultData.resultImg}
+                      download="generated-ad.png"
+                      target="_blank"
+                      rel="noreferrer"
+                      className="flex h-12 w-12 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-glow hover:scale-105 transition-transform"
+                    >
+                      <Download className="h-5 w-5" />
+                    </a>
+                  </div>
                 </div>
                 <div className="pointer-events-none absolute -inset-6 -z-10 rounded-[2rem] bg-primary/20 opacity-0 blur-3xl transition-opacity duration-700 group-hover:opacity-100" />
               </div>

@@ -1,8 +1,10 @@
 import { motion } from "framer-motion";
-import { Sparkles } from "lucide-react";
+import { Sparkles, LayoutDashboard, LogIn } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { Link } from "@tanstack/react-router";
 import { LanguageSwitcher } from "./../LanguageSwitcher";
+import { useAuth } from "@/components/AuthProvider";
 
 const getLinks = (t: any) => [
   { label: t('nav_templates'), href: "#templates" },
@@ -13,6 +15,7 @@ const getLinks = (t: any) => [
 export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const { t } = useTranslation();
+  const { user, loading } = useAuth();
   const links = getLinks(t);
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 8);
@@ -45,6 +48,28 @@ export function Navbar() {
 
           <div className="flex items-center gap-2">
             <LanguageSwitcher />
+
+            {!loading && (
+              <>
+                {user ? (
+                  <Link
+                    to="/dashboard"
+                    className="group flex items-center gap-2 rounded-xl bg-accent-gradient px-4 py-2 text-xs font-semibold text-primary-foreground shadow-glow/40 transition-all duration-300 hover:shadow-glow hover:scale-[1.02]"
+                  >
+                    <LayoutDashboard className="h-3.5 w-3.5" />
+                    <span className="hidden sm:inline">{t("nav_dashboard")}</span>
+                  </Link>
+                ) : (
+                  <Link
+                    to="/login"
+                    className="group flex items-center gap-2 rounded-xl bg-white/10 border border-white/10 px-4 py-2 text-xs font-medium text-foreground hover:bg-white/15 hover:border-primary/30 transition-all duration-300"
+                  >
+                    <LogIn className="h-3.5 w-3.5" />
+                    <span className="hidden sm:inline">{t("nav_signin")}</span>
+                  </Link>
+                )}
+              </>
+            )}
           </div>
         </div>
       </div>

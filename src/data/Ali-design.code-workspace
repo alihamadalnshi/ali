@@ -1,0 +1,16 @@
+{
+	"folders": [
+		{
+			"path": "../../.."
+		},
+		{
+			"name": "adspark-ai",
+			"path": "../../../adspark-ai"
+		},
+		{
+			"name": "ad-genius",
+			"path": "../.."
+		}
+	],
+	"settings": {}
+}
