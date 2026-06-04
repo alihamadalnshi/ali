@@ -68,8 +68,8 @@ global.fetch = async (url, options) => {
 // Import the handler
 const handler = require('../api/polar-webhook').default;
 
-// Mock Webhook Secret (base64 encoded)
-const MOCK_SECRET = Buffer.from('my-super-secret-key-12345678901234567890').toString('base64');
+// Mock Webhook Secret (base64 encoded with prefix)
+const MOCK_SECRET = 'polar_whs_' + Buffer.from('my-super-secret-key-12345678901234567890').toString('base64');
 process.env.POLAR_WEBHOOK_SECRET = MOCK_SECRET;
 
 // Mock Supabase environment variables
@@ -130,7 +130,8 @@ async function runTests() {
 
   const bodyStr = JSON.stringify(payload);
   const signedContent = `${webhookId}.${timestamp}.${bodyStr}`;
-  const secretBytes = Buffer.from(MOCK_SECRET, 'base64');
+  const cleanMockSecret = MOCK_SECRET.replace(/^(whsec_|polar_whs_)/, '');
+  const secretBytes = Buffer.from(cleanMockSecret, 'base64');
   const signatureVal = crypto
     .createHmac('sha256', secretBytes)
     .update(signedContent)

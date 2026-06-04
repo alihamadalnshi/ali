@@ -41,10 +41,11 @@ function verifySignature(
   // 2. Prepare signed content
   const signedContent = `${id}.${timestamp}.${rawBody}`;
 
-  // 3. Decode base64 secret
+  // 3. Decode base64 secret (after stripping any whsec_ or polar_whs_ prefix)
   let secretBytes: Buffer;
   try {
-    secretBytes = Buffer.from(secret, 'base64');
+    const cleanSecret = secret.replace(/^(whsec_|polar_whs_)/, '');
+    secretBytes = Buffer.from(cleanSecret, 'base64');
   } catch (err) {
     console.error("Invalid webhook secret encoding (must be base64):", err);
     return false;
