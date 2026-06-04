@@ -1,8 +1,10 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { Navbar } from "@/components/site/Navbar";
 import { TemplateGallery } from "@/components/site/TemplateGallery";
 import { Pricing } from "@/components/site/Pricing";
 import { Footer } from "@/components/site/CTA";
+import { useAuth } from "@/components/AuthProvider";
+import { useEffect } from "react";
 
 export const Route = createFileRoute("/")({
   component: Index,
@@ -24,6 +26,23 @@ export const Route = createFileRoute("/")({
 });
 
 function Index() {
+  const { user, loading } = useAuth();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!loading && user) {
+      navigate({ to: "/dashboard" });
+    }
+  }, [user, loading, navigate]);
+
+  if (loading) {
+    return null;
+  }
+
+  if (user) {
+    return null;
+  }
+
   return (
     <main id="top" className="relative min-h-screen overflow-x-hidden bg-background text-foreground">
       <Navbar />
