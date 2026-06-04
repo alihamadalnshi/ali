@@ -139,30 +139,37 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
   // Retrieve body
   let rawBody = '';
-  const isPreParsed = req.body && typeof req.body === 'object' && !Buffer.isBuffer(req.body);
+  let readFromStream = false;
 
-  if (isPreParsed) {
-    try {
-      rawBody = JSON.stringify(req.body);
-      console.log('Request body was pre-parsed by runtime. Reconstructed string length:', rawBody.length);
-    } catch (err) {
-      console.error('Failed to reconstruct raw body from pre-parsed object:', err);
-    }
-  } else {
-    try {
-      const rawBodyBuffer = await getRawBody(req);
-      rawBody = rawBodyBuffer.toString('utf8');
+  try {
+    const rawBodyBuffer = await getRawBody(req);
+    rawBody = rawBodyBuffer.toString('utf8');
+    if (rawBody.length > 0) {
+      readFromStream = true;
       console.log('Read raw body from request stream. Length:', rawBody.length);
-    } catch (err: any) {
-      console.error('Failed to read request body stream:', err);
-      // Fallback: if req.body has been populated in any form
-      if (req.body) {
-        rawBody = typeof req.body === 'string' ? req.body : JSON.stringify(req.body);
-        console.log('Fallback: Used req.body directly. Length:', rawBody.length);
-      } else {
-        return res.status(400).json({ error: 'Failed to read request body' });
-      }
     }
+  } catch (err) {
+    console.error('Failed to read request body stream:', err);
+  }
+
+  // Fallback to pre-parsed body if stream was empty or failed
+  const isPreParsed = !readFromStream && req.body && typeof req.body === 'object' && !Buffer.isBuffer(req.body);
+  if (!readFromStream) {
+    if (isPreParsed) {
+      try {
+        rawBody = JSON.stringify(req.body);
+        console.log('Request body was pre-parsed by runtime. Reconstructed string length:', rawBody.length);
+      } catch (err) {
+        console.error('Failed to reconstruct raw body from pre-parsed object:', err);
+      }
+    } else if (req.body) {
+      rawBody = typeof req.body === 'string' ? req.body : JSON.stringify(req.body);
+      console.log('Fallback: Used req.body directly. Length:', rawBody.length);
+    }
+  }
+
+  if (rawBody.length === 0) {
+    return res.status(400).json({ error: 'Failed to read request body' });
   }
 
   // Verify signature
@@ -185,7 +192,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         secretLength: secret ? secret.length : 0,
         secretPrefix: secret ? `${secret.substring(0, 15)}...` : 'missing',
         signatureHeader: signature ? `${signature.substring(0, 20)}...` : undefined,
-        isPreParsed
+        isPreParsed: !!isPreParsed,
+        readFromStream
       }
     });
   }
@@ -250,10 +258,10 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   }
 
   if (!profile) {
-    console.warn(`User profile not found for email: ${customerEmail}`);
+    console.warn('User profile not found for email: ' + customerEmail);
     return res.status(200).json({
       received: true,
-      error: `User profile not found for email: ${customerEmail}`
+      error: 'User profile not found for email: ' + customerEmail
     });
   }
 

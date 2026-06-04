@@ -66,7 +66,8 @@ global.fetch = async (url, options) => {
 };
 
 // Import the handler
-const handler = require('../api/polar-webhook').default;
+const imported = require('../api/polar-webhook');
+const handler = typeof imported === 'function' ? imported : imported.default;
 
 // Mock Webhook Secret (base64 encoded with prefix)
 const MOCK_SECRET = 'polar_whs_' + Buffer.from('my-super-secret-key-12345678901234567890').toString('base64');
