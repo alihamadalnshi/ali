@@ -175,7 +175,19 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   const isValid = verifySignature(secret, id, timestamp, rawBody, signature);
   if (!isValid) {
     console.warn('Webhook signature verification failed');
-    return res.status(401).json({ error: 'Invalid signature' });
+    return res.status(401).json({
+      error: 'Invalid signature',
+      debug: {
+        id,
+        timestamp,
+        rawBodyLength: rawBody.length,
+        rawBodyPreview: rawBody.substring(0, 100),
+        secretLength: secret ? secret.length : 0,
+        secretPrefix: secret ? `${secret.substring(0, 15)}...` : 'missing',
+        signatureHeader: signature ? `${signature.substring(0, 20)}...` : undefined,
+        isPreParsed
+      }
+    });
   }
 
   // Parse webhook payload
