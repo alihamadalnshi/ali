@@ -222,5 +222,27 @@
   "login_powered_by": "بدعم من نماذج Ai — إعلانات الذكاء الاصطناعي في ثوانٍ",
   "login_success_signup": "تحقق من بريدك الإلكتروني للحصول على رابط التأكيد!",
   "login_error_generic": "حدث خطأ غير متوقع",
-  "login_error_google": "فشل تسجيل الدخول باستخدام Google"
+  "login_error_google": "فشل تسجيل الدخول باستخدام Google",
+
+  "pricing_current": "الخطة الحالية",
+  "pricing_current_higher": "خطتك الحالية أعلى",
+
+  "settings_plan_label": "خطة",
+  "settings_gen_limit": "حد التوليد",
+  "settings_per_period": "لكل فترة فوترة",
+  "settings_usage_label": "التوليدات المستخدمة",
+  "settings_renews": "يتجدد في",
+  "settings_amount": "مبلغ الفوترة",
+  "settings_canceling": "سيتم الإلغاء في نهاية الفترة",
+  "settings_upgrade_to": "الترقية إلى",
+  "settings_upgrade_desc": "احصل على {limit} توليد مقابل ${price}/شهر",
+  "settings_manage_polar": "إدارة الاشتراك على Polar",
+  "settings_payment_success": "تم الدفع بنجاح! خطتك نشطة الآن.",
+
+  "dash_stat_credits_plan": "الرصيد",
+  "dash_upgrade_btn": "الترقية إلى",
+  "dash_limit_reached_title": "تم الوصول لحد التوليد",
+  "dash_limit_reached_desc": "قم بالترقية إلى {plan} للحصول على {limit} توليد لكل فترة.",
+  "dash_near_limit_title": "الرصيد على وشك النفاد",
+  "dash_near_limit_desc": "لديك {remaining} من {limit} توليد متبقي."
 }

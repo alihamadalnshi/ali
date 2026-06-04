@@ -1,11 +1,27 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, useSearch } from "@tanstack/react-router";
 import { useAuth } from "@/components/AuthProvider";
 import { useTranslation } from "react-i18next";
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { User, Mail, Shield, Loader2, Save, AlertTriangle, LogOut } from "lucide-react";
+import {
+  User,
+  Mail,
+  Shield,
+  Loader2,
+  Save,
+  AlertTriangle,
+  LogOut,
+  Crown,
+  Zap,
+  ExternalLink,
+  CheckCircle2,
+  XCircle,
+  ArrowUpRight,
+} from "lucide-react";
 import { supabase } from "@/lib/supabase";
 import { toast } from "sonner";
+import { useSubscription } from "@/hooks/useSubscription";
+import { PLAN_CONFIG, getCheckoutUrl, getNextUpgrade } from "@/lib/subscription";
 
 export const Route = createFileRoute("/dashboard/settings")({
   component: SettingsPage,
@@ -23,10 +39,32 @@ function SettingsPage() {
   const [fullName, setFullName] = useState("");
   const [saving, setSaving] = useState(false);
   const [profileLoaded, setProfileLoaded] = useState(false);
+  const {
+    plan,
+    planName,
+    planKey,
+    generationLimit,
+    isSubscribed,
+    loading: subLoading,
+    usage,
+  } = useSubscription();
+
+  // Check for payment success in URL
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get("payment") === "success") {
+      toast.success(t("settings_payment_success"));
+      // Clean the URL
+      window.history.replaceState({}, "", window.location.pathname);
+    }
+  }, [t]);
 
   useEffect(() => {
     const loadProfile = async () => {
-      const { data } = await supabase.from("profiles").select("full_name").single();
+      const { data } = await supabase
+        .from("profiles")
+        .select("full_name")
+        .single();
       if (data) {
         setFullName(data.full_name || "");
       }
@@ -54,6 +92,40 @@ function SettingsPage() {
       toast.error(t("dash_toast_error"));
     } finally {
       setSaving(false);
+    }
+  };
+
+  const nextUpgrade = getNextUpgrade(planKey);
+  const nextPlan = nextUpgrade ? PLAN_CONFIG[nextUpgrade] : null;
+
+  const handleUpgrade = () => {
+    if (!nextPlan || !user?.email) return;
+    const successUrl = `${window.location.origin}/dashboard/settings?payment=success`;
+    window.location.href = getCheckoutUrl(nextPlan.id, user.email, successUrl);
+  };
+
+  const getPlanColor = () => {
+    switch (planKey) {
+      case "business":
+        return "text-amber-400 bg-amber-400/10 border-amber-400/20";
+      case "pro":
+        return "text-purple-400 bg-purple-400/10 border-purple-400/20";
+      case "basic":
+        return "text-blue-400 bg-blue-400/10 border-blue-400/20";
+      default:
+        return "text-muted-foreground bg-white/5 border-white/10";
+    }
+  };
+
+  const getPlanIcon = () => {
+    switch (planKey) {
+      case "business":
+      case "pro":
+        return <Crown className="h-5 w-5" />;
+      case "basic":
+        return <Zap className="h-5 w-5" />;
+      default:
+        return <Shield className="h-5 w-5 text-primary" />;
     }
   };
 
@@ -89,8 +161,12 @@ function SettingsPage() {
             <User className="h-5 w-5 text-primary-foreground" />
           </div>
           <div>
-            <h2 className="text-base font-semibold text-foreground">{t("dash_settings_profile")}</h2>
-            <p className="text-xs text-muted-foreground">{t("dash_settings_profile_desc")}</p>
+            <h2 className="text-base font-semibold text-foreground">
+              {t("dash_settings_profile")}
+            </h2>
+            <p className="text-xs text-muted-foreground">
+              {t("dash_settings_profile_desc")}
+            </p>
           </div>
         </div>
 
@@ -108,14 +184,19 @@ function SettingsPage() {
             </div>
           )}
           <div>
-            <p className="text-sm font-medium text-foreground">{fullName || t("dash_settings_no_name")}</p>
+            <p className="text-sm font-medium text-foreground">
+              {fullName || t("dash_settings_no_name")}
+            </p>
             <p className="text-xs text-muted-foreground">{user?.email}</p>
           </div>
         </div>
 
         {/* Full Name */}
         <div>
-          <label htmlFor="settings-name" className="mb-1.5 block text-xs font-medium text-muted-foreground">
+          <label
+            htmlFor="settings-name"
+            className="mb-1.5 block text-xs font-medium text-muted-foreground"
+          >
             {t("dash_settings_name")}
           </label>
           <div className="relative">
@@ -146,7 +227,9 @@ function SettingsPage() {
               className="w-full rounded-xl border border-border/60 bg-surface py-3 pl-10 pr-4 text-sm text-muted-foreground opacity-60 cursor-not-allowed"
             />
           </div>
-          <p className="mt-1 text-[11px] text-muted-foreground/60">{t("dash_settings_email_hint")}</p>
+          <p className="mt-1 text-[11px] text-muted-foreground/60">
+            {t("dash_settings_email_hint")}
+          </p>
         </div>
 
         <button
@@ -154,12 +237,16 @@ function SettingsPage() {
           disabled={saving}
           className="flex items-center gap-2 rounded-xl bg-accent-gradient px-6 py-2.5 text-sm font-semibold text-primary-foreground shadow-glow/40 transition-all duration-300 hover:shadow-glow disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          {saving ? <Loader2 className="h-4 w-4 animate-spin" /> : <Save className="h-4 w-4" />}
+          {saving ? (
+            <Loader2 className="h-4 w-4 animate-spin" />
+          ) : (
+            <Save className="h-4 w-4" />
+          )}
           {t("dash_settings_save")}
         </button>
       </motion.div>
 
-      {/* Plan Info */}
+      {/* Subscription Section */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -168,23 +255,165 @@ function SettingsPage() {
       >
         <div className="flex items-center gap-3 pb-4 border-b border-white/5">
           <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-surface-elevated border border-white/5">
-            <Shield className="h-5 w-5 text-primary" />
+            {getPlanIcon()}
           </div>
           <div>
-            <h2 className="text-base font-semibold text-foreground">{t("dash_settings_plan")}</h2>
-            <p className="text-xs text-muted-foreground">{t("dash_settings_plan_desc")}</p>
+            <h2 className="text-base font-semibold text-foreground">
+              {t("dash_settings_plan")}
+            </h2>
+            <p className="text-xs text-muted-foreground">
+              {t("dash_settings_plan_desc")}
+            </p>
           </div>
         </div>
 
-        <div className="flex items-center justify-between rounded-xl bg-surface p-4 border border-white/5">
-          <div>
-            <p className="text-sm font-semibold text-foreground">{t("dash_settings_free_plan")}</p>
-            <p className="text-xs text-muted-foreground mt-0.5">{t("dash_settings_free_plan_desc")}</p>
+        {subLoading ? (
+          <div className="flex items-center justify-center py-8">
+            <Loader2 className="h-6 w-6 animate-spin text-primary" />
           </div>
-          <span className="text-[10px] font-bold uppercase tracking-wider text-primary bg-primary/10 px-3 py-1 rounded-full border border-primary/20">
-            {t("dash_settings_active")}
-          </span>
-        </div>
+        ) : (
+          <>
+            {/* Current Plan Card */}
+            <div className="rounded-xl bg-surface p-5 border border-white/5 space-y-4">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <div>
+                    <p className="text-sm font-semibold text-foreground flex items-center gap-2">
+                      {isSubscribed
+                        ? `${planName} ${t("settings_plan_label")}`
+                        : t("dash_settings_free_plan")}
+                      {isSubscribed && (
+                        <span
+                          className={`inline-flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full border ${getPlanColor()}`}
+                        >
+                          <CheckCircle2 className="w-3 h-3" />
+                          {t("dash_settings_active")}
+                        </span>
+                      )}
+                    </p>
+                    <p className="text-xs text-muted-foreground mt-0.5">
+                      {isSubscribed
+                        ? `${t("settings_gen_limit")}: ${generationLimit} ${t("settings_per_period")}`
+                        : t("dash_settings_free_plan_desc")}
+                    </p>
+                  </div>
+                </div>
+                {!isSubscribed && (
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-primary bg-primary/10 px-3 py-1 rounded-full border border-primary/20">
+                    {t("dash_settings_active")}
+                  </span>
+                )}
+              </div>
+
+              {/* Usage Bar */}
+              {usage && (
+                <div className="space-y-2">
+                  <div className="flex items-center justify-between text-xs">
+                    <span className="text-muted-foreground">
+                      {t("settings_usage_label")}
+                    </span>
+                    <span className="font-medium text-foreground">
+                      {usage.used}/{usage.limit}
+                    </span>
+                  </div>
+                  <div className="h-2 rounded-full bg-white/5 overflow-hidden">
+                    <motion.div
+                      initial={{ width: 0 }}
+                      animate={{
+                        width: `${Math.min(100, (usage.used / usage.limit) * 100)}%`,
+                      }}
+                      transition={{ duration: 0.8, ease: "easeOut" }}
+                      className={`h-full rounded-full transition-colors ${
+                        usage.used / usage.limit > 0.9
+                          ? "bg-red-500"
+                          : usage.used / usage.limit > 0.7
+                            ? "bg-amber-500"
+                            : "bg-primary"
+                      }`}
+                    />
+                  </div>
+                </div>
+              )}
+
+              {/* Subscription Details */}
+              {plan?.subscription && (
+                <div className="grid grid-cols-2 gap-3 pt-2 border-t border-white/5">
+                  {plan.subscription.current_period_end && (
+                    <div>
+                      <p className="text-[11px] text-muted-foreground">
+                        {t("settings_renews")}
+                      </p>
+                      <p className="text-xs font-medium text-foreground">
+                        {new Date(
+                          plan.subscription.current_period_end
+                        ).toLocaleDateString()}
+                      </p>
+                    </div>
+                  )}
+                  {plan.subscription.amount && (
+                    <div>
+                      <p className="text-[11px] text-muted-foreground">
+                        {t("settings_amount")}
+                      </p>
+                      <p className="text-xs font-medium text-foreground">
+                        ${(plan.subscription.amount / 100).toFixed(2)}/
+                        {plan.subscription.recurring_interval || "mo"}
+                      </p>
+                    </div>
+                  )}
+                  {plan.subscription.cancel_at_period_end && (
+                    <div className="col-span-2">
+                      <p className="text-xs text-amber-400 flex items-center gap-1">
+                        <XCircle className="w-3.5 h-3.5" />
+                        {t("settings_canceling")}
+                      </p>
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
+
+            {/* Upgrade CTA */}
+            {nextPlan && (
+              <motion.button
+                onClick={handleUpgrade}
+                whileHover={{ scale: 1.01 }}
+                whileTap={{ scale: 0.99 }}
+                className="w-full flex items-center justify-between rounded-xl bg-accent-gradient/10 border border-primary/20 p-4 text-left hover:bg-accent-gradient/20 transition-all duration-300 group"
+              >
+                <div className="flex items-center gap-3">
+                  <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-accent-gradient shadow-glow/30">
+                    <ArrowUpRight className="h-4 w-4 text-primary-foreground" />
+                  </div>
+                  <div>
+                    <p className="text-sm font-semibold text-foreground">
+                      {t("settings_upgrade_to")} {nextPlan.name}
+                    </p>
+                    <p className="text-xs text-muted-foreground">
+                      {t("settings_upgrade_desc")
+                        .replace("{limit}", String(nextPlan.limit))
+                        .replace("{price}", String(nextPlan.price))}
+                    </p>
+                  </div>
+                </div>
+                <ExternalLink className="h-4 w-4 text-muted-foreground group-hover:text-primary transition-colors" />
+              </motion.button>
+            )}
+
+            {/* Manage on Polar */}
+            {isSubscribed && (
+              <a
+                href="https://polar.sh/purchases/subscriptions"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center justify-center gap-2 rounded-xl border border-white/10 bg-white/5 px-4 py-2.5 text-xs font-medium text-muted-foreground hover:text-foreground hover:bg-white/10 transition-all duration-200"
+              >
+                <ExternalLink className="h-3.5 w-3.5" />
+                {t("settings_manage_polar")}
+              </a>
+            )}
+          </>
+        )}
       </motion.div>
 
       {/* Danger Zone */}
@@ -199,8 +428,12 @@ function SettingsPage() {
             <AlertTriangle className="h-5 w-5 text-destructive" />
           </div>
           <div>
-            <h2 className="text-base font-semibold text-foreground">{t("dash_settings_danger")}</h2>
-            <p className="text-xs text-muted-foreground">{t("dash_settings_danger_desc")}</p>
+            <h2 className="text-base font-semibold text-foreground">
+              {t("dash_settings_danger")}
+            </h2>
+            <p className="text-xs text-muted-foreground">
+              {t("dash_settings_danger_desc")}
+            </p>
           </div>
         </div>
 

@@ -1,5 +1,5 @@
 import { motion, AnimatePresence } from "framer-motion";
-import { Upload, Loader2, Download, Lock, Sparkles, ChevronDown, ChevronUp, Heart } from "lucide-react";
+import { Upload, Loader2, Download, Lock, Sparkles, ChevronDown, ChevronUp, Heart, ArrowUpRight } from "lucide-react";
 import { useState, useRef, useEffect } from "react";
 import { toast } from "sonner";
 import { fal } from "@fal-ai/client";
@@ -12,6 +12,8 @@ import t5 from "@/assets/template/5 (1).jpg";
 import { templatePrompts } from "@/data/templateData";
 import { useAuth } from "@/components/AuthProvider";
 import { saveGenerationToHistory } from "@/lib/storage";
+import { useSubscription } from "@/hooks/useSubscription";
+import { getCheckoutUrl, getNextUpgrade, PLAN_CONFIG } from "@/lib/subscription";
 
 // Dynamic import for templates 1-19
 const templateModules = import.meta.glob("../../assets/template/1-19/**/*.{png,jpg,jpeg}", { eager: true });
@@ -71,11 +73,12 @@ fal.config({
 export function TemplateGallery() {
   const { t } = useTranslation();
   const { user } = useAuth();
+  const { usage, planKey, planName, generationLimit, refresh: refreshSubscription } = useSubscription();
   const [active, setActive] = useState("All");
   const [selectedTemplate, setSelectedTemplate] = useState<string | null>(null);
   const [isProcessing, setIsProcessing] = useState(false);
   const [showAll, setShowAll] = useState(false);
-  const [generationCount, setGenerationCount] = useState<number>(0);
+  const [localGenerationCount, setLocalGenerationCount] = useState<number>(0);
   const [showLimitModal, setShowLimitModal] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const [isSavedToHistory, setIsSavedToHistory] = useState(false);
@@ -88,19 +91,26 @@ export function TemplateGallery() {
   } | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
+  // Use subscription-aware count when logged in, fallback to localStorage for guests
+  const generationCount = usage?.used ?? localGenerationCount;
+  const currentLimit = usage?.limit ?? generationLimit;
+
+  const nextUpgrade = getNextUpgrade(planKey);
+  const nextPlan = nextUpgrade ? PLAN_CONFIG[nextUpgrade] : null;
+
   useEffect(() => {
     const localCount = parseInt(localStorage.getItem("generation_count") || "0", 10);
     const sessionCount = parseInt(sessionStorage.getItem("generation_count") || "0", 10);
     const maxCount = Math.max(localCount, sessionCount);
     
-    setGenerationCount(maxCount);
+    setLocalGenerationCount(maxCount);
     toast.dismiss("gen-toast");
     
     // Developer reset function
     (window as any).resetGenerationLimit = () => {
       localStorage.setItem("generation_count", "0");
       sessionStorage.setItem("generation_count", "0");
-      setGenerationCount(0);
+      setLocalGenerationCount(0);
       setShowLimitModal(false);
       console.log("Generation limit reset to 0.");
     };
@@ -115,7 +125,7 @@ export function TemplateGallery() {
   }, [resultData]);
 
   const processGeneration = async (productFile: File, templateImgSrc: string) => {
-    if (generationCount >= 5) {
+    if (generationCount >= currentLimit) {
       setShowLimitModal(true);
       return;
     }
@@ -180,10 +190,12 @@ Ultra realistic product photography.`,
       });
       setIsSavedToHistory(false);
 
-      const newCount = generationCount + 1;
-      setGenerationCount(newCount);
+      const newCount = localGenerationCount + 1;
+      setLocalGenerationCount(newCount);
       localStorage.setItem("generation_count", newCount.toString());
       sessionStorage.setItem("generation_count", newCount.toString());
+      // Refresh subscription data to get updated server-side count
+      refreshSubscription();
 
       toast.success(t('gallery_upload_success'), { id: "gen-toast" });
 
@@ -248,18 +260,20 @@ Ultra realistic product photography.`,
       <div className="mx-auto max-w-7xl px-4 sm:px-6">
         <div className="flex justify-center mb-6">
           {(() => {
-            const MAX = 5;
-            const remaining = Math.max(0, MAX - generationCount);
+            const remaining = Math.max(0, currentLimit - generationCount);
             const remainingText =
               remaining === 0
                 ? t('limit_reached')
                 : remaining === 1
                 ? t('limit_remaining_1')
-                : `${remaining} ${t('limit_remaining_n')}`;
+                : `${remaining}/${currentLimit} ${t('limit_remaining_n')}`;
             return (
               <div className={`px-4 py-1.5 rounded-full text-xs font-semibold backdrop-blur-md border flex items-center gap-2 ${remaining > 0 ? 'bg-primary/10 border-primary/20 text-primary shadow-[0_0_15px_var(--glow)]' : 'bg-destructive/10 border-destructive/20 text-destructive'}`}>
                 {remaining === 0 ? <Lock className="w-3.5 h-3.5" /> : <Sparkles className="w-3.5 h-3.5" />}
                 {remainingText}
+                {planKey !== 'free' && (
+                  <span className="text-[10px] uppercase tracking-wider opacity-70">({planName})</span>
+                )}
               </div>
             );
           })()}
@@ -485,16 +499,33 @@ Ultra realistic product photography.`,
                      <Lock className="w-8 h-8" />
                   </div>
                   <h2 className="text-2xl font-bold mb-2">{t('modal_limit_headline')}</h2>
-                  <p className="text-muted-foreground mb-8 leading-relaxed">{t('modal_limit_desc')}</p>
+                  <p className="text-muted-foreground mb-8 leading-relaxed">
+                    {t('modal_limit_desc')}
+                    {planKey !== 'free' && ` (${planName} — ${currentLimit} ${t('limit_remaining_n')})`}
+                  </p>
                   
                   <div className="flex flex-col w-full gap-3">
-                     <button 
-                       type="button"
-                       onClick={() => setShowLimitModal(false)}
-                       className="w-full py-3 rounded-full bg-primary text-primary-foreground font-semibold hover:bg-primary/90 transition-colors shadow-elegant"
-                     >
-                        {t('modal_btn_upgrade')}
-                     </button>
+                     {nextPlan ? (
+                       <a
+                         href={getCheckoutUrl(
+                           nextPlan.id,
+                           user?.email || undefined,
+                           `${window.location.origin}/dashboard/settings?payment=success`
+                         )}
+                         className="w-full py-3 rounded-full bg-accent-gradient text-primary-foreground font-semibold hover:opacity-95 transition-all shadow-glow flex items-center justify-center gap-2"
+                       >
+                          {t('modal_btn_upgrade')} — {nextPlan.name} (${nextPlan.price}/{t('pricing_mo')})
+                          <ArrowUpRight className="h-4 w-4" />
+                       </a>
+                     ) : (
+                       <button 
+                         type="button"
+                         onClick={() => setShowLimitModal(false)}
+                         className="w-full py-3 rounded-full bg-primary text-primary-foreground font-semibold hover:bg-primary/90 transition-colors shadow-elegant"
+                       >
+                          {t('modal_btn_contact')}
+                       </button>
+                     )}
                      <button 
                        type="button"
                        onClick={() => setShowLimitModal(false)}

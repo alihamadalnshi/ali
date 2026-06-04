@@ -223,5 +223,27 @@
   "login_powered_by": "Powered by نماذج Ai — AI Ads in Seconds",
   "login_success_signup": "Check your email for a confirmation link!",
   "login_error_generic": "An unexpected error occurred",
-  "login_error_google": "Failed to sign in with Google"
+  "login_error_google": "Failed to sign in with Google",
+
+  "pricing_current": "Current Plan",
+  "pricing_current_higher": "Current plan is higher",
+
+  "settings_plan_label": "Plan",
+  "settings_gen_limit": "Generation limit",
+  "settings_per_period": "per billing period",
+  "settings_usage_label": "Generations used",
+  "settings_renews": "Renews on",
+  "settings_amount": "Billing amount",
+  "settings_canceling": "Canceling at end of period",
+  "settings_upgrade_to": "Upgrade to",
+  "settings_upgrade_desc": "Get {limit} generations for ${price}/mo",
+  "settings_manage_polar": "Manage subscription on Polar",
+  "settings_payment_success": "Payment successful! Your plan is now active.",
+
+  "dash_stat_credits_plan": "Credits",
+  "dash_upgrade_btn": "Upgrade to",
+  "dash_limit_reached_title": "Generation limit reached",
+  "dash_limit_reached_desc": "Upgrade to {plan} to get {limit} generations per period.",
+  "dash_near_limit_title": "Running low on credits",
+  "dash_near_limit_desc": "You have {remaining} of {limit} generations remaining."
 }

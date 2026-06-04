@@ -1,38 +1,87 @@
 import { motion } from "framer-motion";
-import { Check, Sparkles } from "lucide-react";
+import { Check, Sparkles, Loader2, Crown } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { SectionHeader } from "./SectionHeader";
+import { useAuth } from "@/components/AuthProvider";
+import { useSubscription } from "@/hooks/useSubscription";
+import { getCheckoutUrl, PLAN_CONFIG } from "@/lib/subscription";
+import { useState } from "react";
+import { useNavigate } from "@tanstack/react-router";
 
 export function Pricing() {
   const { t, i18n } = useTranslation();
+  const { user } = useAuth();
+  const { planKey, loading: subLoading } = useSubscription();
+  const navigate = useNavigate();
   const isRtl = i18n.language === "ar";
+  const [loadingTier, setLoadingTier] = useState<string | null>(null);
 
   const tiers = [
     {
-      id: "basic",
+      id: "basic" as const,
       name: t("pricing_tier_basic"),
       price: 9,
       featured: false,
       imagesKey: "pricing_feature_images_30",
-      desc: isRtl ? "مثالي للمبتدئين لتجربة قوة الذكاء الاصطناعي" : "Perfect for starters to test the power of AI ads.",
+      productId: PLAN_CONFIG.basic.id,
+      desc: isRtl
+        ? "مثالي للمبتدئين لتجربة قوة الذكاء الاصطناعي"
+        : "Perfect for starters to test the power of AI ads.",
     },
     {
-      id: "pro",
+      id: "pro" as const,
       name: t("pricing_tier_pro"),
       price: 19,
       featured: true,
       imagesKey: "pricing_feature_images_100",
-      desc: isRtl ? "الخيار الأفضل للشركات الناشئة والمسوقين" : "The absolute best value for startups and marketers.",
+      productId: PLAN_CONFIG.pro.id,
+      desc: isRtl
+        ? "الخيار الأفضل للشركات الناشئة والمسوقين"
+        : "The absolute best value for startups and marketers.",
     },
     {
-      id: "business",
+      id: "business" as const,
       name: t("pricing_tier_business"),
       price: 49,
       featured: false,
       imagesKey: "pricing_feature_images_300",
-      desc: isRtl ? "شامل جميع الميزات للنمو السريع والتوسع" : "Fully loaded for fast growth and serious scaling.",
+      productId: PLAN_CONFIG.business.id,
+      desc: isRtl
+        ? "شامل جميع الميزات للنمو السريع والتوسع"
+        : "Fully loaded for fast growth and serious scaling.",
     },
   ];
+
+  const handleChoosePlan = (tier: (typeof tiers)[number]) => {
+    if (!user) {
+      // Redirect to login first
+      navigate({ to: "/login" });
+      return;
+    }
+
+    setLoadingTier(tier.id);
+
+    const successUrl = `${window.location.origin}/dashboard/settings?payment=success`;
+    const checkoutUrl = getCheckoutUrl(
+      tier.productId,
+      user.email,
+      successUrl
+    );
+
+    // Redirect to Polar checkout
+    window.location.href = checkoutUrl;
+  };
+
+  const getPlanOrder = (id: string) => {
+    const order = { free: 0, basic: 1, pro: 2, business: 3 };
+    return order[id as keyof typeof order] ?? 0;
+  };
+
+  const isCurrentPlan = (tierId: string) => planKey === tierId;
+  const isDowngrade = (tierId: string) =>
+    getPlanOrder(tierId) < getPlanOrder(planKey);
+  const isUpgrade = (tierId: string) =>
+    getPlanOrder(tierId) > getPlanOrder(planKey);
 
   return (
     <section id="pricing" className="relative py-32 overflow-hidden">
@@ -53,7 +102,11 @@ export function Pricing() {
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-40px" }}
-              transition={{ duration: 0.6, delay: i * 0.1, ease: [0.22, 1, 0.36, 1] }}
+              transition={{
+                duration: 0.6,
+                delay: i * 0.1,
+                ease: [0.22, 1, 0.36, 1],
+              }}
               className={`ring-border-gradient relative rounded-3xl p-8 flex flex-col justify-between transition-all duration-300 hover:scale-[1.02] ${
                 tItem.featured
                   ? "glass-strong shadow-[0_0_50px_rgba(180,85,252,0.15)] border-primary/20"
@@ -69,8 +122,16 @@ export function Pricing() {
 
               <div>
                 <div className="flex items-center justify-between">
-                  <h3 className="text-xl font-bold tracking-tight text-foreground">{tItem.name}</h3>
-                  {tItem.featured && (
+                  <h3 className="text-xl font-bold tracking-tight text-foreground">
+                    {tItem.name}
+                  </h3>
+                  {isCurrentPlan(tItem.id) && (
+                    <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-400 bg-emerald-400/10 px-2 py-0.5 rounded-md border border-emerald-400/20 flex items-center gap-1">
+                      <Crown className="w-3 h-3" />
+                      {t("pricing_current")}
+                    </span>
+                  )}
+                  {!isCurrentPlan(tItem.id) && tItem.featured && (
                     <span className="text-[10px] font-bold uppercase tracking-wider text-primary bg-primary/10 px-2 py-0.5 rounded-md">
                       {isRtl ? "قيمة رائعة" : "Best Value"}
                     </span>
@@ -91,11 +152,11 @@ export function Pricing() {
                   </span>
                 </div>
 
-                {/* Hand-drawn box replication */}
+                {/* Features box */}
                 <div className="mt-8 border border-white/10 rounded-2xl p-5 bg-white/[0.02] shadow-inner relative overflow-hidden group/box">
                   {/* Subtle hover background sheen */}
                   <div className="absolute inset-0 bg-gradient-to-tr from-primary/5 via-transparent to-transparent opacity-0 transition-opacity duration-500 group-hover/box:opacity-100" />
-                  
+
                   <div className="relative z-10 space-y-4">
                     <div className="flex items-center gap-3">
                       <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-primary/15 text-primary shadow-[0_0_10px_rgba(180,85,252,0.2)]">
@@ -128,16 +189,32 @@ export function Pricing() {
               </div>
 
               <div className="mt-8">
-                <a
-                  href="#cta"
-                  className={`flex w-full items-center justify-center rounded-xl py-3 text-sm font-bold transition-all duration-300 ${
-                    tItem.featured
-                      ? "bg-accent-gradient text-primary-foreground shadow-glow hover:opacity-95 hover:shadow-[0_0_35px_var(--glow)]"
-                      : "bg-white/10 text-foreground hover:bg-white/15 border border-white/5"
+                <button
+                  onClick={() => handleChoosePlan(tItem)}
+                  disabled={
+                    isCurrentPlan(tItem.id) ||
+                    isDowngrade(tItem.id) ||
+                    loadingTier === tItem.id ||
+                    subLoading
+                  }
+                  className={`flex w-full items-center justify-center gap-2 rounded-xl py-3 text-sm font-bold transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed ${
+                    isCurrentPlan(tItem.id)
+                      ? "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 cursor-default"
+                      : tItem.featured
+                        ? "bg-accent-gradient text-primary-foreground shadow-glow hover:opacity-95 hover:shadow-[0_0_35px_var(--glow)]"
+                        : "bg-white/10 text-foreground hover:bg-white/15 border border-white/5"
                   }`}
                 >
-                  {t("pricing_btn_select")}
-                </a>
+                  {loadingTier === tItem.id ? (
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                  ) : isCurrentPlan(tItem.id) ? (
+                    t("pricing_current")
+                  ) : isDowngrade(tItem.id) ? (
+                    t("pricing_current_higher")
+                  ) : (
+                    t("pricing_btn_select")
+                  )}
+                </button>
               </div>
             </motion.div>
           ))}
@@ -146,4 +223,3 @@ export function Pricing() {
     </section>
   );
 }
-

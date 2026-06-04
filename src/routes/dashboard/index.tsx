@@ -1,9 +1,19 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useAuth } from "@/components/AuthProvider";
 import { useTranslation } from "react-i18next";
 import { useEffect, useState, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Images, Heart, Sparkles, TrendingUp, Loader2, FolderOpen } from "lucide-react";
+import {
+  Images,
+  Heart,
+  Sparkles,
+  TrendingUp,
+  Loader2,
+  FolderOpen,
+  ArrowUpRight,
+  Crown,
+  Zap,
+} from "lucide-react";
 import { StatCard, StatsGrid } from "@/components/dashboard/DashboardStats";
 import { GenerationCard } from "@/components/dashboard/GenerationCard";
 import {
@@ -13,13 +23,18 @@ import {
 } from "@/lib/storage";
 import { supabase } from "@/lib/supabase";
 import { toast } from "sonner";
+import { useSubscription } from "@/hooks/useSubscription";
+import { getCheckoutUrl, getNextUpgrade, PLAN_CONFIG } from "@/lib/subscription";
 
 export const Route = createFileRoute("/dashboard/")({
   component: DashboardHome,
   head: () => ({
     meta: [
       { title: "Dashboard — نماذج Ai" },
-      { name: "description", content: "View your AI ad generation history and stats." },
+      {
+        name: "description",
+        content: "View your AI ad generation history and stats.",
+      },
     ],
   }),
 });
@@ -45,6 +60,15 @@ function DashboardHome() {
   const [totalCount, setTotalCount] = useState(0);
   const [generationCount, setGenerationCount] = useState(0);
 
+  const {
+    planName,
+    planKey,
+    generationLimit,
+    isSubscribed,
+    usage,
+    loading: subLoading,
+  } = useSubscription();
+
   const loadData = useCallback(async () => {
     try {
       setLoading(true);
@@ -67,6 +91,21 @@ function DashboardHome() {
   }, [loadData]);
 
   const savedCount = generations.filter((g) => g.is_saved).length;
+  const creditsUsed = usage?.used ?? generationCount;
+  const creditsLimit = usage?.limit ?? generationLimit;
+  const creditsRemaining = Math.max(0, creditsLimit - creditsUsed);
+  const usagePercent = creditsLimit > 0 ? (creditsUsed / creditsLimit) * 100 : 0;
+  const isNearLimit = usagePercent >= 80;
+  const isAtLimit = creditsUsed >= creditsLimit;
+
+  const nextUpgrade = getNextUpgrade(planKey);
+  const nextPlan = nextUpgrade ? PLAN_CONFIG[nextUpgrade] : null;
+
+  const handleUpgrade = () => {
+    if (!nextPlan || !user?.email) return;
+    const successUrl = `${window.location.origin}/dashboard/settings?payment=success`;
+    window.location.href = getCheckoutUrl(nextPlan.id, user.email, successUrl);
+  };
 
   const handleToggleSave = async (id: string, saved: boolean) => {
     try {
@@ -101,7 +140,9 @@ function DashboardHome() {
           animate={{ opacity: 1, y: 0 }}
           className="text-3xl font-bold tracking-tight text-gradient"
         >
-          {t("dash_welcome")}, {user?.user_metadata?.full_name?.split(" ")[0] || user?.email?.split("@")[0]}
+          {t("dash_welcome")},{" "}
+          {user?.user_metadata?.full_name?.split(" ")[0] ||
+            user?.email?.split("@")[0]}
         </motion.h1>
         <motion.p
           initial={{ opacity: 0, y: -10 }}
@@ -112,6 +153,62 @@ function DashboardHome() {
           {t("dash_welcome_desc")}
         </motion.p>
       </div>
+
+      {/* Upgrade Banner — shown when near or at limit */}
+      {isNearLimit && nextPlan && (
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.05 }}
+          className={`relative overflow-hidden rounded-2xl p-5 ring-border-gradient ${
+            isAtLimit
+              ? "bg-red-500/5 border border-red-500/20"
+              : "bg-amber-500/5 border border-amber-500/20"
+          }`}
+        >
+          <div className="absolute inset-0 bg-gradient-to-r from-primary/5 via-transparent to-transparent pointer-events-none" />
+          <div className="relative z-10 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+            <div className="flex items-center gap-3">
+              <div
+                className={`flex h-10 w-10 items-center justify-center rounded-xl ${
+                  isAtLimit
+                    ? "bg-red-500/15 text-red-400"
+                    : "bg-amber-500/15 text-amber-400"
+                }`}
+              >
+                {isAtLimit ? (
+                  <Zap className="h-5 w-5" />
+                ) : (
+                  <Crown className="h-5 w-5" />
+                )}
+              </div>
+              <div>
+                <p className="text-sm font-semibold text-foreground">
+                  {isAtLimit
+                    ? t("dash_limit_reached_title")
+                    : t("dash_near_limit_title")}
+                </p>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  {isAtLimit
+                    ? t("dash_limit_reached_desc")
+                        .replace("{plan}", nextPlan.name)
+                        .replace("{limit}", String(nextPlan.limit))
+                    : t("dash_near_limit_desc")
+                        .replace("{remaining}", String(creditsRemaining))
+                        .replace("{limit}", String(creditsLimit))}
+                </p>
+              </div>
+            </div>
+            <button
+              onClick={handleUpgrade}
+              className="flex items-center gap-2 rounded-xl bg-accent-gradient px-5 py-2.5 text-xs font-bold text-primary-foreground shadow-glow/40 hover:shadow-glow transition-all duration-300 whitespace-nowrap"
+            >
+              {t("dash_upgrade_btn")} {nextPlan.name}
+              <ArrowUpRight className="h-3.5 w-3.5" />
+            </button>
+          </div>
+        </motion.div>
+      )}
 
       {/* Stats */}
       <StatsGrid>
@@ -128,15 +225,22 @@ function DashboardHome() {
         />
         <StatCard
           icon={Sparkles}
-          label={t("dash_stat_credits")}
-          value={`${Math.max(0, 5 - generationCount)}/5`}
+          label={
+            isSubscribed
+              ? `${planName} ${t("dash_stat_credits_plan")}`
+              : t("dash_stat_credits")
+          }
+          value={`${creditsRemaining}/${creditsLimit}`}
         />
         <StatCard
           icon={TrendingUp}
           label={t("dash_stat_this_month")}
-          value={generations.filter(
-            (g) => new Date(g.created_at).getMonth() === new Date().getMonth()
-          ).length}
+          value={
+            generations.filter(
+              (g) =>
+                new Date(g.created_at).getMonth() === new Date().getMonth()
+            ).length
+          }
         />
       </StatsGrid>
 
@@ -159,7 +263,9 @@ function DashboardHome() {
             <div className="flex h-20 w-20 items-center justify-center rounded-2xl bg-surface-elevated border border-white/5 mb-6">
               <FolderOpen className="h-9 w-9 text-muted-foreground" />
             </div>
-            <h3 className="text-lg font-semibold text-foreground">{t("dash_empty_title")}</h3>
+            <h3 className="text-lg font-semibold text-foreground">
+              {t("dash_empty_title")}
+            </h3>
             <p className="mt-2 text-sm text-muted-foreground max-w-sm">
               {t("dash_empty_desc")}
             </p>
