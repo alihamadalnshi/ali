@@ -1,6 +1,10 @@
 import { createClient } from '@supabase/supabase-js';
 import crypto from 'crypto';
 
+export const config = {
+  runtime: 'edge',
+};
+
 // Signature verification following the Standard Webhooks specification
 function verifySignature(
   secret: string,
