@@ -27,24 +27,44 @@ function verifySignature(
   signatureHeader: string
 ): boolean {
   if (!secret || !id || !timestamp || !rawBody || !signatureHeader) {
+    console.warn('verifySignature: Missing required parameters', {
+      hasSecret: !!secret,
+      id,
+      timestamp,
+      hasRawBody: !!rawBody,
+      signatureHeader
+    });
     return false;
   }
 
-  // 1. Validate timestamp to prevent replay attacks (tolerance of 5 minutes)
+  // 1. Validate timestamp to prevent replay attacks
   const timestampMs = parseInt(timestamp, 10) * 1000;
   const now = Date.now();
-  if (isNaN(timestampMs) || Math.abs(now - timestampMs) > 5 * 60 * 1000) {
-    console.warn(`Webhook timestamp is out of tolerance window: ${timestamp}`);
+  const timeDifferenceMs = Math.abs(now - timestampMs);
+  
+  if (isNaN(timestampMs)) {
+    console.warn(`Webhook timestamp is not a number: ${timestamp}`);
     return false;
+  }
+
+  // Tolerant to 24 hours for redeliveries and debugging
+  if (timeDifferenceMs > 24 * 60 * 60 * 1000) {
+    console.warn(`Webhook timestamp is too old (older than 24 hours). Event time: ${new Date(timestampMs).toISOString()}, Server time: ${new Date(now).toISOString()}`);
+    return false;
+  }
+
+  if (timeDifferenceMs > 5 * 60 * 1000) {
+    console.log(`Webhook timestamp difference is ${timeDifferenceMs / 1000}s (more than 5 mins). Tolerating up to 24h.`);
   }
 
   // 2. Prepare signed content
   const signedContent = `${id}.${timestamp}.${rawBody}`;
 
-  // 3. Decode base64 secret (after stripping any whsec_ or polar_whs_ prefix)
+  // 3. Decode base64 secret (after trimming and stripping any whsec_ or polar_whs_ prefix)
   let secretBytes: Buffer;
   try {
-    const cleanSecret = secret.replace(/^(whsec_|polar_whs_)/, '');
+    const trimmedSecret = secret.trim();
+    const cleanSecret = trimmedSecret.replace(/^(whsec_|polar_whs_)/, '');
     secretBytes = Buffer.from(cleanSecret, 'base64');
   } catch (err) {
     console.error("Invalid webhook secret encoding (must be base64):", err);
@@ -56,6 +76,15 @@ function verifySignature(
     .createHmac('sha256', secretBytes)
     .update(signedContent)
     .digest('base64');
+
+  console.log('Signature Verification Debug:', {
+    webhookId: id,
+    timestamp,
+    rawBodyLength: rawBody.length,
+    rawBodyPreview: rawBody.substring(0, 100),
+    expectedSignature,
+    signatureHeader
+  });
 
   // 5. Check if any signature in the header matches
   const signatures = signatureHeader.split(' ');
@@ -74,6 +103,7 @@ function verifySignature(
         expectedBuffer.length === actualBuffer.length &&
         crypto.timingSafeEqual(expectedBuffer, actualBuffer)
       ) {
+        console.log('Webhook signature successfully matched expected signature.');
         return true;
       }
     } catch (e) {
@@ -81,6 +111,7 @@ function verifySignature(
     }
   }
 
+  console.warn('Webhook signature mismatch. No signatures matched the expected signature.');
   return false;
 }
 
@@ -95,19 +126,44 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   const timestamp = req.headers['webhook-timestamp'] as string;
   const signature = req.headers['webhook-signature'] as string;
 
+  console.log('Webhook headers received:', {
+    'webhook-id': id,
+    'webhook-timestamp': timestamp,
+    'webhook-signature': signature ? `${signature.substring(0, 20)}...` : undefined,
+    'content-type': req.headers['content-type'],
+  });
+
   if (!id || !timestamp || !signature) {
     return res.status(400).json({ error: 'Missing webhook headers' });
   }
 
-  // Get raw body
-  let rawBodyBuffer: Buffer;
-  try {
-    rawBodyBuffer = await getRawBody(req);
-  } catch (err: any) {
-    console.error('Failed to read request body:', err);
-    return res.status(400).json({ error: 'Failed to read request body' });
+  // Retrieve body
+  let rawBody = '';
+  const isPreParsed = req.body && typeof req.body === 'object' && !Buffer.isBuffer(req.body);
+
+  if (isPreParsed) {
+    try {
+      rawBody = JSON.stringify(req.body);
+      console.log('Request body was pre-parsed by runtime. Reconstructed string length:', rawBody.length);
+    } catch (err) {
+      console.error('Failed to reconstruct raw body from pre-parsed object:', err);
+    }
+  } else {
+    try {
+      const rawBodyBuffer = await getRawBody(req);
+      rawBody = rawBodyBuffer.toString('utf8');
+      console.log('Read raw body from request stream. Length:', rawBody.length);
+    } catch (err: any) {
+      console.error('Failed to read request body stream:', err);
+      // Fallback: if req.body has been populated in any form
+      if (req.body) {
+        rawBody = typeof req.body === 'string' ? req.body : JSON.stringify(req.body);
+        console.log('Fallback: Used req.body directly. Length:', rawBody.length);
+      } else {
+        return res.status(400).json({ error: 'Failed to read request body' });
+      }
+    }
   }
-  const rawBody = rawBodyBuffer.toString('utf8');
 
   // Verify signature
   const secret = process.env.POLAR_WEBHOOK_SECRET;

@@ -212,6 +212,31 @@ async function runTests() {
       console.error('❌ Test Failed: Expected 200 with ignored:true, got', statusMock.calls[0]);
     }
   }
+
+  // Test 4: Pre-parsed body fallback (like Vercel parser default behavior)
+  {
+    console.log('\nTest 4: Pre-parsed body fallback (body parsing enabled by runtime)');
+    const req = Readable.from([]); // Empty stream (consumed)
+    req.method = 'POST';
+    req.headers = {
+      'webhook-id': webhookId,
+      'webhook-timestamp': timestamp,
+      'webhook-signature': signatureHeader,
+    };
+    req.body = payload; // Already parsed by runtime
+
+    const { res, statusMock, jsonMock } = createMockResponse();
+
+    await handler(req, res);
+
+    if (statusMock.calls[0] === 200) {
+      console.log('✅ Test Passed: Returned 200 OK with pre-parsed body fallback');
+      console.log('Response Payload:', jsonMock.calls[0][0]);
+    } else {
+      console.error('❌ Test Failed: Expected 200, got', statusMock.calls[0]);
+    }
+  }
 }
 
 runTests().catch(console.error);
+
