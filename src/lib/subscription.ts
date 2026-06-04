@@ -140,7 +140,7 @@ export function getCheckoutUrl(
   userEmail?: string,
   successUrl?: string
 ): string {
-  const baseUrl = `https://buy.polar.sh/polar_cl_jU5KHrOgUQIJ2wUOAyvkUZFNzWM0gI2rKBCoR1RaqNW`;
+  const baseUrl = `https://sandbox-api.polar.sh/v1/checkout-links/polar_cl_2oHsk83lhvPMLqKipc74vI39gWE84Ebf7yJy70OeaA8/redirect`;
 
   const params = new URLSearchParams();
 
