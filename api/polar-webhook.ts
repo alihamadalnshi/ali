@@ -64,7 +64,7 @@ function verifySignature(
     webhookId: id,
     timestamp,
     rawBodyLength: rawBody.length,
-    rawBodyPreview: rawBody.substring(0, 100),
+    rawBody: rawBody,
     expectedSignature,
     signatureHeader
   });
@@ -158,7 +158,7 @@ export async function POST(request: Request) {
           id,
           timestamp,
           rawBodyLength: rawBody.length,
-          rawBodyPreview: rawBody.substring(0, 100),
+          rawBody: rawBody,
           secretLength: secret ? secret.length : 0,
           secretPrefix: secret ? `${secret.substring(0, 15)}...` : 'missing',
           signatureHeader: signature ? `${signature.substring(0, 20)}...` : undefined,
