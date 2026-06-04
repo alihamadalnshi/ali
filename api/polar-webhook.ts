@@ -1,18 +1,17 @@
 import { createClient } from '@supabase/supabase-js';
-import crypto from 'crypto';
 
 export const config = {
   runtime: 'edge',
 };
 
-// Signature verification following the Standard Webhooks specification
-function verifySignature(
+// Signature verification following the Standard Webhooks specification using Web Crypto API
+async function verifySignature(
   secret: string,
   id: string,
   timestamp: string,
   rawBody: string,
   signatureHeader: string
-): boolean {
+): Promise<boolean> {
   if (!secret || !id || !timestamp || !rawBody || !signatureHeader) {
     console.warn('verifySignature: Missing required parameters', {
       hasSecret: !!secret,
@@ -48,21 +47,43 @@ function verifySignature(
   const signedContent = `${id}.${timestamp}.${rawBody}`;
 
   // 3. Decode base64 secret (after trimming and stripping any whsec_ or polar_whs_ prefix)
-  let secretBytes: Buffer;
+  let secretBytes: Uint8Array;
   try {
     const trimmedSecret = secret.trim();
     const cleanSecret = trimmedSecret.replace(/^(whsec_|polar_whs_)/, '');
-    secretBytes = Buffer.from(cleanSecret, 'base64');
+    
+    // Decode base64 string to Uint8Array safely in Web/Edge environment
+    const binaryString = atob(cleanSecret);
+    secretBytes = new Uint8Array(binaryString.length);
+    for (let i = 0; i < binaryString.length; i++) {
+      secretBytes[i] = binaryString.charCodeAt(i);
+    }
   } catch (err) {
     console.error("Invalid webhook secret encoding (must be base64):", err);
     return false;
   }
 
-  // 4. Compute expected signature in base64
-  const expectedSignature = crypto
-    .createHmac('sha256', secretBytes)
-    .update(signedContent)
-    .digest('base64');
+  // 4. Compute expected signature in base64 using Web Crypto Subtle API
+  let expectedSignature: string;
+  try {
+    const encoder = new TextEncoder();
+    const key = await crypto.subtle.importKey(
+      'raw',
+      secretBytes,
+      { name: 'HMAC', hash: 'SHA-256' },
+      false,
+      ['sign']
+    );
+    const signatureBuffer = await crypto.subtle.sign(
+      'HMAC',
+      key,
+      encoder.encode(signedContent)
+    );
+    expectedSignature = btoa(String.fromCharCode(...new Uint8Array(signatureBuffer)));
+  } catch (err) {
+    console.error("Failed to compute HMAC signature:", err);
+    return false;
+  }
 
   console.log('Signature Verification Debug:', {
     webhookId: id,
@@ -82,19 +103,9 @@ function verifySignature(
     }
     const signatureVal = parts[1];
 
-    try {
-      const expectedBuffer = Buffer.from(expectedSignature);
-      const actualBuffer = Buffer.from(signatureVal);
-
-      if (
-        expectedBuffer.length === actualBuffer.length &&
-        crypto.timingSafeEqual(expectedBuffer, actualBuffer)
-      ) {
-        console.log('Webhook signature successfully matched expected signature.');
-        return true;
-      }
-    } catch (e) {
-      // Ignore errors
+    if (expectedSignature === signatureVal) {
+      console.log('Webhook signature successfully matched expected signature.');
+      return true;
     }
   }
 
@@ -152,7 +163,7 @@ export async function POST(request: Request) {
     });
   }
 
-  const isValid = verifySignature(secret, id, timestamp, rawBody, signature);
+  const isValid = await verifySignature(secret, id, timestamp, rawBody, signature);
   if (!isValid) {
     console.warn('Webhook signature verification failed');
     return new Response(
