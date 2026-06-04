@@ -4,8 +4,8 @@ const secret1 = 'polar_whs_VP90ydLeufJhPGx3jyhhCgWFGypzOHM74BgS2403L3q';
 const secret2 = 'polar_whs_wQfsTWv9irQzHRkSNISR7L391bOkibVjMhgsT3ROTxQe';
 
 const id = '01cdc44c-3476-4698-acff-44e3b7abede0';
-const timestamp = '1780609218';
-const targetSignature = '5HD4Ga/BSRjU+wpaKfkMA0mC200m/tm0GD9s65VCkdA=';
+const timestamp = '1780611249';
+const targetSignature = 'ogm8UoomyqZG8Q8b9qwOZ5tKCxc23i4h396vjaD45DU=';
 
 const payload = {
   "type": "customer.created",
@@ -37,7 +37,7 @@ const payload = {
   }
 };
 
-function check(rawBody: string) {
+function check(rawBody: string, label: string) {
   const signedContent = `${id}.${timestamp}.${rawBody}`;
   
   for (const [secName, secret] of [['Secret1', secret1], ['Secret2', secret2]]) {
@@ -45,7 +45,7 @@ function check(rawBody: string) {
     const secretBytesBase64 = Buffer.from(cleanSecret, 'base64');
     const sig = crypto.createHmac('sha256', secretBytesBase64).update(signedContent).digest('base64');
     if (sig === targetSignature) {
-      console.log(`🎉 FOUND MATCH! Secret: ${secName}, Payload formatting: length ${rawBody.length}`);
+      console.log(`🎉 FOUND MATCH! Secret: ${secName}, Format: ${label}, length ${rawBody.length}`);
       return true;
     }
   }
@@ -53,18 +53,19 @@ function check(rawBody: string) {
 }
 
 // Try minified
-check(JSON.stringify(payload));
+check(JSON.stringify(payload), 'minified');
 
-// Try pretty 2 spaces (with LF and CRLF)
-check(JSON.stringify(payload, null, 2));
-check(JSON.stringify(payload, null, 2).replace(/\n/g, '\r\n'));
+// Try with trailing newline
+check(JSON.stringify(payload) + '\n', 'minified with LF');
+check(JSON.stringify(payload) + '\r\n', 'minified with CRLF');
 
-// Try pretty 4 spaces (with LF and CRLF)
-check(JSON.stringify(payload, null, 4));
-check(JSON.stringify(payload, null, 4).replace(/\n/g, '\r\n'));
+// Try pretty 2 spaces
+check(JSON.stringify(payload, null, 2), 'pretty 2');
+check(JSON.stringify(payload, null, 2).replace(/\n/g, '\r\n'), 'pretty 2 CRLF');
+check(JSON.stringify(payload, null, 2) + '\n', 'pretty 2 with LF');
 
-// Try pretty tab (with LF and CRLF)
-check(JSON.stringify(payload, null, '\t'));
-check(JSON.stringify(payload, null, '\t').replace(/\n/g, '\r\n'));
+// Try pretty 4 spaces
+check(JSON.stringify(payload, null, 4), 'pretty 4');
+check(JSON.stringify(payload, null, 4).replace(/\n/g, '\r\n'), 'pretty 4 CRLF');
 
-console.log('No matches found.');
+console.log('Finished checks.');
