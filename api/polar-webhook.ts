@@ -1,22 +1,5 @@
-import type { VercelRequest, VercelResponse } from '@vercel/node';
 import { createClient } from '@supabase/supabase-js';
 import crypto from 'crypto';
-
-// Disable default body parser to receive raw body for signature verification
-export const config = {
-  api: {
-    bodyParser: false,
-  },
-};
-
-// Helper function to read the raw request body stream
-async function getRawBody(req: VercelRequest): Promise<Buffer> {
-  const chunks: Buffer[] = [];
-  for await (const chunk of req) {
-    chunks.push(typeof chunk === 'string' ? Buffer.from(chunk) : chunk);
-  }
-  return Buffer.concat(chunks);
-}
 
 // Signature verification following the Standard Webhooks specification
 function verifySignature(
@@ -107,7 +90,7 @@ function verifySignature(
         return true;
       }
     } catch (e) {
-      // Ignore errors from parsing/comparison
+      // Ignore errors
     }
   }
 
@@ -115,87 +98,77 @@ function verifySignature(
   return false;
 }
 
-export default async function handler(req: VercelRequest, res: VercelResponse) {
-  // Allow only POST requests
-  if (req.method !== 'POST') {
-    return res.status(405).json({ error: 'Method not allowed' });
-  }
-
+export async function POST(request: Request) {
   // Retrieve headers
-  const id = req.headers['webhook-id'] as string;
-  const timestamp = req.headers['webhook-timestamp'] as string;
-  const signature = req.headers['webhook-signature'] as string;
+  const id = request.headers.get('webhook-id');
+  const timestamp = request.headers.get('webhook-timestamp');
+  const signature = request.headers.get('webhook-signature');
 
   console.log('Webhook headers received:', {
     'webhook-id': id,
     'webhook-timestamp': timestamp,
     'webhook-signature': signature ? `${signature.substring(0, 20)}...` : undefined,
-    'content-type': req.headers['content-type'],
+    'content-type': request.headers.get('content-type'),
   });
 
   if (!id || !timestamp || !signature) {
-    return res.status(400).json({ error: 'Missing webhook headers' });
+    return new Response(JSON.stringify({ error: 'Missing webhook headers' }), {
+      status: 400,
+      headers: { 'Content-Type': 'application/json' },
+    });
   }
 
-  // Retrieve body
+  // Read the raw body as a string using standard Web API
   let rawBody = '';
-  let readFromStream = false;
-
   try {
-    const rawBodyBuffer = await getRawBody(req);
-    rawBody = rawBodyBuffer.toString('utf8');
-    if (rawBody.length > 0) {
-      readFromStream = true;
-      console.log('Read raw body from request stream. Length:', rawBody.length);
-    }
+    rawBody = await request.text();
+    console.log('Read raw body using request.text(). Length:', rawBody.length);
   } catch (err) {
-    console.error('Failed to read request body stream:', err);
-  }
-
-  // Fallback to pre-parsed body if stream was empty or failed
-  const isPreParsed = !readFromStream && req.body && typeof req.body === 'object' && !Buffer.isBuffer(req.body);
-  if (!readFromStream) {
-    if (isPreParsed) {
-      try {
-        rawBody = JSON.stringify(req.body);
-        console.log('Request body was pre-parsed by runtime. Reconstructed string length:', rawBody.length);
-      } catch (err) {
-        console.error('Failed to reconstruct raw body from pre-parsed object:', err);
-      }
-    } else if (req.body) {
-      rawBody = typeof req.body === 'string' ? req.body : JSON.stringify(req.body);
-      console.log('Fallback: Used req.body directly. Length:', rawBody.length);
-    }
+    console.error('Failed to read request body:', err);
+    return new Response(JSON.stringify({ error: 'Failed to read request body' }), {
+      status: 400,
+      headers: { 'Content-Type': 'application/json' },
+    });
   }
 
   if (rawBody.length === 0) {
-    return res.status(400).json({ error: 'Failed to read request body' });
+    return new Response(JSON.stringify({ error: 'Empty request body' }), {
+      status: 400,
+      headers: { 'Content-Type': 'application/json' },
+    });
   }
 
   // Verify signature
   const secret = process.env.POLAR_WEBHOOK_SECRET;
   if (!secret) {
     console.error('Missing POLAR_WEBHOOK_SECRET environment variable');
-    return res.status(500).json({ error: 'Webhook secret is not configured' });
+    return new Response(JSON.stringify({ error: 'Webhook secret is not configured' }), {
+      status: 500,
+      headers: { 'Content-Type': 'application/json' },
+    });
   }
 
   const isValid = verifySignature(secret, id, timestamp, rawBody, signature);
   if (!isValid) {
     console.warn('Webhook signature verification failed');
-    return res.status(401).json({
-      error: 'Invalid signature',
-      debug: {
-        id,
-        timestamp,
-        rawBodyLength: rawBody.length,
-        rawBodyPreview: rawBody.substring(0, 100),
-        secretLength: secret ? secret.length : 0,
-        secretPrefix: secret ? `${secret.substring(0, 15)}...` : 'missing',
-        signatureHeader: signature ? `${signature.substring(0, 20)}...` : undefined,
-        isPreParsed: !!isPreParsed,
-        readFromStream
+    return new Response(
+      JSON.stringify({
+        error: 'Invalid signature',
+        debug: {
+          id,
+          timestamp,
+          rawBodyLength: rawBody.length,
+          rawBodyPreview: rawBody.substring(0, 100),
+          secretLength: secret ? secret.length : 0,
+          secretPrefix: secret ? `${secret.substring(0, 15)}...` : 'missing',
+          signatureHeader: signature ? `${signature.substring(0, 20)}...` : undefined,
+        },
+      }),
+      {
+        status: 401,
+        headers: { 'Content-Type': 'application/json' },
       }
-    });
+    );
   }
 
   // Parse webhook payload
@@ -204,7 +177,10 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     payload = JSON.parse(rawBody);
   } catch (err: any) {
     console.error('Failed to parse JSON body:', err);
-    return res.status(400).json({ error: 'Invalid JSON body' });
+    return new Response(JSON.stringify({ error: 'Invalid JSON body' }), {
+      status: 400,
+      headers: { 'Content-Type': 'application/json' },
+    });
   }
 
   const eventType = payload.type;
@@ -224,7 +200,10 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
   if (!supportedEvents.includes(eventType)) {
     console.log(`Event type ${eventType} is not handled. Ignoring.`);
-    return res.status(200).json({ received: true, ignored: true });
+    return new Response(JSON.stringify({ received: true, ignored: true }), {
+      status: 200,
+      headers: { 'Content-Type': 'application/json' },
+    });
   }
 
   // Initialize Supabase Client with service role key
@@ -233,7 +212,10 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
   if (!supabaseUrl || !supabaseServiceKey) {
     console.error('Missing VITE_SUPABASE_URL or SUPABASE_SERVICE_ROLE_KEY');
-    return res.status(500).json({ error: 'Database credentials not configured' });
+    return new Response(JSON.stringify({ error: 'Database credentials not configured' }), {
+      status: 500,
+      headers: { 'Content-Type': 'application/json' },
+    });
   }
 
   const supabase = createClient(supabaseUrl, supabaseServiceKey);
@@ -242,7 +224,10 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   const customerEmail = data.customer?.email;
   if (!customerEmail) {
     console.warn('No customer email found in webhook data');
-    return res.status(200).json({ received: true, error: 'No customer email found in webhook data' });
+    return new Response(JSON.stringify({ received: true, error: 'No customer email found in webhook data' }), {
+      status: 200,
+      headers: { 'Content-Type': 'application/json' },
+    });
   }
 
   // Look up user profile by email
@@ -254,15 +239,24 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
   if (profileError) {
     console.error(`Error querying profiles for email ${customerEmail}:`, profileError);
-    return res.status(500).json({ error: 'Failed to query user profile' });
+    return new Response(JSON.stringify({ error: 'Failed to query user profile' }), {
+      status: 500,
+      headers: { 'Content-Type': 'application/json' },
+    });
   }
 
   if (!profile) {
     console.warn('User profile not found for email: ' + customerEmail);
-    return res.status(200).json({
-      received: true,
-      error: 'User profile not found for email: ' + customerEmail
-    });
+    return new Response(
+      JSON.stringify({
+        received: true,
+        error: 'User profile not found for email: ' + customerEmail
+      }),
+      {
+        status: 200,
+        headers: { 'Content-Type': 'application/json' },
+      }
+    );
   }
 
   const userId = profile.id;
@@ -276,7 +270,10 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
   if (existingSubError) {
     console.error(`Error querying existing subscription ${data.id}:`, existingSubError);
-    return res.status(500).json({ error: 'Failed to query existing subscription' });
+    return new Response(JSON.stringify({ error: 'Failed to query existing subscription' }), {
+      status: 500,
+      headers: { 'Content-Type': 'application/json' },
+    });
   }
 
   // Map Polar subscription fields to DB schema
@@ -307,7 +304,10 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
   if (upsertError) {
     console.error(`Error upserting subscription ${data.id}:`, upsertError);
-    return res.status(500).json({ error: 'Failed to update subscription in database' });
+    return new Response(JSON.stringify({ error: 'Failed to update subscription in database' }), {
+      status: 500,
+      headers: { 'Content-Type': 'application/json' },
+    });
   }
 
   console.log(`Successfully synced subscription ${data.id} for user ${userId}`);
@@ -339,5 +339,19 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     }
   }
 
-  return res.status(200).json({ received: true, synced: true });
+  return new Response(JSON.stringify({ received: true, synced: true }), {
+    status: 200,
+    headers: { 'Content-Type': 'application/json' },
+  });
+}
+
+// Default export fallback that handles standard routing if needed
+export default async function handler(request: Request) {
+  if (request.method === 'POST') {
+    return POST(request);
+  }
+  return new Response(JSON.stringify({ error: 'Method not allowed' }), {
+    status: 405,
+    headers: { 'Content-Type': 'application/json' },
+  });
 }
