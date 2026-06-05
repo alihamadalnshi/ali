@@ -200,7 +200,8 @@ Ultra realistic product photography.`,
           isSaved: false,
         });
         generationId = savedRecord.id;
-        finalResultImg = savedRecord.resultImageUrl;
+        // Keep using the direct Fal API URL on the frontend result screen
+        finalResultImg = result.data.images[0].url;
       } else {
         // Increment guest local count
         const newCount = localGenerationCount + 1;
