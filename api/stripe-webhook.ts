@@ -11,6 +11,17 @@ const PRICE_TO_PLAN_NAME: Record<string, string> = {
   'price_1TewHUEB6cMflNwV5lvnmVBS': 'Business',
 };
 
+function parseStripeDate(timestamp: any): string | null {
+  if (timestamp === undefined || timestamp === null) return null;
+  const num = Number(timestamp);
+  if (isNaN(num)) return null;
+  try {
+    return new Date(num * 1000).toISOString();
+  } catch (e) {
+    return null;
+  }
+}
+
 async function verifyStripeSignature(
   rawBody: string,
   signatureHeader: string,
@@ -192,6 +203,13 @@ export async function POST(request: Request) {
 
       // Fetch subscription from Stripe to get exact periods/pricing details
       const stripeSub = await fetchStripeSubscription(subscriptionId);
+      console.log('Fetched stripeSub details:', {
+        id: stripeSub.id,
+        status: stripeSub.status,
+        current_period_start: stripeSub.current_period_start,
+        current_period_end: stripeSub.current_period_end,
+      });
+
       const priceId = stripeSub.items.data[0].price.id;
       const planName = PRICE_TO_PLAN_NAME[priceId] || stripeSub.items.data[0].price.nickname || 'Paid Plan';
 
@@ -202,8 +220,8 @@ export async function POST(request: Request) {
         product_id: priceId, // Stripe Price ID
         product_name: planName,
         status: stripeSub.status,
-        current_period_start: new Date(stripeSub.current_period_start * 1000).toISOString(),
-        current_period_end: new Date(stripeSub.current_period_end * 1000).toISOString(),
+        current_period_start: parseStripeDate(stripeSub.current_period_start),
+        current_period_end: parseStripeDate(stripeSub.current_period_end),
         cancel_at_period_end: stripeSub.cancel_at_period_end,
         amount: stripeSub.items.data[0].price.unit_amount,
         currency: stripeSub.items.data[0].price.currency.toUpperCase(),
@@ -279,8 +297,8 @@ export async function POST(request: Request) {
         status: stripeSub.status,
         product_id: priceId,
         product_name: planName,
-        current_period_start: new Date(stripeSub.current_period_start * 1000).toISOString(),
-        current_period_end: new Date(stripeSub.current_period_end * 1000).toISOString(),
+        current_period_start: parseStripeDate(stripeSub.current_period_start),
+        current_period_end: parseStripeDate(stripeSub.current_period_end),
         cancel_at_period_end: stripeSub.cancel_at_period_end,
         amount: stripeSub.items.data[0].price.unit_amount,
         currency: stripeSub.items.data[0].price.currency.toUpperCase(),
