@@ -43,8 +43,10 @@ export async function saveGenerationToHistory(params: {
   productImageUrl: string;
   resultImageUrl: string;
   prompt: string;
-}): Promise<{ id: string }> {
+  isSaved?: boolean;
+}): Promise<{ id: string; productImageUrl: string; resultImageUrl: string; templateImageUrl: string }> {
   const generationId = crypto.randomUUID();
+  const isSaved = params.isSaved ?? false;
 
   // Upload images to Supabase Storage in parallel
   const [storedProduct, storedResult, storedTemplate] = await Promise.all([
@@ -65,7 +67,7 @@ export async function saveGenerationToHistory(params: {
       result_image_url: storedResult,
       prompt: params.prompt,
       status: "completed",
-      is_saved: true,
+      is_saved: isSaved,
     })
     .select("id")
     .single();
@@ -80,7 +82,12 @@ export async function saveGenerationToHistory(params: {
     console.warn("Failed to increment generation count", err);
   }
 
-  return { id: data.id };
+  return { 
+    id: data.id,
+    productImageUrl: storedProduct,
+    resultImageUrl: storedResult,
+    templateImageUrl: storedTemplate
+  };
 }
 
 /**

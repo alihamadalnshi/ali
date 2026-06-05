@@ -11,7 +11,7 @@ import t4 from "@/assets/template/4 (1).jpg";
 import t5 from "@/assets/template/5 (1).jpg";
 import { templatePrompts } from "@/data/templateData";
 import { useAuth } from "@/components/AuthProvider";
-import { saveGenerationToHistory } from "@/lib/storage";
+import { saveGenerationToHistory, toggleSaveGeneration } from "@/lib/storage";
 import { useSubscription } from "@/hooks/useSubscription";
 import { getNextUpgrade, PLAN_CONFIG } from "@/lib/subscription";
 import { supabase } from "@/lib/supabase";
@@ -89,6 +89,7 @@ export function TemplateGallery() {
     resultImg: string;
     templateId?: string;
     prompt?: string;
+    generationId?: string;
   } | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -182,21 +183,46 @@ Ultra realistic product photography.`,
         input: inputPayload
       });
 
+      let generationId: string | undefined = undefined;
+      let finalProductImg = productLocalUrl;
+      let finalResultImg = result.data.images[0].url;
+      let finalTemplateImg = templateImgSrc;
+
+      if (user) {
+        // Automatically save to DB (with isSaved: false) and increment count in DB
+        const savedRecord = await saveGenerationToHistory({
+          userId: user.id,
+          templateId: selectedTemplate || 'unknown',
+          templateImageUrl: templateImgSrc,
+          productImageUrl: productLocalUrl,
+          resultImageUrl: result.data.images[0].url,
+          prompt: typeof inputPayload.prompt === 'string' ? inputPayload.prompt : '',
+          isSaved: false,
+        });
+        generationId = savedRecord.id;
+        finalProductImg = savedRecord.productImageUrl;
+        finalResultImg = savedRecord.resultImageUrl;
+        finalTemplateImg = savedRecord.templateImageUrl;
+      } else {
+        // Increment guest local count
+        const newCount = localGenerationCount + 1;
+        setLocalGenerationCount(newCount);
+        localStorage.setItem("generation_count", newCount.toString());
+        sessionStorage.setItem("generation_count", newCount.toString());
+      }
+
       setResultData({
-        templateImg: templateImgSrc,
-        productImg: productLocalUrl,
-        resultImg: result.data.images[0].url,
+        templateImg: finalTemplateImg,
+        productImg: finalProductImg,
+        resultImg: finalResultImg,
         templateId: selectedTemplate || undefined,
         prompt: typeof inputPayload.prompt === 'string' ? inputPayload.prompt : undefined,
+        generationId,
       });
       setIsSavedToHistory(false);
 
-      const newCount = localGenerationCount + 1;
-      setLocalGenerationCount(newCount);
-      localStorage.setItem("generation_count", newCount.toString());
-      sessionStorage.setItem("generation_count", newCount.toString());
       // Refresh subscription data to get updated server-side count
-      refreshSubscription();
+      await refreshSubscription();
 
       toast.success(t('gallery_upload_success'), { id: "gen-toast" });
 
@@ -427,17 +453,10 @@ Ultra realistic product photography.`,
                     {user && (
                       <button
                         onClick={async () => {
-                          if (!resultData || isSaving || isSavedToHistory) return;
+                          if (!resultData || isSaving || isSavedToHistory || !resultData.generationId) return;
                           setIsSaving(true);
                           try {
-                            await saveGenerationToHistory({
-                              userId: user.id,
-                              templateId: resultData.templateId || 'unknown',
-                              templateImageUrl: resultData.templateImg,
-                              productImageUrl: resultData.productImg,
-                              resultImageUrl: resultData.resultImg,
-                              prompt: resultData.prompt || '',
-                            });
+                            await toggleSaveGeneration(resultData.generationId, true);
                             setIsSavedToHistory(true);
                             toast.success(t('dash_toast_saved'));
                           } catch (err) {
@@ -447,7 +466,7 @@ Ultra realistic product photography.`,
                             setIsSaving(false);
                           }
                         }}
-                        disabled={isSaving || isSavedToHistory}
+                        disabled={isSaving || isSavedToHistory || !resultData.generationId}
                         className={`flex h-12 w-12 items-center justify-center rounded-full transition-all duration-300 ${
                           isSavedToHistory
                             ? 'bg-green-500 text-white shadow-[0_0_20px_rgba(34,197,94,0.4)]'
