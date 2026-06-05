@@ -15,20 +15,23 @@ async function verifyStripeSignature(
   rawBody: string,
   signatureHeader: string,
   secret: string
-): Promise<boolean> {
+): Promise<{ isValid: boolean; debugInfo?: any }> {
   try {
+    const trimmedSecret = secret.trim();
     const parts = signatureHeader.split(',');
     const t = parts.find(p => p.startsWith('t='))?.split('=')[1];
     const signatures = parts
       .filter(p => p.startsWith('v1='))
       .map(p => p.split('=')[1]);
 
-    if (!t || signatures.length === 0) return false;
+    if (!t || signatures.length === 0) {
+      return { isValid: false, debugInfo: { reason: 'Missing timestamp t or signature v1' } };
+    }
 
     const signedPayload = `${t}.${rawBody}`;
 
     const encoder = new TextEncoder();
-    const keyBytes = encoder.encode(secret);
+    const keyBytes = encoder.encode(trimmedSecret);
     const dataBytes = encoder.encode(signedPayload);
 
     const key = await crypto.subtle.importKey(
@@ -51,10 +54,27 @@ async function verifyStripeSignature(
       .map(b => b.toString(16).padStart(2, '0'))
       .join('');
 
-    return signatures.includes(expectedSignature);
-  } catch (err) {
+    const isValid = signatures.includes(expectedSignature);
+
+    const debugInfo = {
+      secretLength: secret.length,
+      trimmedSecretLength: trimmedSecret.length,
+      secretPrefix: secret.substring(0, 10),
+      rawBodyLength: rawBody.length,
+      rawBodyPreview: rawBody.substring(0, 100),
+      timestamp: t,
+      headerSignatures: signatures,
+      expectedSignature,
+    };
+
+    if (!isValid) {
+      console.warn('Stripe signature verification failed details:', debugInfo);
+    }
+
+    return { isValid, debugInfo };
+  } catch (err: any) {
     console.error('Signature verification error:', err);
-    return false;
+    return { isValid: false, debugInfo: { error: err.message || 'Internal verification error' } };
   }
 }
 
@@ -90,10 +110,13 @@ export async function POST(request: Request) {
   }
 
   // 2. Verify signature
-  const isValid = await verifyStripeSignature(rawBody, signature, webhookSecret);
+  const { isValid, debugInfo } = await verifyStripeSignature(rawBody, signature, webhookSecret);
   if (!isValid) {
     console.warn('Stripe signature verification failed');
-    return new Response(JSON.stringify({ error: 'Invalid signature' }), {
+    return new Response(JSON.stringify({ 
+      error: 'Invalid signature',
+      debug: debugInfo
+    }), {
       status: 401,
       headers: { 'Content-Type': 'application/json' },
     });

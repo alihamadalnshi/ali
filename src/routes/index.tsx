@@ -31,7 +31,7 @@ function Index() {
 
   useEffect(() => {
     if (!loading && user) {
-      navigate({ to: "/dashboard" });
+      navigate({ to: "/dashboard/settings" });
     }
   }, [user, loading, navigate]);
 
