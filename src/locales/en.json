@@ -237,7 +237,6 @@
   "settings_canceling": "Canceling at end of period",
   "settings_upgrade_to": "Upgrade to",
   "settings_upgrade_desc": "Get {limit} generations for ${price}/mo",
-  "settings_manage_polar": "Manage subscription on Polar",
   "settings_payment_success": "Payment successful! Your plan is now active.",
 
   "dash_stat_credits_plan": "Credits",

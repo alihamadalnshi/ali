@@ -1,30 +1,33 @@
 import { supabase } from "./supabase";
 
-// Polar product IDs → plan details
 export const PLAN_CONFIG = {
   free: {
     id: "free",
     name: "Free",
     limit: 5,
     price: 0,
+    paymentLink: "",
   },
   basic: {
-    id: "36412367-4e41-448c-823b-8471eca5fbfd",
+    id: "price_1TewGYEB6cMflNwVx4JdDLty",
     name: "Basic",
     limit: 30,
     price: 9,
+    paymentLink: "https://buy.stripe.com/test_9B63cvaWMbAleXKaJQ0kE00",
   },
   pro: {
-    id: "a7af3302-389e-42cd-b735-6686e56ba17f",
+    id: "price_1TewH2EB6cMflNwV3eujiWCv",
     name: "Pro",
     limit: 100,
     price: 19,
+    paymentLink: "https://buy.stripe.com/test_dRm14n7KA0VHdTGbNU0kE01",
   },
   business: {
-    id: "881ab6e7-4959-45c2-8a6f-f594ed1d557f",
+    id: "price_1TewHUEB6cMflNwV5lvnmVBS",
     name: "Business",
     limit: 300,
     price: 49,
+    paymentLink: "https://buy.stripe.com/test_14A00je8Yawh9Dq7xE0kE02",
   },
 } as const;
 
@@ -135,30 +138,6 @@ export async function canUserGenerate(): Promise<{
   };
 }
 
-export function getCheckoutUrl(
-  productId: string,
-  userEmail?: string,
-  successUrl?: string
-): string {
-  const baseUrl = `https://sandbox-api.polar.sh/v1/checkout-links/polar_cl_2oHsk83lhvPMLqKipc74vI39gWE84Ebf7yJy70OeaA8/redirect`;
-
-  const params = new URLSearchParams();
-
-  if (productId) {
-    params.set("product_id", productId);
-  }
-
-  if (userEmail) {
-    params.set("customer_email", userEmail);
-  }
-
-  if (successUrl) {
-    params.set("success_url", successUrl);
-  }
-
-  const qs = params.toString();
-  return qs ? `${baseUrl}?${qs}` : baseUrl;
-}
 
 /**
  * Get the plan key from a product name string.

@@ -24,7 +24,7 @@ import {
 import { supabase } from "@/lib/supabase";
 import { toast } from "sonner";
 import { useSubscription } from "@/hooks/useSubscription";
-import { getCheckoutUrl, getNextUpgrade, PLAN_CONFIG } from "@/lib/subscription";
+import { getNextUpgrade, PLAN_CONFIG } from "@/lib/subscription";
 
 export const Route = createFileRoute("/dashboard/")({
   component: DashboardHome,
@@ -101,10 +101,40 @@ function DashboardHome() {
   const nextUpgrade = getNextUpgrade(planKey);
   const nextPlan = nextUpgrade ? PLAN_CONFIG[nextUpgrade] : null;
 
-  const handleUpgrade = () => {
-    if (!nextPlan || !user?.email) return;
-    const successUrl = `${window.location.origin}/dashboard/settings?payment=success`;
-    window.location.href = getCheckoutUrl(nextPlan.id, user.email, successUrl);
+  const handleUpgrade = async () => {
+    if (!nextPlan || !user) return;
+    try {
+      const { data: { session } } = await supabase.auth.getSession();
+      const token = session?.access_token;
+
+      if (!token) {
+        throw new Error("Missing authentication token");
+      }
+
+      const response = await fetch("/api/update-subscription", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          productId: nextPlan.id,
+          planName: nextPlan.name,
+          amount: nextPlan.price * 100, // cents
+        }),
+      });
+
+      if (!response.ok) {
+        const errData = await response.json();
+        throw new Error(errData.error || "Failed to upgrade subscription");
+      }
+
+      toast.success(t("settings_payment_success"));
+      await loadData();
+    } catch (err: any) {
+      console.error("Upgrade error:", err);
+      toast.error(err.message || "Failed to upgrade. Please try again.");
+    }
   };
 
   const handleToggleSave = async (id: string, saved: boolean) => {

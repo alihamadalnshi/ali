@@ -13,7 +13,8 @@ import { templatePrompts } from "@/data/templateData";
 import { useAuth } from "@/components/AuthProvider";
 import { saveGenerationToHistory } from "@/lib/storage";
 import { useSubscription } from "@/hooks/useSubscription";
-import { getCheckoutUrl, getNextUpgrade, PLAN_CONFIG } from "@/lib/subscription";
+import { getNextUpgrade, PLAN_CONFIG } from "@/lib/subscription";
+import { supabase } from "@/lib/supabase";
 
 // Dynamic import for templates 1-19
 const templateModules = import.meta.glob("../../assets/template/1-19/**/*.{png,jpg,jpeg}", { eager: true });
@@ -506,17 +507,24 @@ Ultra realistic product photography.`,
                   
                   <div className="flex flex-col w-full gap-3">
                      {nextPlan ? (
-                       <a
-                         href={getCheckoutUrl(
-                           nextPlan.id,
-                           user?.email || undefined,
-                           `${window.location.origin}/dashboard/settings?payment=success`
-                         )}
+                       <button
+                         type="button"
+                         onClick={() => {
+                           if (!nextPlan) return;
+                           const nextTierConfig = Object.values(PLAN_CONFIG).find(config => config.id === nextPlan.id);
+                           if (nextTierConfig && nextTierConfig.paymentLink) {
+                             const checkoutUrl = `${nextTierConfig.paymentLink}?client_reference_id=${user?.id || ""}&prefilled_email=${encodeURIComponent(user?.email || "")}`;
+                             window.location.href = checkoutUrl;
+                           } else {
+                             toast.error("Invalid upgrade selection");
+                           }
+                         }}
                          className="w-full py-3 rounded-full bg-accent-gradient text-primary-foreground font-semibold hover:opacity-95 transition-all shadow-glow flex items-center justify-center gap-2"
                        >
+
                           {t('modal_btn_upgrade')} — {nextPlan.name} (${nextPlan.price}/{t('pricing_mo')})
                           <ArrowUpRight className="h-4 w-4" />
-                       </a>
+                       </button>
                      ) : (
                        <button 
                          type="button"

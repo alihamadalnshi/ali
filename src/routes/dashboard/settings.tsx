@@ -21,7 +21,7 @@ import {
 import { supabase } from "@/lib/supabase";
 import { toast } from "sonner";
 import { useSubscription } from "@/hooks/useSubscription";
-import { PLAN_CONFIG, getCheckoutUrl, getNextUpgrade } from "@/lib/subscription";
+import { PLAN_CONFIG, getNextUpgrade } from "@/lib/subscription";
 
 export const Route = createFileRoute("/dashboard/settings")({
   component: SettingsPage,
@@ -34,7 +34,7 @@ export const Route = createFileRoute("/dashboard/settings")({
 });
 
 function SettingsPage() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { user, signOut } = useAuth();
   const [fullName, setFullName] = useState("");
   const [saving, setSaving] = useState(false);
@@ -47,6 +47,7 @@ function SettingsPage() {
     isSubscribed,
     loading: subLoading,
     usage,
+    refresh,
   } = useSubscription();
 
   // Check for payment success in URL
@@ -99,9 +100,16 @@ function SettingsPage() {
   const nextPlan = nextUpgrade ? PLAN_CONFIG[nextUpgrade] : null;
 
   const handleUpgrade = () => {
-    if (!nextPlan || !user?.email) return;
-    const successUrl = `${window.location.origin}/dashboard/settings?payment=success`;
-    window.location.href = getCheckoutUrl(nextPlan.id, user.email, successUrl);
+    if (!nextPlan || !user) return;
+    
+    // Find next plan config to get the paymentLink
+    const nextTierConfig = Object.values(PLAN_CONFIG).find(config => config.id === nextPlan.id);
+    if (nextTierConfig && nextTierConfig.paymentLink) {
+      const checkoutUrl = `${nextTierConfig.paymentLink}?client_reference_id=${user.id}&prefilled_email=${encodeURIComponent(user.email || "")}`;
+      window.location.href = checkoutUrl;
+    } else {
+      toast.error("Invalid upgrade selection");
+    }
   };
 
   const getPlanColor = () => {
@@ -399,17 +407,22 @@ function SettingsPage() {
                 <ExternalLink className="h-4 w-4 text-muted-foreground group-hover:text-primary transition-colors" />
               </motion.button>
             )}
-
-            {/* Manage on Polar */}
+            {/* Manage Subscription on Stripe */}
             {isSubscribed && (
               <a
-                href="https://polar.sh/purchases/subscriptions"
+                href={
+                  import.meta.env.VITE_STRIPE_CUSTOMER_PORTAL_URL
+                    ? `${import.meta.env.VITE_STRIPE_CUSTOMER_PORTAL_URL}${
+                        import.meta.env.VITE_STRIPE_CUSTOMER_PORTAL_URL.includes("?") ? "&" : "?"
+                      }prefilled_email=${encodeURIComponent(user?.email || "")}`
+                    : "https://billing.stripe.com/p/login"
+                }
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center justify-center gap-2 rounded-xl border border-white/10 bg-white/5 px-4 py-2.5 text-xs font-medium text-muted-foreground hover:text-foreground hover:bg-white/10 transition-all duration-200"
+                className="w-full flex items-center justify-center gap-2 rounded-xl border border-white/10 bg-white/5 px-4 py-2.5 text-xs font-medium text-muted-foreground hover:text-foreground hover:bg-white/10 transition-all duration-200"
               >
                 <ExternalLink className="h-3.5 w-3.5" />
-                {t("settings_manage_polar")}
+                {i18n.language === "ar" ? "إدارة الاشتراك على Stripe" : "Manage subscription on Stripe"}
               </a>
             )}
           </>

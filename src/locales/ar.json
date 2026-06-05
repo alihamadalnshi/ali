@@ -236,7 +236,6 @@
   "settings_canceling": "سيتم الإلغاء في نهاية الفترة",
   "settings_upgrade_to": "الترقية إلى",
   "settings_upgrade_desc": "احصل على {limit} توليد مقابل ${price}/شهر",
-  "settings_manage_polar": "إدارة الاشتراك على Polar",
   "settings_payment_success": "تم الدفع بنجاح! خطتك نشطة الآن.",
 
   "dash_stat_credits_plan": "الرصيد",

@@ -4,9 +4,11 @@ import { useTranslation } from "react-i18next";
 import { SectionHeader } from "./SectionHeader";
 import { useAuth } from "@/components/AuthProvider";
 import { useSubscription } from "@/hooks/useSubscription";
-import { getCheckoutUrl, PLAN_CONFIG } from "@/lib/subscription";
+import { PLAN_CONFIG } from "@/lib/subscription";
 import { useState } from "react";
 import { useNavigate } from "@tanstack/react-router";
+import { supabase } from "@/lib/supabase";
+import { toast } from "sonner";
 
 export function Pricing() {
   const { t, i18n } = useTranslation();
@@ -61,15 +63,15 @@ export function Pricing() {
 
     setLoadingTier(tier.id);
 
-    const successUrl = `${window.location.origin}/dashboard/settings?payment=success`;
-    const checkoutUrl = getCheckoutUrl(
-      tier.productId,
-      user.email,
-      successUrl
-    );
-
-    // Redirect to Polar checkout
-    window.location.href = checkoutUrl;
+    const tierConfig = PLAN_CONFIG[tier.id];
+    if (tierConfig && tierConfig.paymentLink) {
+      const checkoutUrl = `${tierConfig.paymentLink}?client_reference_id=${user.id}&prefilled_email=${encodeURIComponent(user.email || "")}`;
+      // Redirect to Stripe checkout
+      window.location.href = checkoutUrl;
+    } else {
+      toast.error("Invalid plan selection");
+      setLoadingTier(null);
+    }
   };
 
   const getPlanOrder = (id: string) => {
