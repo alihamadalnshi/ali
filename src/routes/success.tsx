@@ -21,7 +21,7 @@ function SuccessPage() {
         if (prev <= 1) {
           clearInterval(interval);
           navigate({
-            to: "/dashboard/settings",
+            to: "/dashboard",
             search: { payment: "success" },
           });
           return 0;
@@ -87,7 +87,7 @@ function SuccessPage() {
         <button
           onClick={() =>
             navigate({
-              to: "/dashboard/settings",
+              to: "/dashboard",
               search: { payment: "success" },
             })
           }

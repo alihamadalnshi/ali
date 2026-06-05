@@ -90,6 +90,16 @@ function DashboardHome() {
     loadData();
   }, [loadData]);
 
+  // Check for payment success in URL
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get("payment") === "success") {
+      toast.success(t("settings_payment_success"));
+      // Clean the URL
+      window.history.replaceState({}, "", window.location.pathname);
+    }
+  }, [t]);
+
   const savedCount = generations.filter((g) => g.is_saved).length;
   const creditsUsed = usage?.used ?? generationCount;
   const creditsLimit = usage?.limit ?? generationLimit;

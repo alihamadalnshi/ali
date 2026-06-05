@@ -41,7 +41,7 @@ function LoginPage() {
   // Redirect if already authenticated
   useEffect(() => {
     if (user) {
-      navigate({ to: "/dashboard/settings" });
+      navigate({ to: "/dashboard" });
     }
   }, [user, navigate]);
 
@@ -70,7 +70,7 @@ function LoginPage() {
           password,
         });
         if (error) throw error;
-        navigate({ to: "/dashboard/settings" });
+        navigate({ to: "/dashboard" });
       }
     } catch (err: any) {
       setError(err.message || t("login_error_generic", "An unexpected error occurred"));

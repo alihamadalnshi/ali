@@ -19,7 +19,7 @@ function AuthCallback() {
         console.error("Auth callback error:", error.message);
         navigate({ to: "/login" });
       } else {
-        navigate({ to: "/dashboard/settings" });
+        navigate({ to: "/dashboard" });
       }
     };
 
