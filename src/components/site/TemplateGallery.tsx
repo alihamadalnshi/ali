@@ -200,9 +200,7 @@ Ultra realistic product photography.`,
           isSaved: false,
         });
         generationId = savedRecord.id;
-        finalProductImg = savedRecord.productImageUrl;
         finalResultImg = savedRecord.resultImageUrl;
-        finalTemplateImg = savedRecord.templateImageUrl;
       } else {
         // Increment guest local count
         const newCount = localGenerationCount + 1;

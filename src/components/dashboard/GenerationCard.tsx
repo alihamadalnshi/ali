@@ -34,6 +34,23 @@ export function GenerationCard({
   const [savingState, setSavingState] = useState(false);
   const [deletingState, setDeletingState] = useState(false);
 
+  const hasTemplate = !!templateImageUrl && templateImageUrl.trim() !== "";
+  const hasProduct = !!productImageUrl && productImageUrl.trim() !== "";
+  const hasResult = !!resultImageUrl && resultImageUrl.trim() !== "";
+  const columnsCount = [hasTemplate, hasProduct, hasResult].filter(Boolean).length;
+
+  let modalWidthClass = "max-w-5xl";
+  let gridColsClass = "grid-cols-1 md:grid-cols-3";
+
+  if (columnsCount === 1) {
+    modalWidthClass = "max-w-md";
+    gridColsClass = "grid-cols-1";
+  } else if (columnsCount === 2) {
+    modalWidthClass = "max-w-3xl";
+    gridColsClass = "grid-cols-1 md:grid-cols-2";
+  }
+
+
   const handleToggleSave = async (e: React.MouseEvent) => {
     e.stopPropagation();
     setSavingState(true);
@@ -169,7 +186,7 @@ export function GenerationCard({
             initial={{ scale: 0.9, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             exit={{ scale: 0.9, opacity: 0 }}
-            className="relative max-w-5xl w-full glass-strong rounded-3xl p-6 shadow-elegant overflow-y-auto max-h-[90vh]"
+            className={`relative ${modalWidthClass} w-full glass-strong rounded-3xl p-6 shadow-elegant overflow-y-auto max-h-[90vh]`}
             onClick={(e) => e.stopPropagation()}
           >
             {/* Close button */}
@@ -180,7 +197,7 @@ export function GenerationCard({
               ✕
             </button>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-2">
+            <div className={`grid ${gridColsClass} gap-6 mt-2`}>
               {/* Template */}
               {templateImageUrl && (
                 <div className="flex flex-col items-center gap-3">

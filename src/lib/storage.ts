@@ -48,22 +48,18 @@ export async function saveGenerationToHistory(params: {
   const generationId = crypto.randomUUID();
   const isSaved = params.isSaved ?? false;
 
-  // Upload images to Supabase Storage in parallel
-  const [storedProduct, storedResult, storedTemplate] = await Promise.all([
-    uploadToStorage(params.userId, generationId, "product.png", params.productImageUrl),
-    uploadToStorage(params.userId, generationId, "result.png", params.resultImageUrl),
-    uploadToStorage(params.userId, generationId, "template.jpg", params.templateImageUrl),
-  ]);
+  // Upload only the result image to Supabase Storage
+  const storedResult = await uploadToStorage(params.userId, generationId, "result.png", params.resultImageUrl);
 
-  // Insert generation record
+  // Insert generation record with product and template image urls as null
   const { data, error } = await supabase
     .from("generations")
     .insert({
       id: generationId,
       user_id: params.userId,
       template_id: params.templateId,
-      template_image_url: storedTemplate,
-      product_image_url: storedProduct,
+      template_image_url: null,
+      product_image_url: null,
       result_image_url: storedResult,
       prompt: params.prompt,
       status: "completed",
@@ -84,9 +80,9 @@ export async function saveGenerationToHistory(params: {
 
   return { 
     id: data.id,
-    productImageUrl: storedProduct,
+    productImageUrl: "",
     resultImageUrl: storedResult,
-    templateImageUrl: storedTemplate
+    templateImageUrl: ""
   };
 }
 
