@@ -21,7 +21,7 @@ function SuccessPage() {
         if (prev <= 1) {
           clearInterval(interval);
           navigate({
-            to: "/dashboard",
+            to: "/",
             search: { payment: "success" },
           });
           return 0;
@@ -78,8 +78,8 @@ function SuccessPage() {
           <Loader2 className="h-4 w-4 animate-spin text-primary" />
           <span className="text-xs font-medium text-muted-foreground">
             {isRtl
-              ? `إعادة توجيه إلى لوحة التحكم خلال ${countdown} ثوانٍ...`
-              : `Redirecting to dashboard in ${countdown}s...`}
+              ? `إعادة توجيه إلى الصفحة الرئيسية خلال ${countdown} ثوانٍ...`
+              : `Redirecting to home page in ${countdown}s...`}
           </span>
         </div>
 
@@ -87,13 +87,13 @@ function SuccessPage() {
         <button
           onClick={() =>
             navigate({
-              to: "/dashboard",
+              to: "/",
               search: { payment: "success" },
             })
           }
           className="flex w-full items-center justify-center gap-2 rounded-xl py-3 text-sm font-bold bg-accent-gradient text-primary-foreground shadow-glow hover:opacity-95 transition-all duration-300"
         >
-          <span>{isRtl ? "الذهاب إلى لوحة التحكم" : "Go to Dashboard"}</span>
+          <span>{isRtl ? "الذهاب إلى الصفحة الرئيسية" : "Go to Home Page"}</span>
           <ArrowRight className={`h-4 w-4 ${isRtl ? "rotate-180" : ""}`} />
         </button>
       </motion.div>

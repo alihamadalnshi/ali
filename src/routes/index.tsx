@@ -4,6 +4,9 @@ import { TemplateGallery } from "@/components/site/TemplateGallery";
 import { Pricing } from "@/components/site/Pricing";
 import { Footer } from "@/components/site/CTA";
 import { useAuth } from "@/components/AuthProvider";
+import { useEffect } from "react";
+import { toast } from "sonner";
+import { useTranslation } from "react-i18next";
 
 export const Route = createFileRoute("/")({
   component: Index,
@@ -26,6 +29,16 @@ export const Route = createFileRoute("/")({
 
 function Index() {
   const { user, loading } = useAuth();
+  const { t } = useTranslation();
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get("payment") === "success") {
+      toast.success(t("settings_payment_success"));
+      // Clean the URL
+      window.history.replaceState({}, "", window.location.pathname);
+    }
+  }, [t]);
 
   if (loading) {
     return null;
