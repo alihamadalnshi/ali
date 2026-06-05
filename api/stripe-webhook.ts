@@ -203,11 +203,15 @@ export async function POST(request: Request) {
 
       // Fetch subscription from Stripe to get exact periods/pricing details
       const stripeSub = await fetchStripeSubscription(subscriptionId);
+      const subItem = stripeSub.items?.data?.[0];
+      const periodStart = subItem?.current_period_start ?? stripeSub.current_period_start;
+      const periodEnd = subItem?.current_period_end ?? stripeSub.current_period_end;
+
       console.log('Fetched stripeSub details:', {
         id: stripeSub.id,
         status: stripeSub.status,
-        current_period_start: stripeSub.current_period_start,
-        current_period_end: stripeSub.current_period_end,
+        current_period_start: periodStart,
+        current_period_end: periodEnd,
       });
 
       const priceId = stripeSub.items.data[0].price.id;
@@ -220,8 +224,8 @@ export async function POST(request: Request) {
         product_id: priceId, // Stripe Price ID
         product_name: planName,
         status: stripeSub.status,
-        current_period_start: parseStripeDate(stripeSub.current_period_start),
-        current_period_end: parseStripeDate(stripeSub.current_period_end),
+        current_period_start: parseStripeDate(periodStart),
+        current_period_end: parseStripeDate(periodEnd),
         cancel_at_period_end: stripeSub.cancel_at_period_end,
         amount: stripeSub.items.data[0].price.unit_amount,
         currency: stripeSub.items.data[0].price.currency.toUpperCase(),
@@ -293,12 +297,16 @@ export async function POST(request: Request) {
       const priceId = stripeSub.items.data[0].price.id;
       const planName = PRICE_TO_PLAN_NAME[priceId] || stripeSub.items.data[0].price.nickname || 'Paid Plan';
 
+      const updateItem = stripeSub.items?.data?.[0];
+      const updatePeriodStart = updateItem?.current_period_start ?? stripeSub.current_period_start;
+      const updatePeriodEnd = updateItem?.current_period_end ?? stripeSub.current_period_end;
+
       const updateData: Record<string, any> = {
         status: stripeSub.status,
         product_id: priceId,
         product_name: planName,
-        current_period_start: parseStripeDate(stripeSub.current_period_start),
-        current_period_end: parseStripeDate(stripeSub.current_period_end),
+        current_period_start: parseStripeDate(updatePeriodStart),
+        current_period_end: parseStripeDate(updatePeriodEnd),
         cancel_at_period_end: stripeSub.cancel_at_period_end,
         amount: stripeSub.items.data[0].price.unit_amount,
         currency: stripeSub.items.data[0].price.currency.toUpperCase(),
