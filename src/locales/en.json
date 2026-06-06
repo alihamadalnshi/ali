@@ -135,6 +135,8 @@
   "dash_nav_create": "Create New",
   "dash_nav_settings": "Settings",
   "dash_sign_out": "Sign Out",
+  "dash_settings_delete_account": "Delete Account",
+  "dash_settings_delete_account_loading": "Deleting...",
 
   "dash_welcome": "Welcome back",
   "dash_welcome_desc": "Here's an overview of your AI ad generations.",

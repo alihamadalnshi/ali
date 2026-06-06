@@ -10,7 +10,7 @@ import {
   Loader2,
   Save,
   AlertTriangle,
-  LogOut,
+  Trash2,
   Crown,
   Zap,
   ExternalLink,
@@ -39,6 +39,32 @@ function SettingsPage() {
   const [fullName, setFullName] = useState("");
   const [saving, setSaving] = useState(false);
   const [profileLoaded, setProfileLoaded] = useState(false);
+  const [deletingAccount, setDeletingAccount] = useState(false);
+
+  const handleDeleteAccount = async () => {
+    const isArabic = i18n.language === "ar";
+    const confirmMessage = isArabic 
+      ? "هل أنت متأكد من رغبتك في حذف حسابك نهائياً؟ هذا الإجراء لا يمكن التراجع عنه وسيتم حذف جميع بياناتك ومسوداتك."
+      : "Are you sure you want to delete your account permanently? This action cannot be undone and all your data and generated images will be deleted.";
+    
+    if (!window.confirm(confirmMessage)) {
+      return;
+    }
+
+    setDeletingAccount(true);
+    try {
+      const { error } = await supabase.rpc("delete_user_account");
+      if (error) throw error;
+      
+      toast.success(isArabic ? "تم حذف الحساب بنجاح." : "Account deleted successfully.");
+      await signOut();
+    } catch (err: any) {
+      console.error("Error deleting account:", err);
+      toast.error(isArabic ? "فشل حذف الحساب. يرجى المحاولة مرة أخرى." : "Failed to delete account. Please try again.");
+    } finally {
+      setDeletingAccount(false);
+    }
+  };
   const {
     plan,
     planName,
@@ -451,11 +477,18 @@ function SettingsPage() {
         </div>
 
         <button
-          onClick={signOut}
-          className="flex items-center gap-2 rounded-xl border border-destructive/30 bg-destructive/10 px-5 py-2.5 text-sm font-medium text-destructive hover:bg-destructive/20 transition-all duration-200"
+          onClick={handleDeleteAccount}
+          disabled={deletingAccount}
+          className="flex items-center gap-2 rounded-xl border border-destructive/30 bg-destructive/10 px-5 py-2.5 text-sm font-medium text-destructive hover:bg-destructive/20 transition-all duration-200 disabled:opacity-50"
         >
-          <LogOut className="h-4 w-4" />
-          {t("dash_sign_out")}
+          {deletingAccount ? (
+            <Loader2 className="h-4 w-4 animate-spin" />
+          ) : (
+            <Trash2 className="h-4 w-4" />
+          )}
+          {deletingAccount 
+            ? t("dash_settings_delete_account_loading") 
+            : t("dash_settings_delete_account")}
         </button>
       </motion.div>
     </div>

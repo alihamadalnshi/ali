@@ -134,6 +134,8 @@
   "dash_nav_create": "إنشاء جديد",
   "dash_nav_settings": "الإعدادات",
   "dash_sign_out": "تسجيل الخروج",
+  "dash_settings_delete_account": "حذف الحساب",
+  "dash_settings_delete_account_loading": "جاري الحذف...",
 
   "dash_welcome": "مرحباً بعودتك",
   "dash_welcome_desc": "إليك نظرة عامة على عمليات توليد الإعلانات بالذكاء الاصطناعي.",
