@@ -32,12 +32,27 @@ Object.entries(templateModules).forEach(([path, module]: [string, any]) => {
   }
 });
 
+// Dynamic import for templates s2 (0-50)
+const s2Modules = import.meta.glob("../../assets/template/s2/*.{png,jpg,jpeg}", { eager: true });
+const s2ImageMap: Record<string, string> = {};
+
+Object.entries(s2Modules).forEach(([path, module]: [string, any]) => {
+  const match = path.match(/\/(\d+)\.(png|jpg|jpeg)$/);
+  if (match) {
+    const num = parseInt(match[1]);
+    if (num >= 0 && num <= 50) {
+      const id = `s2-${num}`;
+      s2ImageMap[id] = module.default || module;
+    }
+  }
+});
+
 const getItems = (t: any) => {
   const baseItems = [
-    { id: "noir-elegance", img: t3, title: t('tmpl_noir_elegance'), category: t('cat_fashion'), span: "" },
+    { id: "noir-elegance", img: t3, title: t('tmpl_noir_elegance'), category: t('cat_fashion'), span: "row-span-2" },
     { id: "forest-dew", img: t1, title: t('tmpl_forest_dew'), category: t('cat_beauty'), span: "row-span-2" },
     { id: "desert-oud", img: t4, title: t('tmpl_desert_oud'), category: t('cat_luxury'), span: "row-span-2" },
-    { id: "stone-minimal", img: t5, title: t('tmpl_stone_minimal'), category: t('cat_lifestyle'), span: "" },
+    { id: "stone-minimal", img: t5, title: t('tmpl_stone_minimal'), category: t('cat_lifestyle'), span: "row-span-2" },
   ];
 
   const newItems = Object.keys(templateImageMap)
@@ -51,10 +66,24 @@ const getItems = (t: any) => {
       img: templateImageMap[id],
       title: `${t('template')} ${id.split("-")[1]}`,
       category: t('cat_all'),
-      span: ""
+      span: "row-span-2"
     }));
 
-  return [...baseItems, ...newItems];
+  const s2Items = Object.keys(s2ImageMap)
+    .sort((a, b) => {
+      const numA = parseInt(a.split("-")[1]);
+      const numB = parseInt(b.split("-")[1]);
+      return numB - numA;
+    })
+    .map(id => ({
+      id,
+      img: s2ImageMap[id],
+      title: `${t('template')} S2-${id.split("-")[1]}`,
+      category: t('cat_all'),
+      span: "row-span-2"
+    }));
+
+  return [...baseItems, ...newItems, ...s2Items];
 };
 
 const getCategories = (t: any) => [
@@ -138,10 +167,19 @@ export function TemplateGallery() {
 
       const productLocalUrl = URL.createObjectURL(productFile);
 
-      const productUpload = await fal.storage.upload(productFile);
+      // Download and prepare the template image
+      const tmplRes = await fetch(templateImgSrc);
+      const tmplBlob = await tmplRes.blob();
+      const tmplFile = new File([tmplBlob], "template.jpg", { type: tmplBlob.type });
+
+      // Upload both files to Fal CDN in parallel
+      const [templateUpload, productUpload] = await Promise.all([
+        fal.storage.upload(tmplFile),
+        fal.storage.upload(productFile)
+      ]);
 
       let inputPayload: any = {};
-      const isNewTemplate = selectedTemplate?.startsWith("template-");
+      const isNewTemplate = selectedTemplate?.startsWith("template-") || selectedTemplate?.startsWith("s2-");
 
       if (isNewTemplate) {
         const specificPrompt = templatePrompts[selectedTemplate as string] || `
@@ -151,8 +189,8 @@ camera angle, and commercial advertising style.
 Ultra realistic product photography.`;
 
         inputPayload = {
-          prompt: specificPrompt,
-          image_urls: [productUpload],
+          prompt: `Image 1 is the template, Image 2 is the product. ${specificPrompt}`,
+          image_urls: [templateUpload, productUpload],
           aspect_ratio: "4:5",
           num_images: 1,
           output_format: "png",
@@ -160,11 +198,6 @@ Ultra realistic product photography.`;
           sync_mode: true
         };
       } else {
-        const tmplRes = await fetch(templateImgSrc);
-        const tmplBlob = await tmplRes.blob();
-        const tmplFile = new File([tmplBlob], "template.jpg", { type: tmplBlob.type });
-        const templateUpload = await fal.storage.upload(tmplFile);
-
         inputPayload = {
           prompt: `Image 1 is the template, Image 2 is the product. Replace the product in the template using the uploaded product image.
 Maintain exact shadows, reflections, perspective, lighting,
