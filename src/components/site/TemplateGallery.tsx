@@ -309,9 +309,7 @@ Ultra realistic product photography.`,
   const hasMore = filtered.length > INITIAL_COUNT;
   const visibleItems = showAll ? filtered : filtered.slice(0, INITIAL_COUNT);
 
-  // Calculate if the total cells on mobile (2 cols) will leave the last item alone
-  const totalCells = visibleItems.reduce((acc, it) => acc + (it.span.includes('row-span-2') ? 2 : 1), 0);
-  const isOddCells = totalCells % 2 !== 0;
+
 
   return (
     <section id="templates" className="relative py-32">
@@ -339,10 +337,8 @@ Ultra realistic product photography.`,
         </div>
 
         <div className="relative">
-          <div className="mt-12 grid grid-flow-dense auto-rows-[180px] grid-cols-2 gap-4 sm:auto-rows-[220px] md:grid-cols-3 lg:grid-cols-4">
+          <div className="mt-12 grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
           {visibleItems.map((it, i) => {
-            const isLast = i === visibleItems.length - 1;
-            const extraSpan = isLast && isOddCells ? "col-span-2 md:col-span-1" : "";
             return (
             <motion.div
               key={it.id}
@@ -351,7 +347,7 @@ Ultra realistic product photography.`,
               viewport={{ once: true, margin: "-50px" }}
               transition={{ duration: 0.6, delay: i * 0.05 }}
               onClick={() => setSelectedTemplate(selectedTemplate === it.id ? null : it.id)}
-              className={`group ring-border-gradient relative overflow-hidden rounded-2xl shadow-card cursor-pointer transition-all ${it.span} ${extraSpan} ${selectedTemplate === it.id ? 'ring-primary shadow-glow' : ''}`}
+              className={`group ring-border-gradient relative overflow-hidden rounded-2xl shadow-card cursor-pointer transition-all w-full aspect-[4/5] ${selectedTemplate === it.id ? 'ring-primary shadow-glow' : ''}`}
             >
               <img
                 src={it.img}
@@ -359,7 +355,6 @@ Ultra realistic product photography.`,
                 loading="lazy"
                 className={`absolute inset-0 h-full w-full object-cover transition-all duration-[900ms] ease-out ${selectedTemplate === it.id ? 'scale-110 opacity-30 blur-md grayscale' : 'group-hover:scale-110'}`}
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-background/20 to-transparent opacity-90 pointer-events-none" />
 
               <AnimatePresence mode="wait">
                 {selectedTemplate === it.id ? (
@@ -463,7 +458,6 @@ Ultra realistic product photography.`,
               <div className="glass p-4 rounded-3xl flex flex-col items-center justify-between border border-white/5 bg-white/5 relative overflow-hidden group">
                 <span className="text-[10px] text-muted-foreground mb-4 uppercase tracking-[0.2em] font-medium z-10 bg-background/80 px-3 py-1 rounded-full backdrop-blur-md">{t('result_template')}</span>
                 <img src={resultData.templateImg} className="rounded-2xl w-full aspect-[4/5] object-cover transition-transform duration-700 group-hover:scale-105" />
-                <div className="absolute inset-0 bg-gradient-to-t from-background/40 to-transparent pointer-events-none" />
               </div>
 
               {/* Product */}
@@ -472,7 +466,6 @@ Ultra realistic product photography.`,
                 <div className="w-full aspect-[4/5] bg-white/5 rounded-2xl p-4 flex items-center justify-center">
                   <img src={resultData.productImg} className="max-w-full max-h-full object-contain drop-shadow-2xl transition-transform duration-700 group-hover:scale-110" />
                 </div>
-                <div className="absolute inset-0 bg-gradient-to-t from-background/40 to-transparent pointer-events-none" />
               </div>
 
               {/* Result */}

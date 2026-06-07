@@ -10,6 +10,7 @@ import { Toaster } from "@/components/ui/sonner";
 import { I18nextProvider } from "react-i18next";
 import { AuthProvider } from "@/components/AuthProvider";
 import i18n from "../i18n";
+import { WhatsAppButton } from "@/components/WhatsAppButton";
 
 function NotFoundComponent() {
   return (
@@ -84,6 +85,7 @@ function RootComponent() {
           <Outlet />
         </AuthProvider>
         <Toaster />
+        <WhatsAppButton />
       </QueryClientProvider>
     </I18nextProvider>
   );
