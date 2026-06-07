@@ -83,7 +83,7 @@ const getItems = (t: any) => {
       span: "row-span-2"
     }));
 
-  return [...baseItems, ...newItems, ...s2Items];
+  return [...s2Items, ...baseItems, ...newItems];
 };
 
 const getCategories = (t: any) => [
