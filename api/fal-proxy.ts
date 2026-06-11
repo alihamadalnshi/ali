@@ -98,66 +98,73 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     }
   }
 
-  if (userId) {
-    // Authenticated User Flow: Validate generation count against subscription tier
-    try {
-      const [profileRes, subRes] = await Promise.all([
-        adminSupabase.from('profiles').select('generation_count').eq('id', userId).single(),
-        adminSupabase
-          .from('subscriptions')
-          .select('gateway_price_id, plan_name, status')
-          .eq('user_id', userId)
-          .in('status', ['active', 'trialing'])
-          .order('created_at', { ascending: false })
-          .limit(1)
-          .maybeSingle()
-      ]);
+  // Identify request type to prevent polling/uploads from counting against limits
+  const isStatusCheck = targetUrl.includes('/requests/') || targetUrl.includes('/status/');
+  const isUpload = targetUrl.includes('upload.fal.run');
+  const isGeneration = req.method === 'POST' && !isStatusCheck && !isUpload;
 
-      if (profileRes.error) {
-        console.error(`[fal-proxy] Failed to fetch profile for ${userId}:`, profileRes.error.message);
-        return res.status(500).json({ error: 'Failed to verify user profile' });
-      }
+  if (isGeneration) {
+    if (userId) {
+      // Authenticated User Flow: Validate generation count against subscription tier
+      try {
+        const [profileRes, subRes] = await Promise.all([
+          adminSupabase.from('profiles').select('generation_count').eq('id', userId).single(),
+          adminSupabase
+            .from('subscriptions')
+            .select('gateway_price_id, plan_name, status')
+            .eq('user_id', userId)
+            .in('status', ['active', 'trialing'])
+            .order('created_at', { ascending: false })
+            .limit(1)
+            .maybeSingle()
+        ]);
 
-      const used = profileRes.data?.generation_count ?? 0;
-      let limit = 5; // Default free tier limit
-
-      if (subRes.data) {
-        const priceId = subRes.data.gateway_price_id;
-        const planNameLower = subRes.data.plan_name?.toLowerCase() || '';
-
-        // Match Price IDs or plan names to configuration limits
-        if (priceId === process.env.VITE_PADDLE_PRICE_BUSINESS || planNameLower.includes('business')) {
-          limit = 300;
-        } else if (priceId === process.env.VITE_PADDLE_PRICE_PRO || planNameLower.includes('pro')) {
-          limit = 100;
-        } else if (priceId === process.env.VITE_PADDLE_PRICE_BASIC || planNameLower.includes('basic')) {
-          limit = 30;
+        if (profileRes.error) {
+          console.error(`[fal-proxy] Failed to fetch profile for ${userId}:`, profileRes.error.message);
+          return res.status(500).json({ error: 'Failed to verify user profile' });
         }
-      }
 
-      if (used >= limit) {
-        return res.status(429).json({ error: 'Generation limit reached. Please upgrade your plan.' });
-      }
-    } catch (err) {
-      console.error('[fal-proxy] DB query failed during validation:', err);
-      // Fallback: Proceed but log validation issue
-    }
-  } else {
-    // Guest User Flow: Enforce IP-based rate limiting
-    const ip = (req.headers['x-forwarded-for'] as string) || req.socket?.remoteAddress || 'unknown-ip';
-    const now = Date.now();
-    const clientRecord = guestIpCache.get(ip);
+        const used = profileRes.data?.generation_count ?? 0;
+        let limit = 5; // Default free tier limit
 
-    if (clientRecord) {
-      if (now > clientRecord.resetTime) {
-        guestIpCache.set(ip, { count: 1, resetTime: now + RESET_WINDOW });
-      } else if (clientRecord.count >= GUEST_LIMIT) {
-        return res.status(429).json({ error: 'Guest generation limit reached. Please sign in to continue.' });
-      } else {
-        clientRecord.count += 1;
+        if (subRes.data) {
+          const priceId = subRes.data.gateway_price_id;
+          const planNameLower = subRes.data.plan_name?.toLowerCase() || '';
+
+          // Match Price IDs or plan names to configuration limits
+          if (priceId === process.env.VITE_PADDLE_PRICE_BUSINESS || planNameLower.includes('business')) {
+            limit = 300;
+          } else if (priceId === process.env.VITE_PADDLE_PRICE_PRO || planNameLower.includes('pro')) {
+            limit = 100;
+          } else if (priceId === process.env.VITE_PADDLE_PRICE_BASIC || planNameLower.includes('basic')) {
+            limit = 30;
+          }
+        }
+
+        if (used >= limit) {
+          return res.status(429).json({ error: 'Generation limit reached. Please upgrade your plan.' });
+        }
+      } catch (err) {
+        console.error('[fal-proxy] DB query failed during validation:', err);
+        // Fallback: Proceed but log validation issue
       }
     } else {
-      guestIpCache.set(ip, { count: 1, resetTime: now + RESET_WINDOW });
+      // Guest User Flow: Enforce IP-based rate limiting
+      const ip = (req.headers['x-forwarded-for'] as string) || req.socket?.remoteAddress || 'unknown-ip';
+      const now = Date.now();
+      const clientRecord = guestIpCache.get(ip);
+
+      if (clientRecord) {
+        if (now > clientRecord.resetTime) {
+          guestIpCache.set(ip, { count: 1, resetTime: now + RESET_WINDOW });
+        } else if (clientRecord.count >= GUEST_LIMIT) {
+          return res.status(429).json({ error: 'Guest generation limit reached. Please sign in to continue.' });
+        } else {
+          clientRecord.count += 1;
+        }
+      } else {
+        guestIpCache.set(ip, { count: 1, resetTime: now + RESET_WINDOW });
+      }
     }
   }
 
