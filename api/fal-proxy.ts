@@ -9,7 +9,7 @@ const ALLOWED_ORIGINS = [
 
 // In-memory guest rate limiting cache (resets on container cold starts)
 const guestIpCache = new Map<string, { count: number; resetTime: number }>();
-const GUEST_LIMIT = 5;
+const GUEST_LIMIT = 15;
 const RESET_WINDOW = 3600 * 1000; // 1 hour
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
