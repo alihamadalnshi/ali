@@ -98,7 +98,21 @@ const getCategories = (t: any) => [
 ];
 
 fal.config({
-  credentials: import.meta.env.VITE_FAL_KEY,
+  proxyUrl: "/api/fal-proxy",
+  requestMiddleware: async (request) => {
+    try {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (session?.access_token) {
+        request.headers = {
+          ...request.headers,
+          Authorization: `Bearer ${session.access_token}`,
+        };
+      }
+    } catch (err) {
+      console.warn("Failed to attach auth token to Fal request", err);
+    }
+    return request;
+  }
 });
 
 export function TemplateGallery() {
