@@ -82,7 +82,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   const paddle = getPaddleServer();
   let event: any;
   try {
-    event = paddle.webhooks.unmarshal(rawBody, webhookSecret, signature);
+    event = await paddle.webhooks.unmarshal(rawBody, webhookSecret, signature);
   } catch (err: any) {
     console.error('Paddle signature verification failed:', err.message);
     return res.status(400).json({ error: 'Invalid signature' });
