@@ -162,8 +162,14 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   }
 
   // ── Fal AI Request Dispatch ────────────────────────────────────────────────
+  const falKey = process.env.FAL_KEY || process.env.VITE_FAL_KEY;
+  if (!falKey) {
+    console.error('[fal-proxy] Fal AI API Key is missing (FAL_KEY / VITE_FAL_KEY)');
+    return res.status(500).json({ error: 'Fal AI configuration missing: API Key not set' });
+  }
+
   const headers: Record<string, string> = {
-    'Authorization': `Key ${process.env.FAL_KEY}`,
+    'Authorization': `Key ${falKey}`,
   };
 
   if (req.headers['content-type']) {
