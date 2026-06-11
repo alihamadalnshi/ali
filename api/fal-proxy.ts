@@ -71,6 +71,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     try {
       const { data: { user }, error: authError } = await adminSupabase.auth.getUser(token);
       if (authError || !user) {
+        console.error('[fal-proxy] Session verification failed:', authError?.message || 'User object is null');
         return res.status(401).json({ error: 'Invalid or expired session' });
       }
       userId = user.id;
