@@ -101,11 +101,6 @@ fal.config({
   proxyUrl: "/api/fal-proxy",
   requestMiddleware: async (request) => {
     try {
-      console.log("[Fal Client Request]", {
-        method: request.method,
-        url: request.url,
-        headers: { ...request.headers }
-      });
       const { data: { session } } = await supabase.auth.getSession();
       if (session?.access_token) {
         request.headers = {
