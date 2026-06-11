@@ -5,9 +5,9 @@ import { SectionHeader } from "./SectionHeader";
 import { useAuth } from "@/components/AuthProvider";
 import { useSubscription } from "@/hooks/useSubscription";
 import { PLAN_CONFIG } from "@/lib/subscription";
+import { openCheckout } from "@/lib/paddle-client";
 import { useState } from "react";
 import { useNavigate } from "@tanstack/react-router";
-import { supabase } from "@/lib/supabase";
 import { toast } from "sonner";
 
 export function Pricing() {
@@ -54,22 +54,26 @@ export function Pricing() {
     },
   ];
 
-  const handleChoosePlan = (tier: (typeof tiers)[number]) => {
+  const handleChoosePlan = async (tier: (typeof tiers)[number]) => {
     if (!user) {
-      // Redirect to login first
       navigate({ to: "/login" });
       return;
     }
 
     setLoadingTier(tier.id);
 
-    const tierConfig = PLAN_CONFIG[tier.id];
-    if (tierConfig && tierConfig.paymentLink) {
-      const checkoutUrl = `${tierConfig.paymentLink}?client_reference_id=${user.id}&prefilled_email=${encodeURIComponent(user.email || "")}`;
-      // Redirect to Stripe checkout
-      window.location.href = checkoutUrl;
-    } else {
-      toast.error("Invalid plan selection");
+    try {
+      const tierConfig = PLAN_CONFIG[tier.id];
+      if (!tierConfig || !tierConfig.priceId) {
+        toast.error("Plan not available yet. Please try again later.");
+        return;
+      }
+
+      await openCheckout(tierConfig.priceId, user.id, user.email || "");
+    } catch (err: any) {
+      console.error("Checkout error:", err);
+      toast.error(err.message || "Failed to open checkout. Please try again.");
+    } finally {
       setLoadingTier(null);
     }
   };

@@ -14,6 +14,7 @@ import { useAuth } from "@/components/AuthProvider";
 import { saveGenerationToHistory, toggleSaveGeneration } from "@/lib/storage";
 import { useSubscription } from "@/hooks/useSubscription";
 import { getNextUpgrade, PLAN_CONFIG } from "@/lib/subscription";
+import { openCheckout } from "@/lib/paddle-client";
 import { supabase } from "@/lib/supabase";
 
 // Dynamic import for templates 1-19
@@ -553,14 +554,18 @@ Ultra realistic product photography.`,
                      {nextPlan ? (
                        <button
                          type="button"
-                         onClick={() => {
-                           if (!nextPlan) return;
-                           const nextTierConfig = Object.values(PLAN_CONFIG).find(config => config.id === nextPlan.id);
-                           if (nextTierConfig && nextTierConfig.paymentLink) {
-                             const checkoutUrl = `${nextTierConfig.paymentLink}?client_reference_id=${user?.id || ""}&prefilled_email=${encodeURIComponent(user?.email || "")}`;
-                             window.location.href = checkoutUrl;
+                         onClick={async () => {
+                           if (!nextPlan || !nextUpgrade) return;
+                           const nextTierConfig = PLAN_CONFIG[nextUpgrade];
+                           if (nextTierConfig && nextTierConfig.priceId) {
+                             try {
+                               await openCheckout(nextTierConfig.priceId, user?.id || "", user?.email || "");
+                             } catch (err: any) {
+                               console.error("Checkout error:", err);
+                               toast.error(err.message || "Failed to open checkout.");
+                             }
                            } else {
-                             toast.error("Invalid upgrade selection");
+                             toast.error("Upgrade not available yet.");
                            }
                          }}
                          className="w-full py-3 rounded-full bg-accent-gradient text-primary-foreground font-semibold hover:opacity-95 transition-all shadow-glow flex items-center justify-center gap-2"

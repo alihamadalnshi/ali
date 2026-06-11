@@ -22,6 +22,7 @@ import { supabase } from "@/lib/supabase";
 import { toast } from "sonner";
 import { useSubscription } from "@/hooks/useSubscription";
 import { PLAN_CONFIG, getNextUpgrade } from "@/lib/subscription";
+import { openCheckout } from "@/lib/paddle-client";
 
 export const Route = createFileRoute("/dashboard/settings")({
   component: SettingsPage,
@@ -125,16 +126,21 @@ function SettingsPage() {
   const nextUpgrade = getNextUpgrade(planKey);
   const nextPlan = nextUpgrade ? PLAN_CONFIG[nextUpgrade] : null;
 
-  const handleUpgrade = () => {
+  const handleUpgrade = async () => {
     if (!nextPlan || !user) return;
     
-    // Find next plan config to get the paymentLink
-    const nextTierConfig = Object.values(PLAN_CONFIG).find(config => config.id === nextPlan.id);
-    if (nextTierConfig && nextTierConfig.paymentLink) {
-      const checkoutUrl = `${nextTierConfig.paymentLink}?client_reference_id=${user.id}&prefilled_email=${encodeURIComponent(user.email || "")}`;
-      window.location.href = checkoutUrl;
-    } else {
-      toast.error("Invalid upgrade selection");
+    try {
+      // Find the next tier config to get the Paddle priceId
+      const nextTierConfig = nextUpgrade ? PLAN_CONFIG[nextUpgrade] : null;
+      if (!nextTierConfig || !nextTierConfig.priceId) {
+        toast.error("Upgrade not available yet. Please try again later.");
+        return;
+      }
+
+      await openCheckout(nextTierConfig.priceId, user.id, user.email || "");
+    } catch (err: any) {
+      console.error("Checkout error:", err);
+      toast.error(err.message || "Failed to open checkout. Please try again.");
     }
   };
 
@@ -390,8 +396,7 @@ function SettingsPage() {
                         {t("settings_amount")}
                       </p>
                       <p className="text-xs font-medium text-foreground">
-                        ${(plan.subscription.amount / 100).toFixed(2)}/
-                        {plan.subscription.recurring_interval || "mo"}
+                        ${(plan.subscription.amount / 100).toFixed(2)}/mo
                       </p>
                     </div>
                   )}
@@ -433,22 +438,33 @@ function SettingsPage() {
                 <ExternalLink className="h-4 w-4 text-muted-foreground group-hover:text-primary transition-colors" />
               </motion.button>
             )}
-            {/* Manage Subscription on Stripe */}
+            {/* Manage Subscription */}
             {isSubscribed && (
               <a
                 href={
-                  import.meta.env.VITE_STRIPE_CUSTOMER_PORTAL_URL
-                    ? `${import.meta.env.VITE_STRIPE_CUSTOMER_PORTAL_URL}${
-                        import.meta.env.VITE_STRIPE_CUSTOMER_PORTAL_URL.includes("?") ? "&" : "?"
-                      }prefilled_email=${encodeURIComponent(user?.email || "")}`
-                    : "https://billing.stripe.com/p/login"
+                  import.meta.env.VITE_BILLING_PORTAL_URL
+                    ? `${import.meta.env.VITE_BILLING_PORTAL_URL}${
+                        import.meta.env.VITE_BILLING_PORTAL_URL.includes("?") ? "&" : "?"
+                      }email=${encodeURIComponent(user?.email || "")}`
+                    : "#"
                 }
-                target="_blank"
+                target={import.meta.env.VITE_BILLING_PORTAL_URL ? "_blank" : undefined}
                 rel="noopener noreferrer"
+                onClick={(e) => {
+                  if (!import.meta.env.VITE_BILLING_PORTAL_URL) {
+                    e.preventDefault();
+                    const isArabic = i18n.language === "ar";
+                    toast.info(
+                      isArabic 
+                        ? "إدارة الاشتراكات غير متوفرة حالياً. يرجى التواصل مع الدعم الفني." 
+                        : "Billing management portal is currently unavailable. Please contact support."
+                    );
+                  }
+                }}
                 className="w-full flex items-center justify-center gap-2 rounded-xl border border-white/10 bg-white/5 px-4 py-2.5 text-xs font-medium text-muted-foreground hover:text-foreground hover:bg-white/10 transition-all duration-200"
               >
                 <ExternalLink className="h-3.5 w-3.5" />
-                {i18n.language === "ar" ? "إدارة الاشتراك على Stripe" : "Manage subscription on Stripe"}
+                {i18n.language === "ar" ? "إدارة الاشتراك" : "Manage subscription"}
               </a>
             )}
           </>

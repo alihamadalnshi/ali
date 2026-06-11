@@ -6,28 +6,28 @@ export const PLAN_CONFIG = {
     name: "Free",
     limit: 5,
     price: 0,
-    paymentLink: "",
+    priceId: "",
   },
   basic: {
-    id: "price_1TewGYEB6cMflNwVx4JdDLty",
+    id: "basic",
     name: "Basic",
     limit: 30,
     price: 9,
-    paymentLink: "https://buy.stripe.com/test_9B63cvaWMbAleXKaJQ0kE00",
+    priceId: import.meta.env.VITE_PADDLE_PRICE_BASIC || "",
   },
   pro: {
-    id: "price_1TewH2EB6cMflNwV3eujiWCv",
+    id: "pro",
     name: "Pro",
     limit: 100,
     price: 19,
-    paymentLink: "https://buy.stripe.com/test_dRm14n7KA0VHdTGbNU0kE01",
+    priceId: import.meta.env.VITE_PADDLE_PRICE_PRO || "",
   },
   business: {
-    id: "price_1TewHUEB6cMflNwV5lvnmVBS",
+    id: "business",
     name: "Business",
     limit: 300,
     price: 49,
-    paymentLink: "https://buy.stripe.com/test_14A00je8Yawh9Dq7xE0kE02",
+    priceId: import.meta.env.VITE_PADDLE_PRICE_BUSINESS || "",
   },
 } as const;
 
@@ -36,10 +36,10 @@ export type PlanKey = keyof typeof PLAN_CONFIG;
 export interface Subscription {
   id: string;
   user_id: string;
-  polar_subscription_id: string;
-  polar_customer_id: string | null;
-  product_id: string;
-  product_name: string | null;
+  gateway_subscription_id: string;
+  gateway_customer_id: string | null;
+  gateway_price_id: string;
+  plan_name: string | null;
   status: string;
   current_period_start: string | null;
   current_period_end: string | null;
@@ -95,9 +95,12 @@ export async function getUserPlan(): Promise<UserPlan> {
     };
   }
 
-  // Match product_id to our plan config
+  // Match gateway_price_id to our plan config (via priceId, id, or plan_name)
   const planEntry = Object.entries(PLAN_CONFIG).find(
-    ([, config]) => config.id === subscription.product_id
+    ([, config]) => 
+      (config.priceId && config.priceId === subscription.gateway_price_id) ||
+      config.id === subscription.gateway_price_id || 
+      config.name.toLowerCase() === subscription.plan_name?.toLowerCase()
   );
 
   const planKey = (planEntry?.[0] || "free") as PlanKey;

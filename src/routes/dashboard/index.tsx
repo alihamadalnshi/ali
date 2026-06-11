@@ -25,6 +25,7 @@ import { supabase } from "@/lib/supabase";
 import { toast } from "sonner";
 import { useSubscription } from "@/hooks/useSubscription";
 import { getNextUpgrade, PLAN_CONFIG } from "@/lib/subscription";
+import { openCheckout } from "@/lib/paddle-client";
 
 export const Route = createFileRoute("/dashboard/")({
   component: DashboardHome,
@@ -112,38 +113,19 @@ function DashboardHome() {
   const nextPlan = nextUpgrade ? PLAN_CONFIG[nextUpgrade] : null;
 
   const handleUpgrade = async () => {
-    if (!nextPlan || !user) return;
+    if (!nextPlan || !user || !nextUpgrade) return;
+    
     try {
-      const { data: { session } } = await supabase.auth.getSession();
-      const token = session?.access_token;
-
-      if (!token) {
-        throw new Error("Missing authentication token");
+      const nextTierConfig = PLAN_CONFIG[nextUpgrade];
+      if (!nextTierConfig || !nextTierConfig.priceId) {
+        toast.error("Upgrade not available yet. Please try again later.");
+        return;
       }
 
-      const response = await fetch("/api/update-subscription", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${token}`,
-        },
-        body: JSON.stringify({
-          productId: nextPlan.id,
-          planName: nextPlan.name,
-          amount: nextPlan.price * 100, // cents
-        }),
-      });
-
-      if (!response.ok) {
-        const errData = await response.json();
-        throw new Error(errData.error || "Failed to upgrade subscription");
-      }
-
-      toast.success(t("settings_payment_success"));
-      await loadData();
+      await openCheckout(nextTierConfig.priceId, user.id, user.email || "");
     } catch (err: any) {
-      console.error("Upgrade error:", err);
-      toast.error(err.message || "Failed to upgrade. Please try again.");
+      console.error("Checkout error:", err);
+      toast.error(err.message || "Failed to open checkout. Please try again.");
     }
   };
 
