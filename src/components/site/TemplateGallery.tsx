@@ -152,15 +152,7 @@ export function TemplateGallery() {
     
     setLocalGenerationCount(maxCount);
     toast.dismiss("gen-toast");
-    
-    // Developer reset function
-    (window as any).resetGenerationLimit = () => {
-      localStorage.setItem("generation_count", "0");
-      sessionStorage.setItem("generation_count", "0");
-      setLocalGenerationCount(0);
-      setShowLimitModal(false);
-      console.log("Generation limit reset to 0.");
-    };
+
   }, []);
 
   useEffect(() => {
