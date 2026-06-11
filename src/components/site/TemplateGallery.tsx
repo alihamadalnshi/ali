@@ -1,9 +1,10 @@
 import { motion, AnimatePresence } from "framer-motion";
-import { Upload, Loader2, Download, Lock, Sparkles, ChevronDown, ChevronUp, Heart, ArrowUpRight } from "lucide-react";
+import { Upload, Loader2, Download, Lock, Sparkles, ChevronDown, ChevronUp, Heart, ArrowUpRight, LogIn } from "lucide-react";
 import { useState, useRef, useEffect } from "react";
 import { toast } from "sonner";
 import { fal } from "@fal-ai/client";
 import { useTranslation } from "react-i18next";
+import { Link } from "@tanstack/react-router";
 import { SectionHeader } from "./SectionHeader";
 import t1 from "@/assets/template/1 (1).jpg";
 import t3 from "@/assets/template/3 (1).jpg";
@@ -563,9 +564,16 @@ Ultra realistic product photography.`,
                     {t('modal_limit_desc')}
                     {planKey !== 'free' && ` (${planName} — ${currentLimit} ${t('limit_remaining_n')})`}
                   </p>
-                  
                   <div className="flex flex-col w-full gap-3">
-                     {nextPlan ? (
+                     {!user ? (
+                       <Link
+                         to="/login"
+                         className="w-full py-3 rounded-full bg-accent-gradient text-primary-foreground font-semibold hover:opacity-95 transition-all shadow-glow flex items-center justify-center gap-2"
+                       >
+                          {t('nav_signin')}
+                          <LogIn className="h-4 w-4" />
+                       </Link>
+                     ) : nextPlan ? (
                        <button
                          type="button"
                          onClick={async () => {
@@ -584,19 +592,18 @@ Ultra realistic product photography.`,
                          }}
                          className="w-full py-3 rounded-full bg-accent-gradient text-primary-foreground font-semibold hover:opacity-95 transition-all shadow-glow flex items-center justify-center gap-2"
                        >
-
                           {t('modal_btn_upgrade')} — {nextPlan.name} (${nextPlan.price}/{t('pricing_mo')})
                           <ArrowUpRight className="h-4 w-4" />
                        </button>
                      ) : (
                        <button 
-                         type="button"
-                         onClick={() => setShowLimitModal(false)}
-                         className="w-full py-3 rounded-full bg-primary text-primary-foreground font-semibold hover:bg-primary/90 transition-colors shadow-elegant"
-                       >
-                          {t('modal_btn_contact')}
-                       </button>
-                     )}
+                          type="button"
+                          onClick={() => window.open("mailto:support@example.com", "_blank")}
+                          className="w-full py-3 rounded-full bg-primary text-primary-foreground font-semibold hover:bg-primary/90 transition-colors shadow-elegant"
+                        >
+                           {t('modal_btn_contact')}
+                        </button>
+                      )}
                      <button 
                        type="button"
                        onClick={() => setShowLimitModal(false)}
@@ -606,7 +613,7 @@ Ultra realistic product photography.`,
                      </button>
                      <button onClick={() => window.location.reload()} className="text-xs text-muted-foreground hover:text-foreground mt-4 transition-colors">
                         {t('modal_btn_refresh')}
-                     </button>
+                      </button>
                   </div>
                 </div>
               </motion.div>
