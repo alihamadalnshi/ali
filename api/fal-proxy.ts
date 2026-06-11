@@ -58,6 +58,20 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     return res.status(500).json({ error: 'Server configuration error' });
   }
 
+  // Diagnostics: Verify that SUPABASE_SERVICE_ROLE_KEY belongs to VITE_SUPABASE_URL project
+  try {
+    const keyParts = supabaseServiceKey.split('.');
+    if (keyParts.length === 3) {
+      const payload = JSON.parse(Buffer.from(keyParts[1], 'base64').toString('utf8'));
+      const ref = payload.ref;
+      if (ref && !supabaseUrl.includes(ref)) {
+        console.error(`[fal-proxy] Configuration Error: Service Role Key project reference "${ref}" does not match Supabase URL "${supabaseUrl}"`);
+      }
+    }
+  } catch (err) {
+    console.warn('[fal-proxy] Diagnostics failed to check key ref:', err);
+  }
+
   // Initialize Admin client (bypass RLS for server-side limits checking)
   const adminSupabase = createClient(supabaseUrl, supabaseServiceKey, {
     auth: { persistSession: false },
@@ -72,12 +86,15 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       const { data: { user }, error: authError } = await adminSupabase.auth.getUser(token);
       if (authError || !user) {
         console.error('[fal-proxy] Session verification failed:', authError?.message || 'User object is null');
-        return res.status(401).json({ error: 'Invalid or expired session' });
+        return res.status(401).json({ 
+          error: 'Invalid or expired session', 
+          message: authError?.message || 'User not found' 
+        });
       }
       userId = user.id;
-    } catch (err) {
+    } catch (err: any) {
       console.error('[fal-proxy] Auth verification exception:', err);
-      return res.status(401).json({ error: 'Authentication failed' });
+      return res.status(401).json({ error: 'Authentication failed', message: err.message });
     }
   }
 
