@@ -6,10 +6,14 @@ import { fal } from "@fal-ai/client";
 import { useTranslation } from "react-i18next";
 import { Link } from "@tanstack/react-router";
 import { SectionHeader } from "./SectionHeader";
-import t1 from "@/assets/template/1 (1).jpg";
-import t3 from "@/assets/template/3 (1).jpg";
-import t4 from "@/assets/template/4 (1).jpg";
-import t5 from "@/assets/template/5 (1).jpg";
+import t1 from "@/assets/template/1 (1).webp";
+import t1Thumb from "@/assets/template/thumbs/1 (1).webp";
+import t3 from "@/assets/template/3 (1).webp";
+import t3Thumb from "@/assets/template/thumbs/3 (1).webp";
+import t4 from "@/assets/template/4 (1).webp";
+import t4Thumb from "@/assets/template/thumbs/4 (1).webp";
+import t5 from "@/assets/template/5 (1).webp";
+import t5Thumb from "@/assets/template/thumbs/5 (1).webp";
 import { templatePrompts } from "@/data/templateData";
 import { useAuth } from "@/components/AuthProvider";
 import { saveGenerationToHistory, toggleSaveGeneration } from "@/lib/storage";
@@ -19,14 +23,16 @@ import { openCheckout } from "@/lib/paddle-client";
 import { supabase } from "@/lib/supabase";
 
 // Dynamic import for templates 1-19
-const templateModules = import.meta.glob("../../assets/template/1-19/**/*.{png,jpg,jpeg}", { eager: true });
+const templateModules = import.meta.glob("../../assets/template/1-19/*/*.webp", { eager: true });
+const templateThumbModules = import.meta.glob("../../assets/template/1-19/*/thumbs/*.webp", { eager: true });
+
 const templateImageMap: Record<string, string> = {};
+const templateThumbMap: Record<string, string> = {};
 
 Object.entries(templateModules).forEach(([path, module]: [string, any]) => {
   const match = path.match(/New folder - Copy \((\d+)\)/);
   if (match) {
     const num = parseInt(match[1]);
-    // Map Copy (0) to template-1, Copy (1) to template-2, ..., Copy (18) to template-19
     if (num >= 0 && num < 19) {
       const id = `template-${num + 1}`;
       templateImageMap[id] = module.default || module;
@@ -34,12 +40,26 @@ Object.entries(templateModules).forEach(([path, module]: [string, any]) => {
   }
 });
 
+Object.entries(templateThumbModules).forEach(([path, module]: [string, any]) => {
+  const match = path.match(/New folder - Copy \((\d+)\)/);
+  if (match) {
+    const num = parseInt(match[1]);
+    if (num >= 0 && num < 19) {
+      const id = `template-${num + 1}`;
+      templateThumbMap[id] = module.default || module;
+    }
+  }
+});
+
 // Dynamic import for templates s2 (0-50)
-const s2Modules = import.meta.glob("../../assets/template/s2/*.{png,jpg,jpeg}", { eager: true });
+const s2Modules = import.meta.glob("../../assets/template/s2/*.webp", { eager: true });
+const s2ThumbModules = import.meta.glob("../../assets/template/s2/thumbs/*.webp", { eager: true });
+
 const s2ImageMap: Record<string, string> = {};
+const s2ThumbMap: Record<string, string> = {};
 
 Object.entries(s2Modules).forEach(([path, module]: [string, any]) => {
-  const match = path.match(/\/(\d+)\.(png|jpg|jpeg)$/);
+  const match = path.match(/\/(\d+)\.webp$/);
   if (match) {
     const num = parseInt(match[1]);
     if (num >= 0 && num <= 50) {
@@ -49,12 +69,23 @@ Object.entries(s2Modules).forEach(([path, module]: [string, any]) => {
   }
 });
 
+Object.entries(s2ThumbModules).forEach(([path, module]: [string, any]) => {
+  const match = path.match(/\/(\d+)\.webp$/);
+  if (match) {
+    const num = parseInt(match[1]);
+    if (num >= 0 && num <= 50) {
+      const id = `s2-${num}`;
+      s2ThumbMap[id] = module.default || module;
+    }
+  }
+});
+
 const getItems = (t: any) => {
   const baseItems = [
-    { id: "noir-elegance", img: t3, title: t('tmpl_noir_elegance'), category: t('cat_fashion'), span: "row-span-2" },
-    { id: "forest-dew", img: t1, title: t('tmpl_forest_dew'), category: t('cat_beauty'), span: "row-span-2" },
-    { id: "desert-oud", img: t4, title: t('tmpl_desert_oud'), category: t('cat_luxury'), span: "row-span-2" },
-    { id: "stone-minimal", img: t5, title: t('tmpl_stone_minimal'), category: t('cat_lifestyle'), span: "row-span-2" },
+    { id: "noir-elegance", img: t3, thumb: t3Thumb, title: t('tmpl_noir_elegance'), category: t('cat_fashion'), span: "row-span-2" },
+    { id: "forest-dew", img: t1, thumb: t1Thumb, title: t('tmpl_forest_dew'), category: t('cat_beauty'), span: "row-span-2" },
+    { id: "desert-oud", img: t4, thumb: t4Thumb, title: t('tmpl_desert_oud'), category: t('cat_luxury'), span: "row-span-2" },
+    { id: "stone-minimal", img: t5, thumb: t5Thumb, title: t('tmpl_stone_minimal'), category: t('cat_lifestyle'), span: "row-span-2" },
   ];
 
   const newItems = Object.keys(templateImageMap)
@@ -66,6 +97,7 @@ const getItems = (t: any) => {
     .map(id => ({
       id,
       img: templateImageMap[id],
+      thumb: templateThumbMap[id] || templateImageMap[id],
       title: `${t('template')} ${id.split("-")[1]}`,
       category: t('cat_all'),
       span: "row-span-2"
@@ -80,6 +112,7 @@ const getItems = (t: any) => {
     .map(id => ({
       id,
       img: s2ImageMap[id],
+      thumb: s2ThumbMap[id] || s2ImageMap[id],
       title: `${t('template')} S2-${id.split("-")[1]}`,
       category: t('cat_all'),
       span: "row-span-2"
@@ -358,7 +391,7 @@ Ultra realistic product photography.`,
               className={`group ring-border-gradient relative overflow-hidden rounded-2xl shadow-card cursor-pointer transition-all w-full aspect-[4/5] ${selectedTemplate === it.id ? 'ring-primary shadow-glow' : ''}`}
             >
               <img
-                src={it.img}
+                src={it.thumb}
                 alt={it.title}
                 loading="lazy"
                 className={`absolute inset-0 h-full w-full object-cover transition-all duration-[900ms] ease-out ${selectedTemplate === it.id ? 'scale-110 opacity-30 blur-md grayscale' : 'group-hover:scale-110'}`}
