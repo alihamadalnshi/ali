@@ -264,5 +264,33 @@
   "dash_limit_reached_title": "Generation limit reached",
   "dash_limit_reached_desc": "Upgrade to {plan} to get {limit} generations per period.",
   "dash_near_limit_title": "Running low on credits",
-  "dash_near_limit_desc": "You have {remaining} of {limit} generations remaining."
+  "dash_near_limit_desc": "You have {remaining} of {limit} generations remaining.",
+
+  "terms_title": "Terms of Service",
+  "terms_section_agreement_title": "Agreement to Terms",
+  "terms_section_agreement_desc": "By accessing \"Namadhij AI\" or using any of our services, you acknowledge and fully agree to these terms and conditions.",
+  "terms_section_proprietary_title": "Proprietary Rights",
+  "terms_section_proprietary_desc": "All proprietary rights to the algorithms, tools, and designs created through our platform remain reserved by \"Namadhij AI\". Commercial use outside the platform without written permission is prohibited.",
+  "terms_section_disclaimer_title": "Disclaimer",
+  "terms_section_disclaimer_desc": "Our services are provided \"as is\". We do not guarantee they are free of technical errors, and we disclaim any legal liability arising from content generated or used by the user on the platform.",
+  "terms_section_updates_title": "Updates",
+  "terms_section_updates_desc": "We reserve the right to modify these terms at any time. Your continued use of the platform after modification constitutes implicit acceptance of the new terms.",
+
+  "privacy_title": "Privacy Policy",
+  "privacy_section_security_title": "Data Security",
+  "privacy_section_security_desc": "At \"Namadhij AI\", we are committed to protecting your privacy; all personal data and uploaded files are fully encrypted.",
+  "privacy_section_training_title": "Training Policy",
+  "privacy_section_training_desc": "We pledge that your uploaded images and data will never be used to train our AI models under any circumstances. Your privacy is our highest priority.",
+  "privacy_section_retention_title": "Retention",
+  "privacy_section_retention_desc": "We retain the images you upload in your private account so you can access and download them at any time. You can permanently delete any image or file you uploaded by clicking the 'Delete' button in your dashboard.",
+  "privacy_section_sharing_title": "Data Sharing",
+  "privacy_section_sharing_desc": "We do not share your data with any third parties for marketing or other purposes, except in the event of an explicit legal obligation.",
+
+  "refund_title": "Refund Policy",
+  "refund_section_subs_title": "Subscriptions",
+  "refund_section_subs_desc": "When subscribing to a paid plan, it will renew automatically unless you cancel the subscription before the start of the next billing cycle.",
+  "refund_section_cancel_title": "Cancellation Terms",
+  "refund_section_cancel_desc": "You can cancel your subscription at any time from your account settings. Upon cancellation, you will retain access to the service until the end of your paid period, and no refunds will be issued for partially used periods.",
+  "refund_section_exception_title": "Exceptional Refunds",
+  "refund_section_exception_desc": "In the event of a fundamental technical issue in the service that prevents you from using the features you paid for, you can contact support within 7 days of the payment date to request an evaluation for a refund."
 }

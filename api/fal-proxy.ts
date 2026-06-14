@@ -2,7 +2,7 @@ import type { VercelRequest, VercelResponse } from '@vercel/node';
 import { createClient } from '@supabase/supabase-js';
 
 const ALLOWED_ORIGINS = [
-  'https://ali-nu-ten.vercel.app',
+  'https://www.namadhejai.com',
   'http://localhost:5173',
   'http://127.0.0.1:5173'
 ];
@@ -14,7 +14,7 @@ const RESET_WINDOW = 3600 * 1000; // 1 hour
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   const origin = req.headers.origin || '';
-  
+
   // Restrict CORS to trusted origins
   if (ALLOWED_ORIGINS.includes(origin)) {
     res.setHeader('Access-Control-Allow-Origin', origin);
@@ -86,9 +86,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       const { data: { user }, error: authError } = await adminSupabase.auth.getUser(token);
       if (authError || !user) {
         console.error('[fal-proxy] Session verification failed:', authError?.message || 'User object is null');
-        return res.status(401).json({ 
-          error: 'Invalid or expired session', 
-          message: authError?.message || 'User not found' 
+        return res.status(401).json({
+          error: 'Invalid or expired session',
+          message: authError?.message || 'User not found'
         });
       }
       userId = user.id;

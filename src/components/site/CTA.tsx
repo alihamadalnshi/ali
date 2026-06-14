@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import { Link } from "@tanstack/react-router";
 
 export function CTA() {
   const { t } = useTranslation();
@@ -59,10 +60,10 @@ export function Footer() {
       <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-4 px-4 sm:flex-row sm:px-6">
         <p className="text-xs text-muted-foreground">{t('footer_copy')}</p>
         <div className="flex gap-5 text-xs text-muted-foreground">
-          <a href="#" className="hover:text-foreground">{t('footer_privacy')}</a>
-          <a href="#" className="hover:text-foreground">{t('footer_terms')}</a>
-          <a href="#" className="hover:text-foreground">{t('footer_status')}</a>
-          <a href="#" className="hover:text-foreground">{t('footer_twitter')}</a>
+          <Link to="/privacy" className="hover:text-foreground">{t('footer_privacy')}</Link>
+          <Link to="/terms" className="hover:text-foreground">{t('footer_terms')}</Link>
+          <Link to="/refund" className="hover:text-foreground">{t('refund_title')}</Link>
+          <a href="https://twitter.com" target="_blank" rel="noreferrer" className="hover:text-foreground">{t('footer_twitter')}</a>
         </div>
       </div>
     </footer>
