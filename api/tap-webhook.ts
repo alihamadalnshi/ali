@@ -58,7 +58,14 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     auth: { persistSession: false },
   });
 
-  // 4. Idempotency Check (prevent duplicate processing of the same charge)
+  // 4. Process charge status
+  const status = charge.status?.toUpperCase();
+  if (status !== 'CAPTURED') {
+    console.log(`[tap-webhook] Charge status is ${status} (not CAPTURED). No action taken.`);
+    return res.status(200).json({ ok: true, message: 'Status is not CAPTURED' });
+  }
+
+  // 5. Idempotency Check (prevent duplicate processing of the same charge)
   try {
     const { error: idempotencyError } = await adminSupabase
       .from('webhook_events')
@@ -77,13 +84,6 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     }
   } catch (err) {
     console.error('[tap-webhook] Idempotency check exception:', err);
-  }
-
-  // 5. Process charge status
-  const status = charge.status?.toUpperCase();
-  if (status !== 'CAPTURED') {
-    console.log(`[tap-webhook] Charge status is ${status} (not CAPTURED). No action taken.`);
-    return res.status(200).json({ ok: true, message: 'Status is not CAPTURED' });
   }
 
   // Retrieve user metadata sent during checkout creation
