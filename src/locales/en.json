@@ -270,7 +270,7 @@
   "terms_section_agreement_title": "Agreement to Terms",
   "terms_section_agreement_desc": "By accessing \"Namadhij AI\" or using any of our services, you acknowledge and fully agree to these terms and conditions.",
   "terms_section_proprietary_title": "Proprietary Rights",
-  "terms_section_proprietary_desc": "All proprietary rights to the algorithms, tools, and designs created through our platform remain reserved by \"Namadhij AI\". Commercial use outside the platform without written permission is prohibited.",
+  "terms_section_proprietary_desc": "All proprietary rights to the platform's core code, algorithms, and design assets remain reserved by \"Namadhij AI\". However, users retain full intellectual property ownership and commercial rights to the ad creatives, images, and designs they generate using our platform. You are free to use your generated content commercially outside the platform without any prior written permission.",
   "terms_section_disclaimer_title": "Disclaimer",
   "terms_section_disclaimer_desc": "Our services are provided \"as is\". We do not guarantee they are free of technical errors, and we disclaim any legal liability arising from content generated or used by the user on the platform.",
   "terms_section_updates_title": "Updates",
@@ -292,5 +292,5 @@
   "refund_section_cancel_title": "Cancellation Terms",
   "refund_section_cancel_desc": "You can cancel your subscription at any time from your account settings. Upon cancellation, you will retain access to the service until the end of your paid period, and no refunds will be issued for partially used periods.",
   "refund_section_exception_title": "Exceptional Refunds",
-  "refund_section_exception_desc": "In the event of a fundamental technical issue in the service that prevents you from using the features you paid for, you can contact support within 7 days of the payment date to request an evaluation for a refund."
+  "refund_section_exception_desc": "We offer a 7-day refund policy. If you encounter any technical issues with our service or are unsatisfied with the quality, you can request a full refund within 7 days of your payment date, provided you have used fewer than 5 generation credits. Contact us at support@namadhij.ai or via WhatsApp (+965 9880 8547) to initiate a refund."
 }

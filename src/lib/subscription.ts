@@ -13,21 +13,21 @@ export const PLAN_CONFIG = {
     name: "Basic",
     limit: 30,
     price: 9,
-    priceId: import.meta.env.VITE_PADDLE_PRICE_BASIC || "",
+    priceId: import.meta.env.VITE_TAP_PRICE_BASIC || "basic",
   },
   pro: {
     id: "pro",
     name: "Pro",
     limit: 100,
     price: 19,
-    priceId: import.meta.env.VITE_PADDLE_PRICE_PRO || "",
+    priceId: import.meta.env.VITE_TAP_PRICE_PRO || "pro",
   },
   business: {
     id: "business",
     name: "Business",
     limit: 300,
     price: 49,
-    priceId: import.meta.env.VITE_PADDLE_PRICE_BUSINESS || "",
+    priceId: import.meta.env.VITE_TAP_PRICE_BUSINESS || "business",
   },
 } as const;
 

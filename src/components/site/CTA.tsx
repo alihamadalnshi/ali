@@ -57,9 +57,14 @@ export function Footer() {
   const { t } = useTranslation();
   return (
     <footer className="border-t border-white/5 py-10">
-      <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-4 px-4 sm:flex-row sm:px-6">
-        <p className="text-xs text-muted-foreground">{t('footer_copy')}</p>
-        <div className="flex gap-5 text-xs text-muted-foreground">
+      <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-6 px-4 sm:flex-row sm:px-6">
+        <div className="flex flex-col items-center sm:items-start gap-2">
+          <p className="text-xs text-muted-foreground">{t('footer_copy')}</p>
+          <p className="text-[10px] text-muted-foreground/60">
+            Support: support@namadhij.ai | WhatsApp: +965 9880 8547
+          </p>
+        </div>
+        <div className="flex flex-wrap justify-center gap-5 text-xs text-muted-foreground">
           <Link to="/privacy" className="hover:text-foreground">{t('footer_privacy')}</Link>
           <Link to="/terms" className="hover:text-foreground">{t('footer_terms')}</Link>
           <Link to="/refund" className="hover:text-foreground">{t('refund_title')}</Link>

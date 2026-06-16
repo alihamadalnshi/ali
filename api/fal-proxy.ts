@@ -132,11 +132,26 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
           const planNameLower = subRes.data.plan_name?.toLowerCase() || '';
 
           // Match Price IDs or plan names to configuration limits
-          if (priceId === process.env.VITE_PADDLE_PRICE_BUSINESS || planNameLower.includes('business')) {
+          if (
+            priceId === process.env.VITE_PADDLE_PRICE_BUSINESS || 
+            priceId === process.env.VITE_TAP_PRICE_BUSINESS ||
+            priceId === 'business' ||
+            planNameLower.includes('business')
+          ) {
             limit = 300;
-          } else if (priceId === process.env.VITE_PADDLE_PRICE_PRO || planNameLower.includes('pro')) {
+          } else if (
+            priceId === process.env.VITE_PADDLE_PRICE_PRO || 
+            priceId === process.env.VITE_TAP_PRICE_PRO ||
+            priceId === 'pro' ||
+            planNameLower.includes('pro')
+          ) {
             limit = 100;
-          } else if (priceId === process.env.VITE_PADDLE_PRICE_BASIC || planNameLower.includes('basic')) {
+          } else if (
+            priceId === process.env.VITE_PADDLE_PRICE_BASIC || 
+            priceId === process.env.VITE_TAP_PRICE_BASIC ||
+            priceId === 'basic' ||
+            planNameLower.includes('basic')
+          ) {
             limit = 30;
           }
         }

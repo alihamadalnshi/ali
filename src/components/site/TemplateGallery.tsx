@@ -19,7 +19,7 @@ import { useAuth } from "@/components/AuthProvider";
 import { saveGenerationToHistory, toggleSaveGeneration } from "@/lib/storage";
 import { useSubscription } from "@/hooks/useSubscription";
 import { getNextUpgrade, PLAN_CONFIG } from "@/lib/subscription";
-import { openCheckout } from "@/lib/paddle-client";
+import { openTapCheckout } from "@/lib/tap-client";
 import { supabase } from "@/lib/supabase";
 
 // Dynamic import for templates 1-19
@@ -606,7 +606,7 @@ Ultra realistic product photography.`,
                            const nextTierConfig = PLAN_CONFIG[nextUpgrade];
                            if (nextTierConfig && nextTierConfig.priceId) {
                              try {
-                               await openCheckout(nextTierConfig.priceId, user?.id || "", user?.email || "");
+                               await openTapCheckout(nextTierConfig.priceId, user?.id || "", user?.email || "");
                              } catch (err: any) {
                                console.error("Checkout error:", err);
                                toast.error(err.message || "Failed to open checkout.");
@@ -623,7 +623,7 @@ Ultra realistic product photography.`,
                      ) : (
                        <button 
                           type="button"
-                          onClick={() => window.open("mailto:support@example.com", "_blank")}
+                          onClick={() => window.open("mailto:support@namadhij.ai", "_blank")}
                           className="w-full py-3 rounded-full bg-primary text-primary-foreground font-semibold hover:bg-primary/90 transition-colors shadow-elegant"
                         >
                            {t('modal_btn_contact')}

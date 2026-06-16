@@ -22,7 +22,7 @@ import { supabase } from "@/lib/supabase";
 import { toast } from "sonner";
 import { useSubscription } from "@/hooks/useSubscription";
 import { PLAN_CONFIG, getNextUpgrade } from "@/lib/subscription";
-import { openCheckout } from "@/lib/paddle-client";
+import { openTapCheckout } from "@/lib/tap-client";
 
 export const Route = createFileRoute("/dashboard/settings")({
   component: SettingsPage,
@@ -137,7 +137,7 @@ function SettingsPage() {
         return;
       }
 
-      await openCheckout(nextTierConfig.priceId, user.id, user.email || "");
+      await openTapCheckout(nextTierConfig.priceId, user.id, user.email || "");
     } catch (err: any) {
       console.error("Checkout error:", err);
       toast.error(err.message || "Failed to open checkout. Please try again.");

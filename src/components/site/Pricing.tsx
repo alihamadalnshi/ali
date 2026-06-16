@@ -5,7 +5,7 @@ import { SectionHeader } from "./SectionHeader";
 import { useAuth } from "@/components/AuthProvider";
 import { useSubscription } from "@/hooks/useSubscription";
 import { PLAN_CONFIG } from "@/lib/subscription";
-import { openCheckout } from "@/lib/paddle-client";
+import { openTapCheckout } from "@/lib/tap-client";
 import { useState } from "react";
 import { useNavigate } from "@tanstack/react-router";
 import { toast } from "sonner";
@@ -69,7 +69,7 @@ export function Pricing() {
         return;
       }
 
-      await openCheckout(tierConfig.priceId, user.id, user.email || "");
+      await openTapCheckout(tierConfig.priceId, user.id, user.email || "");
     } catch (err: any) {
       console.error("Checkout error:", err);
       toast.error(err.message || "Failed to open checkout. Please try again.");
