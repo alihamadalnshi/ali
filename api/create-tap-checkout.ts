@@ -75,6 +75,12 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   const host = req.headers.host || 'localhost:5173';
   const protocol = host.includes('localhost') || host.includes('127.0.0.1') ? 'http' : 'https';
   const successUrl = `${protocol}://${host}/dashboard/settings?payment=success`;
+  
+  // Tap requires a public HTTPS URL for webhooks. Avoid sending local urls.
+  const webhookUrl = `${protocol}://${host}/api/tap-webhook`;
+  const postObject = protocol === 'https' && !host.includes('localhost') && !host.includes('127.0.0.1')
+    ? { url: webhookUrl }
+    : undefined;
 
   const tapSecretKey = process.env.TAP_SECRET_KEY;
   if (!tapSecretKey) {
@@ -100,11 +106,12 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
           email: email.trim(),
         },
         source: {
-          id: 'src_all', // Allow all supported payment methods (Visa, MasterCard, Apple Pay, Mada, etc.)
+          id: 'src_all',
         },
         redirect: {
           url: successUrl,
         },
+        post: postObject,
         metadata: {
           userId,
           priceId: planKey,
