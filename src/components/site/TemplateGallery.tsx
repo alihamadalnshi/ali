@@ -623,7 +623,7 @@ Ultra realistic product photography.`,
                      ) : (
                        <button 
                           type="button"
-                          onClick={() => window.open("mailto:support@namadhij.ai", "_blank")}
+                          onClick={() => window.open("mailto:namadhejai@proton.me", "_blank")}
                           className="w-full py-3 rounded-full bg-primary text-primary-foreground font-semibold hover:bg-primary/90 transition-colors shadow-elegant"
                         >
                            {t('modal_btn_contact')}

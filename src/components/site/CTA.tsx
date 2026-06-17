@@ -61,14 +61,13 @@ export function Footer() {
         <div className="flex flex-col items-center sm:items-start gap-2">
           <p className="text-xs text-muted-foreground">{t('footer_copy')}</p>
           <p className="text-[10px] text-muted-foreground/60">
-            Support: support@namadhij.ai | WhatsApp: +965 9880 8547
+            Support: namadhejai@proton.me | WhatsApp: +965 9880 8547
           </p>
         </div>
         <div className="flex flex-wrap justify-center gap-5 text-xs text-muted-foreground">
           <Link to="/privacy" className="hover:text-foreground">{t('footer_privacy')}</Link>
           <Link to="/terms" className="hover:text-foreground">{t('footer_terms')}</Link>
           <Link to="/refund" className="hover:text-foreground">{t('refund_title')}</Link>
-          <a href="https://twitter.com" target="_blank" rel="noreferrer" className="hover:text-foreground">{t('footer_twitter')}</a>
         </div>
       </div>
     </footer>
