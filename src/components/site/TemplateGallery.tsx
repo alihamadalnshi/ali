@@ -152,7 +152,7 @@ fal.config({
 export function TemplateGallery() {
   const { t } = useTranslation();
   const { user } = useAuth();
-  const { usage, planKey, planName, generationLimit, refresh: refreshSubscription } = useSubscription();
+  const { plan, usage, planKey, planName, generationLimit, refresh: refreshSubscription } = useSubscription();
   const [active, setActive] = useState("All");
   const [selectedTemplate, setSelectedTemplate] = useState<string | null>(null);
   const [isProcessing, setIsProcessing] = useState(false);
@@ -177,6 +177,10 @@ export function TemplateGallery() {
 
   const nextUpgrade = getNextUpgrade(planKey);
   const nextPlan = nextUpgrade ? PLAN_CONFIG[nextUpgrade] : null;
+
+  const activeCurrency = (plan?.subscription?.currency?.toUpperCase() === 'KWD'
+    ? 'KWD'
+    : (localStorage.getItem("preferred_currency") as "USD" | "KWD") || "USD");
 
   useEffect(() => {
     const localCount = parseInt(localStorage.getItem("generation_count") || "0", 10);
@@ -606,7 +610,7 @@ Ultra realistic product photography.`,
                            const nextTierConfig = PLAN_CONFIG[nextUpgrade];
                            if (nextTierConfig && nextTierConfig.priceId) {
                              try {
-                               await openTapCheckout(nextTierConfig.priceId, user?.id || "", user?.email || "");
+                               await openTapCheckout(nextTierConfig.priceId, user?.id || "", user?.email || "", activeCurrency);
                              } catch (err: any) {
                                console.error("Checkout error:", err);
                                toast.error(err.message || "Failed to open checkout.");
@@ -617,7 +621,7 @@ Ultra realistic product photography.`,
                          }}
                          className="w-full py-3 rounded-full bg-accent-gradient text-primary-foreground font-semibold hover:opacity-95 transition-all shadow-glow flex items-center justify-center gap-2"
                        >
-                          {t('modal_btn_upgrade')} — {nextPlan.name} (${nextPlan.price}/{t('pricing_mo')})
+                          {t('modal_btn_upgrade')} — {nextPlan.name} ({activeCurrency === "KWD" ? `${nextPlan.prices.KWD} KWD` : `$${nextPlan.prices.USD}`}/{t('pricing_mo')})
                           <ArrowUpRight className="h-4 w-4" />
                        </button>
                      ) : (

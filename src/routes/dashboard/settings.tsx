@@ -126,6 +126,10 @@ function SettingsPage() {
   const nextUpgrade = getNextUpgrade(planKey);
   const nextPlan = nextUpgrade ? PLAN_CONFIG[nextUpgrade] : null;
 
+  const activeCurrency = (plan?.subscription?.currency?.toUpperCase() === 'KWD'
+    ? 'KWD'
+    : (localStorage.getItem("preferred_currency") as "USD" | "KWD") || "USD");
+
   const handleUpgrade = async () => {
     if (!nextPlan || !user) return;
     
@@ -137,7 +141,7 @@ function SettingsPage() {
         return;
       }
 
-      await openTapCheckout(nextTierConfig.priceId, user.id, user.email || "");
+      await openTapCheckout(nextTierConfig.priceId, user.id, user.email || "", activeCurrency);
     } catch (err: any) {
       console.error("Checkout error:", err);
       toast.error(err.message || "Failed to open checkout. Please try again.");
@@ -396,7 +400,11 @@ function SettingsPage() {
                         {t("settings_amount")}
                       </p>
                       <p className="text-xs font-medium text-foreground">
-                        ${(plan.subscription.amount / 100).toFixed(2)}/mo
+                        {plan.subscription.currency?.toUpperCase() === "KWD"
+                          ? i18n.language === "ar"
+                            ? `${(plan.subscription.amount / 1000).toFixed(3)} د.ك/شهر`
+                            : `${(plan.subscription.amount / 1000).toFixed(3)} KWD/mo`
+                          : `$${(plan.subscription.amount / 100).toFixed(2)}/mo`}
                       </p>
                     </div>
                   )}
@@ -429,9 +437,13 @@ function SettingsPage() {
                       {t("settings_upgrade_to")} {nextPlan.name}
                     </p>
                     <p className="text-xs text-muted-foreground">
-                      {t("settings_upgrade_desc")
-                        .replace("{limit}", String(nextPlan.limit))
-                        .replace("{price}", String(nextPlan.price))}
+                      {activeCurrency === "KWD"
+                        ? i18n.language === "ar"
+                          ? `احصل على ${nextPlan.limit} توليد مقابل ${nextPlan.prices.KWD} د.ك/شهر`
+                          : `Get ${nextPlan.limit} generations for ${nextPlan.prices.KWD} KWD/mo`
+                        : t("settings_upgrade_desc")
+                            .replace("{limit}", String(nextPlan.limit))
+                            .replace("{price}", String(nextPlan.prices.USD))}
                     </p>
                   </div>
                 </div>

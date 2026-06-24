@@ -6,6 +6,7 @@ export const PLAN_CONFIG = {
     name: "Free",
     limit: 5,
     price: 0,
+    prices: { USD: 0, KWD: 0 },
     priceId: "",
   },
   basic: {
@@ -13,6 +14,7 @@ export const PLAN_CONFIG = {
     name: "Basic",
     limit: 30,
     price: 9,
+    prices: { USD: 9, KWD: 3 },
     priceId: import.meta.env.VITE_TAP_PRICE_BASIC || "basic",
   },
   pro: {
@@ -20,6 +22,7 @@ export const PLAN_CONFIG = {
     name: "Pro",
     limit: 100,
     price: 19,
+    prices: { USD: 19, KWD: 6 },
     priceId: import.meta.env.VITE_TAP_PRICE_PRO || "pro",
   },
   business: {
@@ -27,6 +30,7 @@ export const PLAN_CONFIG = {
     name: "Business",
     limit: 300,
     price: 49,
+    prices: { USD: 49, KWD: 15 },
     priceId: import.meta.env.VITE_TAP_PRICE_BUSINESS || "business",
   },
 } as const;

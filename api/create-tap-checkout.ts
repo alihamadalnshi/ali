@@ -1,10 +1,17 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 import { createClient } from '@supabase/supabase-js';
 
-const PLAN_PRICES: Record<string, { price: number; name: string }> = {
-  basic: { price: 9, name: 'Basic' },
-  pro: { price: 19, name: 'Pro' },
-  business: { price: 49, name: 'Business' },
+const PLAN_PRICES: Record<string, Record<string, { price: number; name: string }>> = {
+  USD: {
+    basic: { price: 9, name: 'Basic' },
+    pro: { price: 19, name: 'Pro' },
+    business: { price: 49, name: 'Business' },
+  },
+  KWD: {
+    basic: { price: 3, name: 'Basic' },
+    pro: { price: 6, name: 'Pro' },
+    business: { price: 15, name: 'Business' },
+  },
 };
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
@@ -25,7 +32,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  const { priceId, userId, email } = req.body;
+  const { priceId, userId, email, currency = 'USD' } = req.body;
 
   if (!priceId || !userId || !email) {
     return res.status(400).json({ error: 'Missing required parameters (priceId, userId, email)' });
@@ -33,7 +40,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
   // Resolve plan pricing
   const planKey = priceId.toLowerCase();
-  const plan = PLAN_PRICES[planKey];
+  const selectedCurrency = (typeof currency === 'string' ? currency : 'USD').toUpperCase();
+  const currencyPrices = PLAN_PRICES[selectedCurrency] || PLAN_PRICES['USD'];
+  const plan = currencyPrices[planKey];
 
   if (!plan) {
     return res.status(400).json({ error: `Invalid priceId: ${priceId}` });
@@ -97,7 +106,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       },
       body: JSON.stringify({
         amount: plan.price,
-        currency: 'USD',
+        currency: selectedCurrency,
         threeDSecure: true,
         save_card: false,
         customer: {

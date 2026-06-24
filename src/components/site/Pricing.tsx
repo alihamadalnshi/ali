@@ -17,12 +17,20 @@ export function Pricing() {
   const navigate = useNavigate();
   const isRtl = i18n.language === "ar";
   const [loadingTier, setLoadingTier] = useState<string | null>(null);
+  const [selectedCurrency, setSelectedCurrency] = useState<"USD" | "KWD">(() => {
+    return (localStorage.getItem("preferred_currency") as "USD" | "KWD") || "USD";
+  });
+
+  const handleCurrencyChange = (curr: "USD" | "KWD") => {
+    setSelectedCurrency(curr);
+    localStorage.setItem("preferred_currency", curr);
+  };
 
   const tiers = [
     {
       id: "basic" as const,
       name: t("pricing_tier_basic"),
-      price: 9,
+      price: PLAN_CONFIG.basic.prices[selectedCurrency],
       featured: false,
       imagesKey: "pricing_feature_images_30",
       productId: PLAN_CONFIG.basic.id,
@@ -33,7 +41,7 @@ export function Pricing() {
     {
       id: "pro" as const,
       name: t("pricing_tier_pro"),
-      price: 19,
+      price: PLAN_CONFIG.pro.prices[selectedCurrency],
       featured: true,
       imagesKey: "pricing_feature_images_100",
       productId: PLAN_CONFIG.pro.id,
@@ -44,7 +52,7 @@ export function Pricing() {
     {
       id: "business" as const,
       name: t("pricing_tier_business"),
-      price: 49,
+      price: PLAN_CONFIG.business.prices[selectedCurrency],
       featured: false,
       imagesKey: "pricing_feature_images_300",
       productId: PLAN_CONFIG.business.id,
@@ -69,7 +77,7 @@ export function Pricing() {
         return;
       }
 
-      await openTapCheckout(tierConfig.priceId, user.id, user.email || "");
+      await openTapCheckout(tierConfig.priceId, user.id, user.email || "", selectedCurrency);
     } catch (err: any) {
       console.error("Checkout error:", err);
       toast.error(err.message || "Failed to open checkout. Please try again.");
@@ -101,7 +109,33 @@ export function Pricing() {
           description={t("pricing_desc")}
         />
 
-        <div className="mt-20 grid gap-8 md:grid-cols-3 items-stretch max-w-5xl mx-auto">
+        {/* Currency Switcher */}
+        <div className="mt-8 flex justify-center">
+          <div className="relative flex items-center p-0.5 rounded-xl bg-white/[0.03] border border-white/10 backdrop-blur-md">
+            <button
+              onClick={() => handleCurrencyChange("USD")}
+              className={`px-5 py-2 rounded-lg text-xs font-bold transition-all duration-200 ${
+                selectedCurrency === "USD"
+                  ? "bg-primary text-primary-foreground shadow-glow"
+                  : "text-muted-foreground hover:text-foreground"
+              }`}
+            >
+              USD ($)
+            </button>
+            <button
+              onClick={() => handleCurrencyChange("KWD")}
+              className={`px-5 py-2 rounded-lg text-xs font-bold transition-all duration-200 ${
+                selectedCurrency === "KWD"
+                  ? "bg-primary text-primary-foreground shadow-glow"
+                  : "text-muted-foreground hover:text-foreground"
+              }`}
+            >
+              KWD (د.ك)
+            </button>
+          </div>
+        </div>
+
+        <div className="mt-16 grid gap-8 md:grid-cols-3 items-stretch max-w-5xl mx-auto">
           {tiers.map((tItem, i) => (
             <motion.div
               key={tItem.id}
@@ -151,7 +185,11 @@ export function Pricing() {
                 {/* Price layout */}
                 <div className="mt-6 flex items-baseline gap-1">
                   <span className="text-6xl font-extrabold tracking-tight text-gradient">
-                    ${tItem.price}
+                    {selectedCurrency === "KWD"
+                      ? isRtl
+                        ? `${tItem.price} د.ك`
+                        : `${tItem.price} KWD`
+                      : `$${tItem.price}`}
                   </span>
                   <span className="text-sm text-muted-foreground font-medium">
                     /{t("pricing_mo")}

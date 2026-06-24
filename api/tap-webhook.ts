@@ -113,8 +113,10 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       current_period_start: now.toISOString(),
       current_period_end: expiryDate.toISOString(),
       cancel_at_period_end: false,
-      amount: charge.amount ? Math.round(charge.amount * 100) : null, // Convert to cents
-      currency: charge.currency || 'USD',
+      amount: charge.amount
+        ? Math.round(charge.amount * (charge.currency?.toUpperCase() === 'KWD' ? 1000 : 100))
+        : null,
+      currency: charge.currency ? charge.currency.toUpperCase() : 'USD',
       recurring_interval: 'month',
       updated_at: now.toISOString(),
       created_at: now.toISOString(),

@@ -62,6 +62,7 @@ function DashboardHome() {
   const [generationCount, setGenerationCount] = useState(0);
 
   const {
+    plan,
     planName,
     planKey,
     generationLimit,
@@ -122,7 +123,11 @@ function DashboardHome() {
         return;
       }
 
-      await openTapCheckout(nextTierConfig.priceId, user.id, user.email || "");
+      const activeCurrency = (plan?.subscription?.currency?.toUpperCase() === 'KWD'
+        ? 'KWD'
+        : (localStorage.getItem("preferred_currency") as "USD" | "KWD") || "USD");
+
+      await openTapCheckout(nextTierConfig.priceId, user.id, user.email || "", activeCurrency);
     } catch (err: any) {
       console.error("Checkout error:", err);
       toast.error(err.message || "Failed to open checkout. Please try again.");

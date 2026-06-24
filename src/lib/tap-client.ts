@@ -12,7 +12,7 @@ import { toast } from "sonner";
  * @param userId - Your internal user ID (passed to metadata for webhook linking)
  * @param email - User's email
  */
-export async function openTapCheckout(priceId: string, userId: string, email: string): Promise<void> {
+export async function openTapCheckout(priceId: string, userId: string, email: string, currency: string = "USD"): Promise<void> {
   const toastId = "tap-checkout-toast";
   toast.loading(
     document.documentElement.lang === "ar" 
@@ -31,6 +31,7 @@ export async function openTapCheckout(priceId: string, userId: string, email: st
         priceId,
         userId,
         email,
+        currency,
       }),
     });
 
