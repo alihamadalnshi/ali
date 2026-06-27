@@ -51,7 +51,7 @@ Object.entries(templateThumbModules).forEach(([path, module]: [string, any]) => 
   }
 });
 
-// Dynamic import for templates s2 (0-50)
+// Dynamic import for templates s2 (0-88)
 const s2Modules = import.meta.glob("../../assets/template/s2/*.webp", { eager: true });
 const s2ThumbModules = import.meta.glob("../../assets/template/s2/thumbs/*.webp", { eager: true });
 
@@ -62,7 +62,7 @@ Object.entries(s2Modules).forEach(([path, module]: [string, any]) => {
   const match = path.match(/\/(\d+)\.webp$/);
   if (match) {
     const num = parseInt(match[1]);
-    if (num >= 0 && num <= 50) {
+    if (num >= 0 && num <= 88) {
       const id = `s2-${num}`;
       s2ImageMap[id] = module.default || module;
     }
@@ -73,7 +73,7 @@ Object.entries(s2ThumbModules).forEach(([path, module]: [string, any]) => {
   const match = path.match(/\/(\d+)\.webp$/);
   if (match) {
     const num = parseInt(match[1]);
-    if (num >= 0 && num <= 50) {
+    if (num >= 0 && num <= 88) {
       const id = `s2-${num}`;
       s2ThumbMap[id] = module.default || module;
     }

@@ -1,0 +1,24 @@
+Image 1 is the template, Image 2 is the product.
+Top View
+The product in the center is lying down.
+"A front-facing, eye-level shot of the product from 74.png placed perfectly upright and straight on a flat ground surface, avoiding any tilt or angle."
+background : * **Arrangement:** A large, square, gray stone that fills the entire image.
+* **Texture and Color:** The cube has a rough, matte texture and a charcoal gray color.
+
+**Background:** **Background and Lighting:** A  light extends straight from the top left to the bottom right, illuminating the product. The rest of the background is dark.
+
+The photo was taken from a distance.
+
+Product upright.
+
+
+Important:
+1. Preserve all printing and design details on the product.
+2. Ultra-realistic cinematic lighting, shadows, and reflections.
+3. Maintain the product's realistic and luxurious aesthetic.
+4. The final image must be 100% realistic, ultra-high-resolution, and 8K quality, with all text on the
+product fully preserved.
+This ultra-realistic luxury product image captures the product exactly as it appears, with meticulous
+attention to detail. Do not alter any details whatsoever: preserve the shape, proportions, structure,
+materials, surface texture, color tones, printed logo, Arabic and English text, internal contents, product
+design, and every visible detail exactly as in the product image. Maintain the original product color
