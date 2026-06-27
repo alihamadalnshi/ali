@@ -1,4 +1,3 @@
-
 export const templatePrompts: Record<string, string> = {
   "template-1": `4. Base and Surface
 Platform: The product stands on a circular, polished, dark stone platform (possibly obsidianor dark marble)
@@ -2160,6 +2159,921 @@ Below, calm blue water is visible, clearly reflecting the product, wood, and san
 
 The photograph was taken from a distance.
 
+
+Important:
+1. Preserve all printing and design details on the product.
+2. Ultra-realistic cinematic lighting, shadows, and reflections.
+3. Maintain the product's realistic and luxurious aesthetic.
+4. The final image must be 100% realistic, ultra-high-resolution, and 8K quality, with all text on the
+product fully preserved.
+This ultra-realistic luxury product image captures the product exactly as it appears, with meticulous
+attention to detail. Do not alter any details whatsoever: preserve the shape, proportions, structure,
+materials, surface texture, color tones, printed logo, Arabic and English text, internal contents, product
+design, and every visible detail exactly as in the product image. Maintain the original product color`,
+
+  "s2-51": `Image 1 is the template, Image 2 is the product.
+
+
+The product is displayed inside a real classic car that matches its design.
+
+### **Location:**
+
+* **Interior:** The product is placed on the center console of a classic car with a black interior and camel-colored leather seats.
+
+
+Important:
+1. Preserve all printing and design details on the product.
+2. Ultra-realistic cinematic lighting, shadows, and reflections.
+3. Maintain the product's realistic and luxurious aesthetic.
+4. The final image must be 100% realistic, ultra-high-resolution, and 8K quality, with all text on the
+product fully preserved.
+This ultra-realistic luxury product image captures the product exactly as it appears, with meticulous
+attention to detail. Do not alter any details whatsoever: preserve the shape, proportions, structure,
+materials, surface texture, color tones, printed logo, Arabic and English text, internal contents, product
+design, and every visible detail exactly as in the product image. Maintain the original product color`,
+
+  "s2-52": `Image 1 is the template, Image 2 is the product.
+
+
+Low shot to showcase the product in a Hero View format
+Extremely low shot
+Very close-up shot of the product
+* **Location**: The product is placed on top of the steering wheel.
+
+Only the top of the steering wheel is visible.
+
+* **Background and Lighting**: The background shows a clear, dry blue sky visible through the windshield, suggesting a daytime outdoor setting. The lighting is natural, casting soft shadows on the product.
+
+The car is a true classic, perfectly complementing its design.
+
+It has a black interior.
+
+The sky completely covers the upper part of the image.
+
+
+Important:
+1. Preserve all printing and design details on the product.
+2. Ultra-realistic cinematic lighting, shadows, and reflections.
+3. Maintain the product's realistic and luxurious aesthetic.
+4. The final image must be 100% realistic, ultra-high-resolution, and 8K quality, with all text on the
+product fully preserved.
+This ultra-realistic luxury product image captures the product exactly as it appears, with meticulous
+attention to detail. Do not alter any details whatsoever: preserve the shape, proportions, structure,
+materials, surface texture, color tones, printed logo, Arabic and English text, internal contents, product
+design, and every visible detail exactly as in the product image. Maintain the original product color`,
+
+  "s2-53": `Image 1 is the template, Image 2 is the product.
+
+* **Place**: The product is placed on the left rear seat of a classic car.
+
+The car has camel-colored leather seats with vertical stitching.
+
+The product is placed upright in the center of the seat so that the seat back is the only background.
+
+A shot taken directly in front of it.
+
+* **Background and Lighting**: The lighting creates an attractive shadow pattern that includes part of the background, the entire product, and the rest of the image in darkness, suggesting sunlight filtering through a window.
+
+Light and Shadow: The striking "curtain" effect—likely caused by light filtering through metal curtains outside the screen—casts symmetrical horizontal lines of light and shadow in a square pattern.
+
+
+Important:
+1. Preserve all printing and design details on the product.
+2. Ultra-realistic cinematic lighting, shadows, and reflections.
+3. Maintain the product's realistic and luxurious aesthetic.
+4. The final image must be 100% realistic, ultra-high-resolution, and 8K quality, with all text on the
+product fully preserved.
+This ultra-realistic luxury product image captures the product exactly as it appears, with meticulous
+attention to detail. Do not alter any details whatsoever: preserve the shape, proportions, structure,
+materials, surface texture, color tones, printed logo, Arabic and English text, internal contents, product
+design, and every visible detail exactly as in the product image. Maintain the original product color`,
+
+  "s2-54": `Image 1 is the template, Image 2 is the product.
+
+
+The product is positioned on the edge of the car window, appearing as a dark shadow against the illuminated interior.
+
+* **Hand**: A straight hand extends from the right side of the frame to reach for the product, appearing as a dark shadow against the light.
+
+* **Background**: The photograph was taken from outside the car, through the open window. The background visible through the glass is the well-lit, camel-colored leather interior, creating a warm contrast with the dark shadows of the product and the hand.
+
+* **Composition and Lighting**: The lighting creates a high-contrast effect, highlighting the shape of the product and the hand against the bright interior. The frame uses the dark edges of the car door and window frame to draw attention to the main subject.
+
+The car is classic. The leather seats have vertical stitching.
+
+
+
+
+
+Important:
+1. Preserve all printing and design details on the product.
+2. Ultra-realistic cinematic lighting, shadows, and reflections.
+3. Maintain the product's realistic and luxurious aesthetic.
+4. The final image must be 100% realistic, ultra-high-resolution, and 8K quality, with all text on the
+product fully preserved.
+This ultra-realistic luxury product image captures the product exactly as it appears, with meticulous
+attention to detail. Do not alter any details whatsoever: preserve the shape, proportions, structure,
+materials, surface texture, color tones, printed logo, Arabic and English text, internal contents, product
+design, and every visible detail exactly as in the product image. Maintain the original product color`,
+
+  "s2-55": `Image 1 is the template, Image 2 is the product.
+
+
+Top-down image.
+
+The product is lying flat in the center of the image.
+
+* **Background:** The bottle is positioned directly above the gearshift of a car with a wooden center console and leather seats on either side.
+
+* **Interior Details:** The background includes an instrument panel with an analog clock, classic climate control buttons, seat belts, and a black handbrake lever at the bottom center.
+
+The product is displayed inside a real classic car that matches its design.
+
+It features a black interior and camel-colored leather seats with vertical stitching.
+
+
+
+
+
+Important:
+1. Preserve all printing and design details on the product.
+2. Ultra-realistic cinematic lighting, shadows, and reflections.
+3. Maintain the product's realistic and luxurious aesthetic.
+4. The final image must be 100% realistic, ultra-high-resolution, and 8K quality, with all text on the
+product fully preserved.
+This ultra-realistic luxury product image captures the product exactly as it appears, with meticulous
+attention to detail. Do not alter any details whatsoever: preserve the shape, proportions, structure,
+materials, surface texture, color tones, printed logo, Arabic and English text, internal contents, product
+design, and every visible detail exactly as in the product image. Maintain the original product color`,
+
+  "s2-56": `Image 1 is the template, Image 2 is the product.
+
+
+**Surface**: The product rests on the edge of a white leather-upholstered surface, reminiscent of luxurious furniture such as a Chesterfield sofa. The upholstery provides an elegant base and a distinctive texture. The sofa is in a vertical position.
+
+The product is positioned at the highest point of the sofa.
+
+The image was captured from a very low and close angle using HeroView.
+
+Only the top of the sofa is visible.
+
+**Lighting and Background**: The background is a black wall with a white natural light beam extending from the top left to the bottom right, illuminating part of the background; the rest remains dark. This lighting accentuates the product's form and creates a luxurious and inviting atmosphere.
+
+Important:
+1. Preserve all printing and design details on the product.
+2. Ultra-realistic cinematic lighting, shadows, and reflections.
+3. Maintain the product's realistic and luxurious aesthetic.
+4. The final image must be 100% realistic, ultra-high-resolution, and 8K quality, with all text on the
+product fully preserved.
+This ultra-realistic luxury product image captures the product exactly as it appears, with meticulous
+attention to detail. Do not alter any details whatsoever: preserve the shape, proportions, structure,
+materials, surface texture, color tones, printed logo, Arabic and English text, internal contents, product
+design, and every visible detail exactly as in the product image. Maintain the original product color`,
+
+  "s2-57": `Image 1 is the template, Image 2 is the product.
+Top View
+The product in the center is lying down.
+
+*Surface**: The product rests on a white leather upholstery, reminiscent of luxury furniture such as a Chesterfield sofa. The upholstery provides an elegant base and a distinctive texture.
+
+**Background:** **Background and Lighting:** A beam of white natural light extends straight from the top left to the bottom right, illuminating the product. The rest of the background is dark.
+
+The photo was taken from a distance.
+
+Product upright.
+
+
+
+
+
+Important:
+1. Preserve all printing and design details on the product.
+2. Ultra-realistic cinematic lighting, shadows, and reflections.
+3. Maintain the product's realistic and luxurious aesthetic.
+4. The final image must be 100% realistic, ultra-high-resolution, and 8K quality, with all text on the
+product fully preserved.
+This ultra-realistic luxury product image captures the product exactly as it appears, with meticulous
+attention to detail. Do not alter any details whatsoever: preserve the shape, proportions, structure,
+materials, surface texture, color tones, printed logo, Arabic and English text, internal contents, product
+design, and every visible detail exactly as in the product image. Maintain the original product color`,
+
+  "s2-58": `Image 1 is the template, Image 2 is the product.
+* **Base**: The product rests vertically on a large, floor-filling display of numerous spherical pearls of varying sizes in pink and white.
+
+The pearls form a mound, rising in the center.
+
+**Background**: * **Background and Lighting**: The background is smooth and even. The lighting is focused and inviting, casting soft shadows.**Surface**: The product rests on a white leather upholstery, reminiscent of luxury furniture such as a Chesterfield sofa. The upholstery provides an elegant base and a distinctive texture.
+
+The photograph was taken from a close distance.
+
+
+Important:
+1. Preserve all printing and design details on the product.
+2. Ultra-realistic cinematic lighting, shadows, and reflections.
+3. Maintain the product's realistic and luxurious aesthetic.
+4. The final image must be 100% realistic, ultra-high-resolution, and 8K quality, with all text on the
+product fully preserved.
+This ultra-realistic luxury product image captures the product exactly as it appears, with meticulous
+attention to detail. Do not alter any details whatsoever: preserve the shape, proportions, structure,
+materials, surface texture, color tones, printed logo, Arabic and English text, internal contents, product
+design, and every visible detail exactly as in the product image. Maintain the original product color`,
+
+  "s2-59": `Image 1 is the template, Image 2 is the product.
+front view
+The product in the center straight
+
+*Surface**: The product rests on a white leather upholstery, reminiscent of luxury furniture such as a Chesterfield sofa. The upholstery provides an elegant base and a distinctive texture.
+
+
+The photo was taken from a Close distance.
+
+Product upright.
+
+Behind the product, several copies of the same product are visible, each in a different position. The focus is on the front product, while the rest are blurred.
+
+Important:
+1. Preserve all printing and design details on the product.
+2. Ultra-realistic cinematic lighting, shadows, and reflections.
+3. Maintain the product's realistic and luxurious aesthetic.
+4. The final image must be 100% realistic, ultra-high-resolution, and 8K quality, with all text on the
+product fully preserved.
+This ultra-realistic luxury product image captures the product exactly as it appears, with meticulous
+attention to detail. Do not alter any details whatsoever: preserve the shape, proportions, structure,
+materials, surface texture, color tones, printed logo, Arabic and English text, internal contents, product
+design, and every visible detail exactly as in the product image. Maintain the original product color`,
+
+  "s2-60": `Image 1 is the template, Image 2 is the product.
+**Surface**: The product rests on the edge of a white leather-upholstered surface, reminiscent of luxurious furniture such as a Chesterfield sofa. The upholstery provides an elegant base and a distinctive texture. 
+
+The product is positioned at the highest point of the sofa.
+
+The photo was taken from a very low and distant angle.
+
+**Lighting and Background**: The background is a black wall with a white natural light beam extending from the top left to the bottom right, illuminating part of the background; the rest remains dark. This lighting accentuates the product's form and creates a luxurious and inviting atmosphere.
+
+
+
+Important:
+1. Preserve all printing and design details on the product.
+2. Ultra-realistic cinematic lighting, shadows, and reflections.
+3. Maintain the product's realistic and luxurious aesthetic.
+4. The final image must be 100% realistic, ultra-high-resolution, and 8K quality, with all text on the
+product fully preserved.
+This ultra-realistic luxury product image captures the product exactly as it appears, with meticulous
+attention to detail. Do not alter any details whatsoever: preserve the shape, proportions, structure,
+materials, surface texture, color tones, printed logo, Arabic and English text, internal contents, product
+design, and every visible detail exactly as in the product image. Maintain the original product color`,
+
+  "s2-61": `Image 1 is the template, Image 2 is the product.
+Product in the center,
+
+* **Person's hands:** The person is holding the product, wearing stylish, warm, light brown leather gloves. The leather appears smooth with visible stitching and natural creases, suggesting high quality.
+
+**Person's hands:** The person is holding the bottle, wearing stylish, warm, light brown leather gloves. * **Clothing:** The person is wearing a long, dark olive-colored coat. The coat has a distinct herringbone pattern, and a single brown button is visible on the left cuff of the frame.
+
+Close-up shot
+
+The coat fills the entire background.
+
+The person appears with his back partially to the camera. His hands are extended in front of him at waist level, one on top of the other in a calm and steady motion, and the producer gently holds hands while , making it the focus of the image.
+
+
+Important:
+1. Preserve all printing and design details on the product.
+2. Ultra-realistic cinematic lighting, shadows, and reflections.
+3. Maintain the product's realistic and luxurious aesthetic.
+4. The final image must be 100% realistic, ultra-high-resolution, and 8K quality, with all text on the
+product fully preserved.
+This ultra-realistic luxury product image captures the product exactly as it appears, with meticulous
+attention to detail. Do not alter any details whatsoever: preserve the shape, proportions, structure,
+materials, surface texture, color tones, printed logo, Arabic and English text, internal contents, product
+design, and every visible detail exactly as in the product image. Maintain the original product color`,
+
+  "s2-62": `Image 1 is the template, Image 2 is the product.
+The background is a plain, dark olive-colored surface. It is placed on the ground.
+
+The product is in the center, lying flat on the ground and facing the camera.
+
+The photo was taken from a distance.
+
+* **Lighting:** The light comes from the top left to the bottom right of the background, highlighting the product. The rest of the background is very dark.
+
+Important:
+1. Preserve all printing and design details on the product.
+2. Ultra-realistic cinematic lighting, shadows, and reflections.
+3. Maintain the product's realistic and luxurious aesthetic.
+4. The final image must be 100% realistic, ultra-high-resolution, and 8K quality, with all text on the
+product fully preserved.
+This ultra-realistic luxury product image captures the product exactly as it appears, with meticulous
+attention to detail. Do not alter any details whatsoever: preserve the shape, proportions, structure,
+materials, surface texture, color tones, printed logo, Arabic and English text, internal contents, product
+design, and every visible detail exactly as in the product image. Maintain the original product color`,
+
+  "s2-63": `Image 1 is the template, Image 2 is the product.
+* **Background**: The bottle is placed between two rectangular vertical slabs of polished dark green marble.
+
+The product is placed on a plain beige background, under soft, focused lighting that creates a deep and elegant atmosphere.
+
+
+
+Important:
+1. Preserve all printing and design details on the product.
+2. Ultra-realistic cinematic lighting, shadows, and reflections.
+3. Maintain the product's realistic and luxurious aesthetic.
+4. The final image must be 100% realistic, ultra-high-resolution, and 8K quality, with all text on the
+product fully preserved.
+This ultra-realistic luxury product image captures the product exactly as it appears, with meticulous
+attention to detail. Do not alter any details whatsoever: preserve the shape, proportions, structure,
+materials, surface texture, color tones, printed logo, Arabic and English text, internal contents, product
+design, and every visible detail exactly as in the product image. Maintain the original product color`,
+
+  "s2-64": `Image 1 is the template, Image 2 is the product.
+The bottle rests on a dark, matte, velvety oily surface, forming a solid base for the image.
+
+Behind the product is a softly lit, light oily background.
+
+The image was captured from a very low angle using a HeroView system.
+A slightly close-up shot.
+
+Important:
+1. Preserve all printing and design details on the product.
+2. Ultra-realistic cinematic lighting, shadows, and reflections.
+3. Maintain the product's realistic and luxurious aesthetic.
+4. The final image must be 100% realistic, ultra-high-resolution, and 8K quality, with all text on the
+product fully preserved.
+This ultra-realistic luxury product image captures the product exactly as it appears, with meticulous
+attention to detail. Do not alter any details whatsoever: preserve the shape, proportions, structure,
+materials, surface texture, color tones, printed logo, Arabic and English text, internal contents, product
+design, and every visible detail exactly as in the product image. Maintain the original product color`,
+
+  "s2-65": `Image 1 is the template, Image 2 is the product.
+The background is a plain, dark olive-colored surface placed on the floor.
+
+The product is in the center.
+Beneath the product is a luxurious green marble floor.
+
+
+Important:
+1. Preserve all printing and design details on the product.
+2. Ultra-realistic cinematic lighting, shadows, and reflections.
+3. Maintain the product's realistic and luxurious aesthetic.
+4. The final image must be 100% realistic, ultra-high-resolution, and 8K quality, with all text on the
+product fully preserved.
+This ultra-realistic luxury product image captures the product exactly as it appears, with meticulous
+attention to detail. Do not alter any details whatsoever: preserve the shape, proportions, structure,
+materials, surface texture, color tones, printed logo, Arabic and English text, internal contents, product
+design, and every visible detail exactly as in the product image. Maintain the original product color`,
+
+  "s2-66": `Image 1 is the template, Image 2 is the product.
+## **4. Surface and Background:**
+* **Background:** The product is placed on a traditional woven rug (similar to a Persian or Oriental design).
+* **Texture and Color:** The rug features intricate geometric patterns in red. The rug's fibers are clearly visible, lending the image a tangible sense of  cultural richness.
+
+
+### **6. Compositional Context:**
+* **Perspective:** Shot from a high angle, with the product lying flat on the floor.
+* **Quality:** The image features high focus and detail, in line with the professional product photography standards adhered to by the user.
+Top View
+
+The product in the center is lying down.
+
+The rug completely covers the floor.
+
+**Background:** **Background and Lighting:** A beam of light extends from the top left to the bottom right, illuminating the product. The rest of the background is dark.
+
+The photo was taken from a distance.
+
+
+
+
+Important:
+1. Preserve all printing and design details on the product.
+2. Ultra-realistic cinematic lighting, shadows, and reflections.
+3. Maintain the product's realistic and luxurious aesthetic.
+4. The final image must be 100% realistic, ultra-high-resolution, and 8K quality, with all text on the
+product fully preserved.
+This ultra-realistic luxury product image captures the product exactly as it appears, with meticulous
+attention to detail. Do not alter any details whatsoever: preserve the shape, proportions, structure,
+materials, surface texture, color tones, printed logo, Arabic and English text, internal contents, product
+design, and every visible detail exactly as in the product image. Maintain the original product color.`,
+
+  "s2-67": `Image 1 is the template, Image 2 is the product.
+* **Surface**: The bottle is placed on a surface.
+
+* **Background and Lighting**: The background is a plain, neutral-colored beige wall. The lighting is soft and directed, casting a distinctive, window-like shadow on the wall behind the product, adding depth to the scene.
+
+Background and base: The bottle is placed vertically on a traditional Persian or Oriental rug decorated with floral patterns in dark red, dark blue and cream.
+
+Important:
+1. Preserve all printing and design details on the product.
+2. Ultra-realistic cinematic lighting, shadows, and reflections.
+3. Maintain the product's realistic and luxurious aesthetic.
+4. The final image must be 100% realistic, ultra-high-resolution, and 8K quality, with all text on the
+product fully preserved.
+This ultra-realistic luxury product image captures the product exactly as it appears, with meticulous
+attention to detail. Do not alter any details whatsoever: preserve the shape, proportions, structure,
+materials, surface texture, color tones, printed logo, Arabic and English text, internal contents, product
+design, and every visible detail exactly as in the product image. Maintain the original product color.`,
+
+  "s2-68": `Image 1 is the template, Image 2 is the product.
+Aerial View
+
+**Hand:** A hand gripping the bottle tightly, palm facing upwards. The hand is wearing the sleeve of a white, Gulf-style garment. The hand extends from the left side of the image to the center.
+
+The hand appears to be positioned away from the background on the ground.
+
+Background and Base: The bottle rests vertically on a traditional Persian or Oriental rug decorated with floral patterns in dark red, dark blue, and cream.
+
+The photograph was taken from a slightly distant location.
+
+Background and base: The bottle is placed vertically on a traditional Persian or Oriental rug decorated with floral patterns in dark red, dark blue and cream.
+
+Important:
+1. Preserve all printing and design details on the product.
+2. Ultra-realistic cinematic lighting, shadows, and reflections.
+3. Maintain the product's realistic and luxurious aesthetic.
+4. The final image must be 100% realistic, ultra-high-resolution, and 8K quality, with all text on the
+product fully preserved.
+This ultra-realistic luxury product image captures the product exactly as it appears, with meticulous
+attention to detail. Do not alter any details whatsoever: preserve the shape, proportions, structure,
+materials, surface texture, color tones, printed logo, Arabic and English text, internal contents, product
+design, and every visible detail exactly as in the product image. Maintain the original product color.`,
+
+  "s2-69": `Image 1 is the template, Image 2 is the product.
+* **Base**: The product rests on a piece of : big black rock
+It is of average size compared to the product.
+
+Background:  Place the bottle on a traditional Persian or Oriental rug decorated with floral patterns in dark red, dark blue, and cream.
+
+
+* **Background and Lighting**:  The lighting is focused and attractive, casting soft shadows 
+
+The photo was taken from a little distance.
+
+
+Important:
+1. Preserve all printing and design details on the product.
+2. Ultra-realistic cinematic lighting, shadows, and reflections.
+3. Maintain the product's realistic and luxurious aesthetic.
+4. The final image must be 100% realistic, ultra-high-resolution, and 8K quality, with all text on the
+product fully preserved.
+This ultra-realistic luxury product image captures the product exactly as it appears, with meticulous
+attention to detail. Do not alter any details whatsoever: preserve the shape, proportions, structure,
+materials, surface texture, color tones, printed logo, Arabic and English text, internal contents, product
+design, and every visible detail exactly as in the product image. Maintain the original product color`,
+
+  "s2-70": `Image 1 is the template, Image 2 is the product.
+The photo was taken from a top-down perspective.
+
+The product consists of three identical items arranged in a triangle.
+
+A piece of: Black stone
+. Its size is average compared to the overall product.
+It is positioned horizontally a little way above the top item.
+
+The two items below are slightly separated.
+
+Background: Background: Place the bottle on a traditional Persian or Oriental rug decorated with floral patterns in dark red, dark blue, and cream.
+
+
+giving the image a natural and organic aesthetic.
+
+Background: **Background and Lighting**: The lighting is focused and attractive, casting soft shadows
+
+The photo was taken from a slightly distant location.
+
+The back ground completely covers the ground.
+
+
+Important:
+1. Preserve all printing and design details on the product.
+2. Ultra-realistic cinematic lighting, shadows, and reflections.
+3. Maintain the product's realistic and luxurious aesthetic.
+4. The final image must be 100% realistic, ultra-high-resolution, and 8K quality, with all text on the
+Product fully preserved.
+This ultra-realistic luxury product image captures the product exactly as it appears, with meticulous
+attention to detail. Do not alter any details whatsoever: preserve the shape, proportions, structure,
+Materials, surface texture, color tones, printed logo, Arabic and English text, internal contents, product
+design, and every visible detail exactly as in the product image. Maintain the original product colorinal product color.`,
+
+  "s2-71": `Image 1 is the template, Image 2 is the product.
+Top View
+The product in the center is lying down.
+
+background : * **Surface**: The bottle is placed on a smooth, plain white surface against a photographer's background.
+
+* **Lighting and Shadows**: The composition features natural light. This creates a strong, distinct shadow of the bottle on the surface from the right side.
+
+
+* **Lighting and Shadows**: The composition features natural light. This creates a strong, distinct shadow of the bottle on the surface from the left side.
+
+
+
+
+The photo was taken from a distance.
+
+Product upright.
+
+
+Important:
+1. Preserve all printing and design details on the product.
+2. Ultra-realistic cinematic lighting, shadows, and reflections.
+3. Maintain the product's realistic and luxurious aesthetic.
+4. The final image must be 100% realistic, ultra-high-resolution, and 8K quality, with all text on the
+product fully preserved.
+This ultra-realistic luxury product image captures the product exactly as it appears, with meticulous
+attention to detail. Do not alter any details whatsoever: preserve the shape, proportions, structure,
+materials, surface texture, color tones, printed logo, Arabic and English text, internal contents, product
+design, and every visible detail exactly as in the product image. Maintain the original product color`,
+
+  "s2-72": `Image 1 is the template, Image 2 is the product.
+Top View
+The product in the center is lying down.
+
+background : * **Surface**: The bottle is placed on a smooth, plain white surface against a photographer's background.
+
+* **Lighting and Shadows**: The composition features natural light. This creates a strong, distinct shadow of the bottle on the surface from the right side.
+
+**Background:** **Background and Lighting:** A beam of light extends straight from the top left to the bottom right, illuminating the product. The rest of the background is dark.
+
+The photo was taken from a distance.
+
+Product upright.
+
+
+Important:
+1. Preserve all printing and design details on the product.
+2. Ultra-realistic cinematic lighting, shadows, and reflections.
+3. Maintain the product's realistic and luxurious aesthetic.
+4. The final image must be 100% realistic, ultra-high-resolution, and 8K quality, with all text on the
+product fully preserved.
+This ultra-realistic luxury product image captures the product exactly as it appears, with meticulous
+attention to detail. Do not alter any details whatsoever: preserve the shape, proportions, structure,
+materials, surface texture, color tones, printed logo, Arabic and English text, internal contents, product
+design, and every visible detail exactly as in the product image. Maintain the original product color`,
+
+  "s2-73": `Image 1 is the template, Image 2 is the product.
+Top View
+
+**Hand:** A hand gripping the bottle tightly, palm facing upwards. The hand is wearing the sleeve of a white, Gulf-style thobe. The hand extends from the left side of the image to the center.
+Wear a watch that matches the product's color. The watch is worn correctly. Only the watch band is visible.
+
+The hand appears to be far from the  on the ground.
+A real man's hand
+
+A piece of  : A one huge, slightly dark gray rock
+on the ground
+
+ The background is a :  * **Surface**: The bottle is placed on a smooth, 
+plain white surface against a photographer's background.
+The background is white, while the background in the back is grayish-white.
+
+* **Lighting and Shadows**: The composition features natural light. This creates a strong, distinct shadow of the bottle on the surface from the right side.
+
+
+ The lighting is focused and attractive, casting soft shadows 
+
+The photograph was taken from a slightly distant location.
+
+
+
+Important:
+1. Preserve all printing and design details on the product.
+2. Ultra-realistic cinematic lighting, shadows, and reflections.
+3. Maintain the product's realistic and luxurious aesthetic.
+4. The final image must be 100% realistic, ultra-high-resolution, and 8K quality, with all text on the
+product fully preserved.
+This ultra-realistic luxury product image captures the product exactly as it appears, with meticulous
+attention to detail. Do not alter any details whatsoever: preserve the shape, proportions, structure,
+materials, surface texture, color tones, printed logo, Arabic and English text, internal contents, product
+design, and every visible detail exactly as in the product image. Maintain the original product color`,
+
+  "s2-74": `Image 1 is the template, Image 2 is the product.
+Product in the center
+Top view
+Product lying down The product is lying upright. Product resting on the cubes
+
+## **Geometric Shapes**
+
+* **Arrangement:** The product is surrounded by a series of rectangular, gray stone shapes of varying sizes, arranged in an abstract, overlapping, or graduated pattern.
+
+* **Texture and Color:** The cubes have a rough, matte texture and a charcoal gray color.
+
+### **Composition and Lighting:**
+
+* **Lighting:** The image is illuminated by strong, focused light from the upper left, producing sharp, striking shadows cast by both the product and the cubes against a pure, plain white background.
+
+* **Framing:** The composition is centered around the image, highlighting the architectural arrangement of the cubes.
+
+
+Important:
+
+1. All printing and design details on the product are preserved.
+
+2. Ultra-realistic cinematic lighting, shadows, and reflections.
+
+3. The product's realistic and luxurious aesthetic is maintained.
+
+4. The final image must be 100% realistic, ultra-high-resolution, and 8K, preserving all text on the product.
+
+The entire product is preserved.
+
+This ultra-realistic image of the luxury product accurately represents the product as seen, with meticulous attention to detail.
+
+No details are altered whatsoever: the shape, proportions, structure,
+
+materials, surface texture, color tones, printed logo, Arabic and English text, internal contents,
+
+product design, and all visible details are preserved exactly as in the product image. The original product color is maintained.`,
+
+  "s2-75": `Image 1 is the template, Image 2 is the product.
+Top View
+The product in the center is lying down.
+"A front-facing, eye-level shot of the product from 74.png placed perfectly upright and straight on a flat ground surface, avoiding any tilt or angle."
+background : * **Arrangement:** A large, square, gray stone that fills the entire image.
+* **Texture and Color:** The cube has a rough, matte texture and a charcoal gray color.
+
+**Background:** **Background and Lighting:** A  light extends straight from the top left to the bottom right, illuminating the product. The rest of the background is dark.
+
+The photo was taken from a distance.
+
+Product upright.
+
+
+Important:
+1. Preserve all printing and design details on the product.
+2. Ultra-realistic cinematic lighting, shadows, and reflections.
+3. Maintain the product's realistic and luxurious aesthetic.
+4. The final image must be 100% realistic, ultra-high-resolution, and 8K quality, with all text on the
+product fully preserved.
+This ultra-realistic luxury product image captures the product exactly as it appears, with meticulous
+attention to detail. Do not alter any details whatsoever: preserve the shape, proportions, structure,
+materials, surface texture, color tones, printed logo, Arabic and English text, internal contents, product
+design, and every visible detail exactly as in the product image. Maintain the original product color`,
+
+  "s2-76": `Image 1 is the template, Image 2 is the product.
+The image consists of two backgrounds. The back is gray. The bottom, which is the background, is white (both backgrounds are plain).
+
+The product is placed on a base: * **Arrangement:** A , square, gray stone 
+
+* **Texture and Color:** The cube has a rough, matte texture and a charcoal gray color.
+
+The front view shows the light coming from the left, so the product's shadow is on the right.
+
+The photo was taken from a distance.
+
+
+
+Important:
+1. Preserve all printing and design details on the product.
+2. Ultra-realistic cinematic lighting, shadows, and reflections.
+3. Maintain the product's realistic and luxurious aesthetic.
+4. The final image must be 100% realistic, ultra-high-resolution, and 8K quality, with all text on the
+product fully preserved.
+This ultra-realistic luxury product image captures the product exactly as it appears, with meticulous
+attention to detail. Do not alter any details whatsoever: preserve the shape, proportions, structure,
+materials, surface texture, color tones, printed logo, Arabic and English text, internal contents, product
+design, and every visible detail exactly as in the product image. Maintain the original product color`,
+
+  "s2-77": `Image 1 is the template, Image 2 is the product.
+Background: The bottle rests on the sharp edge of a white surface.
+
+Lighting: The background is a solid brown, professional-looking shot. The lighting is soft and focused, highlighting the metallic elements of the product and creating a sleek, professional look.
+
+A shot taken from far below, making the product appear large, luxurious, and heroic.
+
+A shot from the left.
+
+
+
+
+Important:
+1. Preserve all printing and design details on the product.
+2. Ultra-realistic cinematic lighting, shadows, and reflections.
+3. Maintain the product's realistic and luxurious aesthetic.
+4. The final image must be 100% realistic, ultra-high-resolution, and 8K quality, with all text on the
+product fully preserved.
+This ultra-realistic luxury product image captures the product exactly as it appears, with meticulous
+attention to detail. Do not alter any details whatsoever: preserve the shape, proportions, structure,
+materials, surface texture, color tones, printed logo, Arabic and English text, internal contents, product
+design, and every visible detail exactly as in the product image. Maintain the original product color`,
+
+  "s2-78": `Image 1 is the template, Image 2 is the product.
+The background consists of two contrasting surfaces separated by a horizontal line.
+
+**Top Section**: A uniformly colored surface, resembling brown fabric or paper.
+
+**Bottom Section**: A smooth, white surface with fine, light gray veining.
+
+**Composition**: The transition between the top and lighter bottom sections creates a sharp, clean horizontal line that forms the background of the perfume bottle.
+
+
+[Top view]
+The product  on the floor.
+Slightly distant shot.
+
+Important:
+1. Preserve all printing and design details on the product.
+2. Ultra-realistic cinematic lighting, shadows, and reflections.
+3. Maintain the product's realistic and luxurious aesthetic.
+4. The final image must be 100% realistic, ultra-high-resolution, and 8K quality, with all text on the
+product fully preserved.
+This ultra-realistic luxury product image captures the product exactly as it appears, with meticulous
+attention to detail. Do not alter any details whatsoever: preserve the shape, proportions, structure,
+materials, surface texture, color tones, printed logo, Arabic and English text, internal contents, product
+design, and every visible detail exactly as in the product image. Maintain the original product color`,
+
+  "s2-79": `Image 1 is the template, Image 2 is the product.
+Aerial View
+
+**Hand:** A hand black watch strap and  gripping the bottle tightly, palm facing upwards. The hand is wearing the sleeve of a white, Gulf-style garment. The hand extends from the left side of the image to the center.
+
+The hand appears to be positioned away from the background on the ground.
+
+Background and Base:  **Top Section**: A uniformly colored surface, brown 
+The photograph was taken from a slightly distant location.
+. The background is clear  , and 4K
+
+The photograph was taken from a slightly distant location.
+
+
+
+Important:
+1. Preserve all printing and design details on the product.
+2. Ultra-realistic cinematic lighting, shadows, and reflections.
+3. Maintain the product's realistic and luxurious aesthetic.
+4. The final image must be 100% realistic, ultra-high-resolution, and 8K quality, with all text on the
+product fully preserved.
+This ultra-realistic luxury product image captures the product exactly as it appears, with meticulous
+attention to detail. Do not alter any details whatsoever: preserve the shape, proportions, structure,
+materials, surface texture, color tones, printed logo, Arabic and English text, internal contents, product
+design, and every visible detail exactly as in the product image. Maintain the original product color`,
+
+  "s2-80": `Image 1 is the template, Image 2 is the product.
+
+High-angle top-down product photography background, fine textured desert sand surface. Featuring precise, deep concentric circular furrows carved into the sand, creating a stepped, multi-layered topography. Dramatic cinematic spotlighting from the top-left, intense chiaroscuro effect with sharp contrast between the sand ridges and troughs. Color palette of earthy deep browns and golden amber. Luxurious, mystical, and serene mood. Hyper-realistic, 8k resolution, commercial photography style, clean central negative space for product placement, soft volumetric lighting highlighting the grain and depth of the circular sand grooves
+
+
+Important:
+1. Preserve all printing and design details on the product.
+2. Ultra-realistic cinematic lighting, shadows, and reflections.
+3. Maintain the product's realistic and luxurious aesthetic.
+4. The final image must be 100% realistic, ultra-high-resolution, and 8K quality, with all text on the
+product fully preserved.
+This ultra-realistic luxury product image captures the product exactly as it appears, with meticulous
+attention to detail. Do not alter any details whatsoever: preserve the shape, proportions, structure,
+materials, surface texture, color tones, printed logo, Arabic and English text, internal contents, product
+design, and every visible detail exactly as in the product image. Maintain the original product color`,
+
+  "s2-81": `Image 1 is the template, Image 2 is the product.
+
+A high-quality cinematic image of a product resting on a piece of natural sandstone with a distinctive texture, black color, and naturally rough edges. The sandstone rests on a dark, glossy surface, reflecting a clear and harmonious image of the bottle and the stone. In the background, delicate curves in the sand or a soft color gradient create a sense of depth and tranquility. The lighting is warm, soft, and focused, highlighting the liquid inside the amber bottle and casting soft, subtle shadows. The color palette is monochromatic, dominated by earthy tones: warm beige, sandy gold, soft amber, and dark espresso shades. The composition is centered, angled from above to eye level. The overall atmosphere is simple, sophisticated, elegant, and serene. High resolution, photographic realism, 8K, studio lighting, advertising quality.
+
+
+
+
+Important:
+1. Preserve all printing and design details on the product.
+2. Ultra-realistic cinematic lighting, shadows, and reflections.
+3. Maintain the product's realistic and luxurious aesthetic.
+4. The final image must be 100% realistic, ultra-high-resolution, and 8K quality, with all text on the
+product fully preserved.
+This ultra-realistic luxury product image captures the product exactly as it appears, with meticulous
+attention to detail. Do not alter any details whatsoever: preserve the shape, proportions, structure,
+materials, surface texture, color tones, printed logo, Arabic and English text, internal contents, product
+design, and every visible detail exactly as in the product image. Maintain the original product color`,
+
+  "s2-82": `Image 1 is the template, Image 2 is the product.
+
+Close-up front view
+
+A professional photograph depicting a luxury product placed on a sandy base:
+
+The base features concentric circular ripples in the sand, creating a subtle sheen and deep, elegant shadows.
+
+The background is a plain, dark gold photographic , and a professional light source is positioned in the center behind the product.
+
+
+
+Important:
+1. Preserve all printing and design details on the product.
+2. Ultra-realistic cinematic lighting, shadows, and reflections.
+3. Maintain the product's realistic and luxurious aesthetic.
+4. The final image must be 100% realistic, ultra-high-resolution, and 8K quality, with all text on the
+product fully preserved.
+This ultra-realistic luxury product image captures the product exactly as it appears, with meticulous
+attention to detail. Do not alter any details whatsoever: preserve the shape, proportions, structure,
+materials, surface texture, color tones, printed logo, Arabic and English text, internal contents, product
+design, and every visible detail exactly as in the product image. Maintain the original product color`,
+
+  "s2-83": `Image 1 is the template, Image 2 is the product.
+
+
+Professional studio product photography. The product is mounted on a series of rectangular columns made of dark, rough concrete with a visible porous stone texture. Dark, cinematic lighting with a single overhead spotlight sharply highlights the product's edges while casting soft, deep shadows beneath the columns. The dark, monochromatic aesthetic is high-contrast, featuring deep shades of dark gray, charcoal, and black. The composition is simple, shot at eye level, with sharp focus on the product. The image is captured in 8K resolution, offering photographic realism, a sophisticated atmosphere, and a pure, dark gray background.
+
+
+
+
+Important:
+1. Preserve all printing and design details on the product.
+2. Ultra-realistic cinematic lighting, shadows, and reflections.
+3. Maintain the product's realistic and luxurious aesthetic.
+4. The final image must be 100% realistic, ultra-high-resolution, and 8K quality, with all text on the
+product fully preserved.
+This ultra-realistic luxury product image captures the product exactly as it appears, with meticulous
+attention to detail. Do not alter any details whatsoever: preserve the shape, proportions, structure,
+materials, surface texture, color tones, printed logo, Arabic and English text, internal contents, product
+design, and every visible detail exactly as in the product image. Maintain the original product color`,
+
+  "s2-84": `Image 1 is the template, Image 2 is the product.
+
+
+A sophisticated photograph of a luxury product, showing an elegant perfume bottle resting on a large base of raw, dark gray slate with a porous, cracked texture. A real man's hand, wearing an elegant watch, touches the bottle from above. In the background, a figure in a traditional Gulf thobe fills the frame. The lighting is dramatic and mysterious, with sharp highlights on the bottle's edges, high contrast, and deep shadows. A cinematic image, with meticulous focus on the product, in 8K resolution, professional studio quality, creating an atmosphere of luxury and mystery.
+
+
+
+
+Important:
+1. Preserve all printing and design details on the product.
+2. Ultra-realistic cinematic lighting, shadows, and reflections.
+3. Maintain the product's realistic and luxurious aesthetic.
+4. The final image must be 100% realistic, ultra-high-resolution, and 8K quality, with all text on the
+product fully preserved.
+This ultra-realistic luxury product image captures the product exactly as it appears, with meticulous
+attention to detail. Do not alter any details whatsoever: preserve the shape, proportions, structure,
+materials, surface texture, color tones, printed logo, Arabic and English text, internal contents, product
+design, and every visible detail exactly as in the product image. Maintain the original product color`,
+
+  "s2-85": `Image 1 is the template, Image 2 is the product.
+
+The scene was set from a top-down perspective. The base surface is a rough, charcoal-grey natural slate slab with a natural, rough edge. This slab is set against a smooth, matte, dark black background, creating a striking contrast. The light is soft and focused, casting gentle, subtle shadows. The atmosphere is luxurious and mysterious.
+
+
+
+Important:
+1. Preserve all printing and design details on the product.
+2. Ultra-realistic cinematic lighting, shadows, and reflections.
+3. Maintain the product's realistic and luxurious aesthetic.
+4. The final image must be 100% realistic, ultra-high-resolution, and 8K quality, with all text on the
+product fully preserved.
+This ultra-realistic luxury product image captures the product exactly as it appears, with meticulous
+attention to detail. Do not alter any details whatsoever: preserve the shape, proportions, structure,
+materials, surface texture, color tones, printed logo, Arabic and English text, internal contents, product
+design, and every visible detail exactly as in the product image. Maintain the original product color`,
+
+  "s2-86": `Image 1 is the template, Image 2 is the product.
+
+
+A high-quality, professional product photography studio backdrop features a wide, deep, dark blue-black body of water in the foreground, interspersed with intricate, undulating wave patterns. The water's cool hue creates a striking reflection and refraction, while the central background is a cool, bright, and perfectly clean white. To the right and left of the product are two large, rectangular panels in navy blue, filling the sides. The water's surface and the illuminated column create a seamless vertical visual connection. The overall lighting is dramatic and contrasting; the foreground water and the central panel are illuminated with a cool, clean light, while the surrounding area remains in shadow (a striking contrast of light and shadow). The perspective is a clean, centralized product presentation at eye level. The overall atmosphere is deep, luxurious, mysterious, natural, and opulent. The depth of field emphasizes the water in the foreground and the central panel, gradually fading into darkness.
+
+
+Important:
+1. Preserve all printing and design details on the product.
+2. Ultra-realistic cinematic lighting, shadows, and reflections.
+3. Maintain the product's realistic and luxurious aesthetic.
+4. The final image must be 100% realistic, ultra-high-resolution, and 8K quality, with all text on the
+product fully preserved.
+This ultra-realistic luxury product image captures the product exactly as it appears, with meticulous
+attention to detail. Do not alter any details whatsoever: preserve the shape, proportions, structure,
+materials, surface texture, color tones, printed logo, Arabic and English text, internal contents, product
+design, and every visible detail exactly as in the product image. Maintain the original product color`,
+
+  "s2-87": `Image 1 is the template, Image 2 is the product.
+
+
+The bottle was placed on a plain, reflective, dark blue professional-grade background, creating a perfect, mirror-like reflection of both the bottle and the cap.
+
+The background wall is made of smooth, dark blue plaster, giving it a delicate, elegant texture that absorbs light rather than reflecting it.
+
+Soft lighting
+Composition: The bottle is positioned vertically in the lower center of the frame, with a large empty space above it. The camera is positioned at eye level, and the reflection is also clearly visible on the surface, creating a symmetrical duality. There is no noise or distortion in the background.
+
+The backgrounds are very dark.
+
+The photo was taken from a very long distance away.
+
+
+Important:
+1. Preserve all printing and design details on the product.
+2. Ultra-realistic cinematic lighting, shadows, and reflections.
+3. Maintain the product's realistic and luxurious aesthetic.
+4. The final image must be 100% realistic, ultra-high-resolution, and 8K quality, with all text on the
+product fully preserved.
+This ultra-realistic luxury product image captures the product exactly as it appears, with meticulous
+attention to detail. Do not alter any details whatsoever: preserve the shape, proportions, structure,
+materials, surface texture, color tones, printed logo, Arabic and English text, internal contents, product
+design, and every visible detail exactly as in the product image. Maintain the original product color`,
+
+  "s2-88": `Image 1 is the template, Image 2 is the product.
+
+
+Subject: High-Resolution Professional Scene, Shot from a Top View (Flat Image)
+
+1. Material and Texture: The main background is a vast expanse of deep, dark blue water, punctuated by concentric, finely detailed, high-contrast circular ripple patterns that are strikingly distributed across the entire frame. These ripples should be sharply detailed and deep. The water's surface is wet and reflective. A smooth, matte white rectangular base, extending from the top edge to the bottom, divides the water vertically. The product is placed flat on this base.
+
+2. Lighting: Focused, dramatic studio lighting with cool tones. The main light source comes from a strong, overhead angle, precisely positioned to cast deep, intense shadows that define the crests and troughs of the water ripples (the effect of light contrast on water). This light illuminates the matte white surface, casting the product's shadow downwards.
+
+3. Composition: A precise and symmetrical top view. The composition is clean, balanced, and perfectly centered, with precise focus on the multi-layered, square object. The water ripples should be high-contrast and well-defined near the central object, then gradually fade as they recede into the dark background, maintaining the effect of shallow depth of field. The central square and the vertical base dominate the central axis.
 
 Important:
 1. Preserve all printing and design details on the product.
