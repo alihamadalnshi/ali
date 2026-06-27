@@ -2171,10 +2171,7 @@ attention to detail. Do not alter any details whatsoever: preserve the shape, pr
 materials, surface texture, color tones, printed logo, Arabic and English text, internal contents, product
 design, and every visible detail exactly as in the product image. Maintain the original product color`,
 
-  "s2-51": `Image 1 is the template, Image 2 is the product.
-
-
-The product is displayed inside a real classic car that matches its design.
+  "s2-51": `The product is displayed inside a real classic car that matches its design.
 
 ### **Location:**
 
@@ -2192,10 +2189,7 @@ attention to detail. Do not alter any details whatsoever: preserve the shape, pr
 materials, surface texture, color tones, printed logo, Arabic and English text, internal contents, product
 design, and every visible detail exactly as in the product image. Maintain the original product color`,
 
-  "s2-52": `Image 1 is the template, Image 2 is the product.
-
-
-Low shot to showcase the product in a Hero View format
+  "s2-52": `Low shot to showcase the product in a Hero View format
 Extremely low shot
 Very close-up shot of the product
 * **Location**: The product is placed on top of the steering wheel.
@@ -2222,9 +2216,7 @@ attention to detail. Do not alter any details whatsoever: preserve the shape, pr
 materials, surface texture, color tones, printed logo, Arabic and English text, internal contents, product
 design, and every visible detail exactly as in the product image. Maintain the original product color`,
 
-  "s2-53": `Image 1 is the template, Image 2 is the product.
-
-* **Place**: The product is placed on the left rear seat of a classic car.
+  "s2-53": `* **Place**: The product is placed on the left rear seat of a classic car.
 
 The car has camel-colored leather seats with vertical stitching.
 
@@ -2248,10 +2240,7 @@ attention to detail. Do not alter any details whatsoever: preserve the shape, pr
 materials, surface texture, color tones, printed logo, Arabic and English text, internal contents, product
 design, and every visible detail exactly as in the product image. Maintain the original product color`,
 
-  "s2-54": `Image 1 is the template, Image 2 is the product.
-
-
-The product is positioned on the edge of the car window, appearing as a dark shadow against the illuminated interior.
+  "s2-54": `The product is positioned on the edge of the car window, appearing as a dark shadow against the illuminated interior.
 
 * **Hand**: A straight hand extends from the right side of the frame to reach for the product, appearing as a dark shadow against the light.
 
@@ -2276,10 +2265,7 @@ attention to detail. Do not alter any details whatsoever: preserve the shape, pr
 materials, surface texture, color tones, printed logo, Arabic and English text, internal contents, product
 design, and every visible detail exactly as in the product image. Maintain the original product color`,
 
-  "s2-55": `Image 1 is the template, Image 2 is the product.
-
-
-Top-down image.
+  "s2-55": `Top-down image.
 
 The product is lying flat in the center of the image.
 
@@ -2306,10 +2292,7 @@ attention to detail. Do not alter any details whatsoever: preserve the shape, pr
 materials, surface texture, color tones, printed logo, Arabic and English text, internal contents, product
 design, and every visible detail exactly as in the product image. Maintain the original product color`,
 
-  "s2-56": `Image 1 is the template, Image 2 is the product.
-
-
-**Surface**: The product rests on the edge of a white leather-upholstered surface, reminiscent of luxurious furniture such as a Chesterfield sofa. The upholstery provides an elegant base and a distinctive texture. The sofa is in a vertical position.
+  "s2-56": `**Surface**: The product rests on the edge of a white leather-upholstered surface, reminiscent of luxurious furniture such as a Chesterfield sofa. The upholstery provides an elegant base and a distinctive texture. The sofa is in a vertical position.
 
 The product is positioned at the highest point of the sofa.
 
@@ -2330,8 +2313,7 @@ attention to detail. Do not alter any details whatsoever: preserve the shape, pr
 materials, surface texture, color tones, printed logo, Arabic and English text, internal contents, product
 design, and every visible detail exactly as in the product image. Maintain the original product color`,
 
-  "s2-57": `Image 1 is the template, Image 2 is the product.
-Top View
+  "s2-57": `Top View
 The product in the center is lying down.
 
 *Surface**: The product rests on a white leather upholstery, reminiscent of luxury furniture such as a Chesterfield sofa. The upholstery provides an elegant base and a distinctive texture.
@@ -2357,8 +2339,7 @@ attention to detail. Do not alter any details whatsoever: preserve the shape, pr
 materials, surface texture, color tones, printed logo, Arabic and English text, internal contents, product
 design, and every visible detail exactly as in the product image. Maintain the original product color`,
 
-  "s2-58": `Image 1 is the template, Image 2 is the product.
-* **Base**: The product rests vertically on a large, floor-filling display of numerous spherical pearls of varying sizes in pink and white.
+  "s2-58": `* **Base**: The product rests vertically on a large, floor-filling display of numerous spherical pearls of varying sizes in pink and white.
 
 The pearls form a mound, rising in the center.
 
@@ -2378,8 +2359,7 @@ attention to detail. Do not alter any details whatsoever: preserve the shape, pr
 materials, surface texture, color tones, printed logo, Arabic and English text, internal contents, product
 design, and every visible detail exactly as in the product image. Maintain the original product color`,
 
-  "s2-59": `Image 1 is the template, Image 2 is the product.
-front view
+  "s2-59": `front view
 The product in the center straight
 
 *Surface**: The product rests on a white leather upholstery, reminiscent of luxury furniture such as a Chesterfield sofa. The upholstery provides an elegant base and a distinctive texture.
@@ -2402,8 +2382,7 @@ attention to detail. Do not alter any details whatsoever: preserve the shape, pr
 materials, surface texture, color tones, printed logo, Arabic and English text, internal contents, product
 design, and every visible detail exactly as in the product image. Maintain the original product color`,
 
-  "s2-60": `Image 1 is the template, Image 2 is the product.
-**Surface**: The product rests on the edge of a white leather-upholstered surface, reminiscent of luxurious furniture such as a Chesterfield sofa. The upholstery provides an elegant base and a distinctive texture. 
+  "s2-60": `**Surface**: The product rests on the edge of a white leather-upholstered surface, reminiscent of luxurious furniture such as a Chesterfield sofa. The upholstery provides an elegant base and a distinctive texture. 
 
 The product is positioned at the highest point of the sofa.
 
@@ -2424,8 +2403,7 @@ attention to detail. Do not alter any details whatsoever: preserve the shape, pr
 materials, surface texture, color tones, printed logo, Arabic and English text, internal contents, product
 design, and every visible detail exactly as in the product image. Maintain the original product color`,
 
-  "s2-61": `Image 1 is the template, Image 2 is the product.
-Product in the center,
+  "s2-61": `Product in the center,
 
 * **Person's hands:** The person is holding the product, wearing stylish, warm, light brown leather gloves. The leather appears smooth with visible stitching and natural creases, suggesting high quality.
 
@@ -2449,8 +2427,7 @@ attention to detail. Do not alter any details whatsoever: preserve the shape, pr
 materials, surface texture, color tones, printed logo, Arabic and English text, internal contents, product
 design, and every visible detail exactly as in the product image. Maintain the original product color`,
 
-  "s2-62": `Image 1 is the template, Image 2 is the product.
-The background is a plain, dark olive-colored surface. It is placed on the ground.
+  "s2-62": `The background is a plain, dark olive-colored surface. It is placed on the ground.
 
 The product is in the center, lying flat on the ground and facing the camera.
 
@@ -2469,8 +2446,7 @@ attention to detail. Do not alter any details whatsoever: preserve the shape, pr
 materials, surface texture, color tones, printed logo, Arabic and English text, internal contents, product
 design, and every visible detail exactly as in the product image. Maintain the original product color`,
 
-  "s2-63": `Image 1 is the template, Image 2 is the product.
-* **Background**: The bottle is placed between two rectangular vertical slabs of polished dark green marble.
+  "s2-63": `* **Background**: The bottle is placed between two rectangular vertical slabs of polished dark green marble.
 
 The product is placed on a plain beige background, under soft, focused lighting that creates a deep and elegant atmosphere.
 
@@ -2487,8 +2463,7 @@ attention to detail. Do not alter any details whatsoever: preserve the shape, pr
 materials, surface texture, color tones, printed logo, Arabic and English text, internal contents, product
 design, and every visible detail exactly as in the product image. Maintain the original product color`,
 
-  "s2-64": `Image 1 is the template, Image 2 is the product.
-The bottle rests on a dark, matte, velvety oily surface, forming a solid base for the image.
+  "s2-64": `The bottle rests on a dark, matte, velvety oily surface, forming a solid base for the image.
 
 Behind the product is a softly lit, light oily background.
 
@@ -2506,8 +2481,7 @@ attention to detail. Do not alter any details whatsoever: preserve the shape, pr
 materials, surface texture, color tones, printed logo, Arabic and English text, internal contents, product
 design, and every visible detail exactly as in the product image. Maintain the original product color`,
 
-  "s2-65": `Image 1 is the template, Image 2 is the product.
-The background is a plain, dark olive-colored surface placed on the floor.
+  "s2-65": `The background is a plain, dark olive-colored surface placed on the floor.
 
 The product is in the center.
 Beneath the product is a luxurious green marble floor.
@@ -2524,8 +2498,7 @@ attention to detail. Do not alter any details whatsoever: preserve the shape, pr
 materials, surface texture, color tones, printed logo, Arabic and English text, internal contents, product
 design, and every visible detail exactly as in the product image. Maintain the original product color`,
 
-  "s2-66": `Image 1 is the template, Image 2 is the product.
-## **4. Surface and Background:**
+  "s2-66": `## **4. Surface and Background:**
 * **Background:** The product is placed on a traditional woven rug (similar to a Persian or Oriental design).
 * **Texture and Color:** The rug features intricate geometric patterns in red. The rug's fibers are clearly visible, lending the image a tangible sense of  cultural richness.
 
@@ -2557,8 +2530,7 @@ attention to detail. Do not alter any details whatsoever: preserve the shape, pr
 materials, surface texture, color tones, printed logo, Arabic and English text, internal contents, product
 design, and every visible detail exactly as in the product image. Maintain the original product color.`,
 
-  "s2-67": `Image 1 is the template, Image 2 is the product.
-* **Surface**: The bottle is placed on a surface.
+  "s2-67": `* **Surface**: The bottle is placed on a surface.
 
 * **Background and Lighting**: The background is a plain, neutral-colored beige wall. The lighting is soft and directed, casting a distinctive, window-like shadow on the wall behind the product, adding depth to the scene.
 
@@ -2575,8 +2547,7 @@ attention to detail. Do not alter any details whatsoever: preserve the shape, pr
 materials, surface texture, color tones, printed logo, Arabic and English text, internal contents, product
 design, and every visible detail exactly as in the product image. Maintain the original product color.`,
 
-  "s2-68": `Image 1 is the template, Image 2 is the product.
-Aerial View
+  "s2-68": `Aerial View
 
 **Hand:** A hand gripping the bottle tightly, palm facing upwards. The hand is wearing the sleeve of a white, Gulf-style garment. The hand extends from the left side of the image to the center.
 
@@ -2599,8 +2570,7 @@ attention to detail. Do not alter any details whatsoever: preserve the shape, pr
 materials, surface texture, color tones, printed logo, Arabic and English text, internal contents, product
 design, and every visible detail exactly as in the product image. Maintain the original product color.`,
 
-  "s2-69": `Image 1 is the template, Image 2 is the product.
-* **Base**: The product rests on a piece of : big black rock
+  "s2-69": `* **Base**: The product rests on a piece of : big black rock
 It is of average size compared to the product.
 
 Background:  Place the bottle on a traditional Persian or Oriental rug decorated with floral patterns in dark red, dark blue, and cream.
@@ -2622,8 +2592,7 @@ attention to detail. Do not alter any details whatsoever: preserve the shape, pr
 materials, surface texture, color tones, printed logo, Arabic and English text, internal contents, product
 design, and every visible detail exactly as in the product image. Maintain the original product color`,
 
-  "s2-70": `Image 1 is the template, Image 2 is the product.
-The photo was taken from a top-down perspective.
+  "s2-70": `The photo was taken from a top-down perspective.
 
 The product consists of three identical items arranged in a triangle.
 
@@ -2656,8 +2625,7 @@ attention to detail. Do not alter any details whatsoever: preserve the shape, pr
 Materials, surface texture, color tones, printed logo, Arabic and English text, internal contents, product
 design, and every visible detail exactly as in the product image. Maintain the original product colorinal product color.`,
 
-  "s2-71": `Image 1 is the template, Image 2 is the product.
-Top View
+  "s2-71": `Top View
 The product in the center is lying down.
 
 background : * **Surface**: The bottle is placed on a smooth, plain white surface against a photographer's background.
@@ -2686,8 +2654,7 @@ attention to detail. Do not alter any details whatsoever: preserve the shape, pr
 materials, surface texture, color tones, printed logo, Arabic and English text, internal contents, product
 design, and every visible detail exactly as in the product image. Maintain the original product color`,
 
-  "s2-72": `Image 1 is the template, Image 2 is the product.
-Top View
+  "s2-72": `Top View
 The product in the center is lying down.
 
 background : * **Surface**: The bottle is placed on a smooth, plain white surface against a photographer's background.
@@ -2712,8 +2679,7 @@ attention to detail. Do not alter any details whatsoever: preserve the shape, pr
 materials, surface texture, color tones, printed logo, Arabic and English text, internal contents, product
 design, and every visible detail exactly as in the product image. Maintain the original product color`,
 
-  "s2-73": `Image 1 is the template, Image 2 is the product.
-Top View
+  "s2-73": `Top View
 
 **Hand:** A hand gripping the bottle tightly, palm facing upwards. The hand is wearing the sleeve of a white, Gulf-style thobe. The hand extends from the left side of the image to the center.
 Wear a watch that matches the product's color. The watch is worn correctly. Only the watch band is visible.
@@ -2748,8 +2714,7 @@ attention to detail. Do not alter any details whatsoever: preserve the shape, pr
 materials, surface texture, color tones, printed logo, Arabic and English text, internal contents, product
 design, and every visible detail exactly as in the product image. Maintain the original product color`,
 
-  "s2-74": `Image 1 is the template, Image 2 is the product.
-Product in the center
+  "s2-74": `Product in the center
 Top view
 Product lying down The product is lying upright. Product resting on the cubes
 
@@ -2786,8 +2751,7 @@ materials, surface texture, color tones, printed logo, Arabic and English text, 
 
 product design, and all visible details are preserved exactly as in the product image. The original product color is maintained.`,
 
-  "s2-75": `Image 1 is the template, Image 2 is the product.
-Top View
+  "s2-75": `Top View
 The product in the center is lying down.
 "A front-facing, eye-level shot of the product from 74.png placed perfectly upright and straight on a flat ground surface, avoiding any tilt or angle."
 background : * **Arrangement:** A large, square, gray stone that fills the entire image.
@@ -2811,8 +2775,7 @@ attention to detail. Do not alter any details whatsoever: preserve the shape, pr
 materials, surface texture, color tones, printed logo, Arabic and English text, internal contents, product
 design, and every visible detail exactly as in the product image. Maintain the original product color`,
 
-  "s2-76": `Image 1 is the template, Image 2 is the product.
-The image consists of two backgrounds. The back is gray. The bottom, which is the background, is white (both backgrounds are plain).
+  "s2-76": `The image consists of two backgrounds. The back is gray. The bottom, which is the background, is white (both backgrounds are plain).
 
 The product is placed on a base: * **Arrangement:** A , square, gray stone 
 
@@ -2835,8 +2798,7 @@ attention to detail. Do not alter any details whatsoever: preserve the shape, pr
 materials, surface texture, color tones, printed logo, Arabic and English text, internal contents, product
 design, and every visible detail exactly as in the product image. Maintain the original product color`,
 
-  "s2-77": `Image 1 is the template, Image 2 is the product.
-Background: The bottle rests on the sharp edge of a white surface.
+  "s2-77": `Background: The bottle rests on the sharp edge of a white surface.
 
 Lighting: The background is a solid brown, professional-looking shot. The lighting is soft and focused, highlighting the metallic elements of the product and creating a sleek, professional look.
 
@@ -2858,8 +2820,7 @@ attention to detail. Do not alter any details whatsoever: preserve the shape, pr
 materials, surface texture, color tones, printed logo, Arabic and English text, internal contents, product
 design, and every visible detail exactly as in the product image. Maintain the original product color`,
 
-  "s2-78": `Image 1 is the template, Image 2 is the product.
-The background consists of two contrasting surfaces separated by a horizontal line.
+  "s2-78": `The background consists of two contrasting surfaces separated by a horizontal line.
 
 **Top Section**: A uniformly colored surface, resembling brown fabric or paper.
 
@@ -2883,8 +2844,7 @@ attention to detail. Do not alter any details whatsoever: preserve the shape, pr
 materials, surface texture, color tones, printed logo, Arabic and English text, internal contents, product
 design, and every visible detail exactly as in the product image. Maintain the original product color`,
 
-  "s2-79": `Image 1 is the template, Image 2 is the product.
-Aerial View
+  "s2-79": `Aerial View
 
 **Hand:** A hand black watch strap and  gripping the bottle tightly, palm facing upwards. The hand is wearing the sleeve of a white, Gulf-style garment. The hand extends from the left side of the image to the center.
 
@@ -2909,9 +2869,7 @@ attention to detail. Do not alter any details whatsoever: preserve the shape, pr
 materials, surface texture, color tones, printed logo, Arabic and English text, internal contents, product
 design, and every visible detail exactly as in the product image. Maintain the original product color`,
 
-  "s2-80": `Image 1 is the template, Image 2 is the product.
-
-High-angle top-down product photography background, fine textured desert sand surface. Featuring precise, deep concentric circular furrows carved into the sand, creating a stepped, multi-layered topography. Dramatic cinematic spotlighting from the top-left, intense chiaroscuro effect with sharp contrast between the sand ridges and troughs. Color palette of earthy deep browns and golden amber. Luxurious, mystical, and serene mood. Hyper-realistic, 8k resolution, commercial photography style, clean central negative space for product placement, soft volumetric lighting highlighting the grain and depth of the circular sand grooves
+  "s2-80": `High-angle top-down product photography background, fine textured desert sand surface. Featuring precise, deep concentric circular furrows carved into the sand, creating a stepped, multi-layered topography. Dramatic cinematic spotlighting from the top-left, intense chiaroscuro effect with sharp contrast between the sand ridges and troughs. Color palette of earthy deep browns and golden amber. Luxurious, mystical, and serene mood. Hyper-realistic, 8k resolution, commercial photography style, clean central negative space for product placement, soft volumetric lighting highlighting the grain and depth of the circular sand grooves
 
 
 Important:
@@ -2925,9 +2883,7 @@ attention to detail. Do not alter any details whatsoever: preserve the shape, pr
 materials, surface texture, color tones, printed logo, Arabic and English text, internal contents, product
 design, and every visible detail exactly as in the product image. Maintain the original product color`,
 
-  "s2-81": `Image 1 is the template, Image 2 is the product.
-
-A high-quality cinematic image of a product resting on a piece of natural sandstone with a distinctive texture, black color, and naturally rough edges. The sandstone rests on a dark, glossy surface, reflecting a clear and harmonious image of the bottle and the stone. In the background, delicate curves in the sand or a soft color gradient create a sense of depth and tranquility. The lighting is warm, soft, and focused, highlighting the liquid inside the amber bottle and casting soft, subtle shadows. The color palette is monochromatic, dominated by earthy tones: warm beige, sandy gold, soft amber, and dark espresso shades. The composition is centered, angled from above to eye level. The overall atmosphere is simple, sophisticated, elegant, and serene. High resolution, photographic realism, 8K, studio lighting, advertising quality.
+  "s2-81": `A high-quality cinematic image of a product resting on a piece of natural sandstone with a distinctive texture, black color, and naturally rough edges. The sandstone rests on a dark, glossy surface, reflecting a clear and harmonious image of the bottle and the stone. In the background, delicate curves in the sand or a soft color gradient create a sense of depth and tranquility. The lighting is warm, soft, and focused, highlighting the liquid inside the amber bottle and casting soft, subtle shadows. The color palette is monochromatic, dominated by earthy tones: warm beige, sandy gold, soft amber, and dark espresso shades. The composition is centered, angled from above to eye level. The overall atmosphere is simple, sophisticated, elegant, and serene. High resolution, photographic realism, 8K, studio lighting, advertising quality.
 
 
 
@@ -2943,9 +2899,7 @@ attention to detail. Do not alter any details whatsoever: preserve the shape, pr
 materials, surface texture, color tones, printed logo, Arabic and English text, internal contents, product
 design, and every visible detail exactly as in the product image. Maintain the original product color`,
 
-  "s2-82": `Image 1 is the template, Image 2 is the product.
-
-Close-up front view
+  "s2-82": `Close-up front view
 
 A professional photograph depicting a luxury product placed on a sandy base:
 
@@ -2966,10 +2920,7 @@ attention to detail. Do not alter any details whatsoever: preserve the shape, pr
 materials, surface texture, color tones, printed logo, Arabic and English text, internal contents, product
 design, and every visible detail exactly as in the product image. Maintain the original product color`,
 
-  "s2-83": `Image 1 is the template, Image 2 is the product.
-
-
-Professional studio product photography. The product is mounted on a series of rectangular columns made of dark, rough concrete with a visible porous stone texture. Dark, cinematic lighting with a single overhead spotlight sharply highlights the product's edges while casting soft, deep shadows beneath the columns. The dark, monochromatic aesthetic is high-contrast, featuring deep shades of dark gray, charcoal, and black. The composition is simple, shot at eye level, with sharp focus on the product. The image is captured in 8K resolution, offering photographic realism, a sophisticated atmosphere, and a pure, dark gray background.
+  "s2-83": `Professional studio product photography. The product is mounted on a series of rectangular columns made of dark, rough concrete with a visible porous stone texture. Dark, cinematic lighting with a single overhead spotlight sharply highlights the product's edges while casting soft, deep shadows beneath the columns. The dark, monochromatic aesthetic is high-contrast, featuring deep shades of dark gray, charcoal, and black. The composition is simple, shot at eye level, with sharp focus on the product. The image is captured in 8K resolution, offering photographic realism, a sophisticated atmosphere, and a pure, dark gray background.
 
 
 
@@ -2985,10 +2936,7 @@ attention to detail. Do not alter any details whatsoever: preserve the shape, pr
 materials, surface texture, color tones, printed logo, Arabic and English text, internal contents, product
 design, and every visible detail exactly as in the product image. Maintain the original product color`,
 
-  "s2-84": `Image 1 is the template, Image 2 is the product.
-
-
-A sophisticated photograph of a luxury product, showing an elegant perfume bottle resting on a large base of raw, dark gray slate with a porous, cracked texture. A real man's hand, wearing an elegant watch, touches the bottle from above. In the background, a figure in a traditional Gulf thobe fills the frame. The lighting is dramatic and mysterious, with sharp highlights on the bottle's edges, high contrast, and deep shadows. A cinematic image, with meticulous focus on the product, in 8K resolution, professional studio quality, creating an atmosphere of luxury and mystery.
+  "s2-84": `A sophisticated photograph of a luxury product, showing an elegant perfume bottle resting on a large base of raw, dark gray slate with a porous, cracked texture. A real man's hand, wearing an elegant watch, touches the bottle from above. In the background, a figure in a traditional Gulf thobe fills the frame. The lighting is dramatic and mysterious, with sharp highlights on the bottle's edges, high contrast, and deep shadows. A cinematic image, with meticulous focus on the product, in 8K resolution, professional studio quality, creating an atmosphere of luxury and mystery.
 
 
 
@@ -3004,9 +2952,7 @@ attention to detail. Do not alter any details whatsoever: preserve the shape, pr
 materials, surface texture, color tones, printed logo, Arabic and English text, internal contents, product
 design, and every visible detail exactly as in the product image. Maintain the original product color`,
 
-  "s2-85": `Image 1 is the template, Image 2 is the product.
-
-The scene was set from a top-down perspective. The base surface is a rough, charcoal-grey natural slate slab with a natural, rough edge. This slab is set against a smooth, matte, dark black background, creating a striking contrast. The light is soft and focused, casting gentle, subtle shadows. The atmosphere is luxurious and mysterious.
+  "s2-85": `The scene was set from a top-down perspective. The base surface is a rough, charcoal-grey natural slate slab with a natural, rough edge. This slab is set against a smooth, matte, dark black background, creating a striking contrast. The light is soft and focused, casting gentle, subtle shadows. The atmosphere is luxurious and mysterious.
 
 
 
@@ -3021,10 +2967,7 @@ attention to detail. Do not alter any details whatsoever: preserve the shape, pr
 materials, surface texture, color tones, printed logo, Arabic and English text, internal contents, product
 design, and every visible detail exactly as in the product image. Maintain the original product color`,
 
-  "s2-86": `Image 1 is the template, Image 2 is the product.
-
-
-A high-quality, professional product photography studio backdrop features a wide, deep, dark blue-black body of water in the foreground, interspersed with intricate, undulating wave patterns. The water's cool hue creates a striking reflection and refraction, while the central background is a cool, bright, and perfectly clean white. To the right and left of the product are two large, rectangular panels in navy blue, filling the sides. The water's surface and the illuminated column create a seamless vertical visual connection. The overall lighting is dramatic and contrasting; the foreground water and the central panel are illuminated with a cool, clean light, while the surrounding area remains in shadow (a striking contrast of light and shadow). The perspective is a clean, centralized product presentation at eye level. The overall atmosphere is deep, luxurious, mysterious, natural, and opulent. The depth of field emphasizes the water in the foreground and the central panel, gradually fading into darkness.
+  "s2-86": `A high-quality, professional product photography studio backdrop features a wide, deep, dark blue-black body of water in the foreground, interspersed with intricate, undulating wave patterns. The water's cool hue creates a striking reflection and refraction, while the central background is a cool, bright, and perfectly clean white. To the right and left of the product are two large, rectangular panels in navy blue, filling the sides. The water's surface and the illuminated column create a seamless vertical visual connection. The overall lighting is dramatic and contrasting; the foreground water and the central panel are illuminated with a cool, clean light, while the surrounding area remains in shadow (a striking contrast of light and shadow). The perspective is a clean, centralized product presentation at eye level. The overall atmosphere is deep, luxurious, mysterious, natural, and opulent. The depth of field emphasizes the water in the foreground and the central panel, gradually fading into darkness.
 
 
 Important:
@@ -3038,10 +2981,7 @@ attention to detail. Do not alter any details whatsoever: preserve the shape, pr
 materials, surface texture, color tones, printed logo, Arabic and English text, internal contents, product
 design, and every visible detail exactly as in the product image. Maintain the original product color`,
 
-  "s2-87": `Image 1 is the template, Image 2 is the product.
-
-
-The bottle was placed on a plain, reflective, dark blue professional-grade background, creating a perfect, mirror-like reflection of both the bottle and the cap.
+  "s2-87": `The bottle was placed on a plain, reflective, dark blue professional-grade background, creating a perfect, mirror-like reflection of both the bottle and the cap.
 
 The background wall is made of smooth, dark blue plaster, giving it a delicate, elegant texture that absorbs light rather than reflecting it.
 
@@ -3064,10 +3004,7 @@ attention to detail. Do not alter any details whatsoever: preserve the shape, pr
 materials, surface texture, color tones, printed logo, Arabic and English text, internal contents, product
 design, and every visible detail exactly as in the product image. Maintain the original product color`,
 
-  "s2-88": `Image 1 is the template, Image 2 is the product.
-
-
-Subject: High-Resolution Professional Scene, Shot from a Top View (Flat Image)
+  "s2-88": `Subject: High-Resolution Professional Scene, Shot from a Top View (Flat Image)
 
 1. Material and Texture: The main background is a vast expanse of deep, dark blue water, punctuated by concentric, finely detailed, high-contrast circular ripple patterns that are strikingly distributed across the entire frame. These ripples should be sharply detailed and deep. The water's surface is wet and reflective. A smooth, matte white rectangular base, extending from the top edge to the bottom, divides the water vertically. The product is placed flat on this base.
 

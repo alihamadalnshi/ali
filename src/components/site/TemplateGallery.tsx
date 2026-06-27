@@ -186,7 +186,7 @@ export function TemplateGallery() {
     const localCount = parseInt(localStorage.getItem("generation_count") || "0", 10);
     const sessionCount = parseInt(sessionStorage.getItem("generation_count") || "0", 10);
     const maxCount = Math.max(localCount, sessionCount);
-    
+
     setLocalGenerationCount(maxCount);
     toast.dismiss("gen-toast");
 
@@ -367,8 +367,8 @@ Ultra realistic product photography.`,
               remaining === 0
                 ? t('limit_reached')
                 : remaining === 1
-                ? t('limit_remaining_1')
-                : `${remaining}/${currentLimit} ${t('limit_remaining_n')}`;
+                  ? t('limit_remaining_1')
+                  : `${remaining}/${currentLimit} ${t('limit_remaining_n')}`;
             return (
               <div className={`px-4 py-1.5 rounded-full text-xs font-semibold backdrop-blur-md border flex items-center gap-2 ${remaining > 0 ? 'bg-primary/10 border-primary/20 text-primary shadow-[0_0_15px_var(--glow)]' : 'bg-destructive/10 border-destructive/20 text-destructive'}`}>
                 {remaining === 0 ? <Lock className="w-3.5 h-3.5" /> : <Sparkles className="w-3.5 h-3.5" />}
@@ -383,78 +383,79 @@ Ultra realistic product photography.`,
 
         <div className="relative">
           <div className="mt-12 grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
-          {visibleItems.map((it, i) => {
-            return (
-            <motion.div
-              key={it.id}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-50px" }}
-              transition={{ duration: 0.6, delay: i * 0.05 }}
-              onClick={() => setSelectedTemplate(selectedTemplate === it.id ? null : it.id)}
-              className={`group ring-border-gradient relative overflow-hidden rounded-2xl shadow-card cursor-pointer transition-all w-full aspect-[4/5] ${selectedTemplate === it.id ? 'ring-primary shadow-glow' : ''}`}
-            >
-              <img
-                src={it.thumb}
-                alt={it.title}
-                loading="lazy"
-                className={`absolute inset-0 h-full w-full object-cover transition-all duration-[900ms] ease-out ${selectedTemplate === it.id ? 'scale-110 opacity-30 blur-md grayscale' : 'group-hover:scale-110'}`}
-              />
+            {visibleItems.map((it, i) => {
+              return (
+                <motion.div
+                  key={it.id}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: "-50px" }}
+                  transition={{ duration: 0.6, delay: i * 0.05 }}
+                  onClick={() => setSelectedTemplate(selectedTemplate === it.id ? null : it.id)}
+                  className={`group ring-border-gradient relative overflow-hidden rounded-2xl shadow-card cursor-pointer transition-all w-full aspect-[4/5] ${selectedTemplate === it.id ? 'ring-primary shadow-glow' : ''}`}
+                >
+                  <img
+                    src={it.thumb}
+                    alt={it.title}
+                    loading="lazy"
+                    className={`absolute inset-0 h-full w-full object-cover transition-all duration-[900ms] ease-out ${selectedTemplate === it.id ? 'scale-110 opacity-30 blur-md grayscale' : 'group-hover:scale-110'}`}
+                  />
 
-              <AnimatePresence mode="wait">
-                {selectedTemplate === it.id ? (
-                  <motion.div
-                    key="upload-overlay"
-                    initial={{ opacity: 0, scale: 0.95 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    exit={{ opacity: 0, scale: 0.95 }}
-                    transition={{ duration: 0.3 }}
-                    onDrop={handleDrop}
-                    onDragOver={handleDragOver}
-                    onClick={handleUploadClick}
-                    className="absolute inset-0 flex flex-col items-center justify-center p-4 text-center z-10 hover:bg-background/70 bg-background/60 backdrop-blur-md transition-colors"
-                  >
-                    {isProcessing ? (
-                      <div className="flex flex-col items-center">
-                        <div className="flex h-14 w-14 items-center justify-center rounded-full bg-primary/20 text-primary shadow-[0_0_20px_var(--glow)] ring-1 ring-primary/40 mb-3">
-                          <Loader2 className="h-6 w-6 animate-spin" />
-                        </div>
-                        <p className="text-sm font-semibold text-foreground">{t('result_generating')}</p>
-                      </div>
+                  <AnimatePresence mode="wait">
+                    {selectedTemplate === it.id ? (
+                      <motion.div
+                        key="upload-overlay"
+                        initial={{ opacity: 0, scale: 0.95 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        exit={{ opacity: 0, scale: 0.95 }}
+                        transition={{ duration: 0.3 }}
+                        onDrop={handleDrop}
+                        onDragOver={handleDragOver}
+                        onClick={handleUploadClick}
+                        className="absolute inset-0 flex flex-col items-center justify-center p-4 text-center z-10 hover:bg-background/70 bg-background/60 backdrop-blur-md transition-colors"
+                      >
+                        {isProcessing ? (
+                          <div className="flex flex-col items-center">
+                            <div className="flex h-14 w-14 items-center justify-center rounded-full bg-primary/20 text-primary shadow-[0_0_20px_var(--glow)] ring-1 ring-primary/40 mb-3">
+                              <Loader2 className="h-6 w-6 animate-spin" />
+                            </div>
+                            <p className="text-sm font-semibold text-foreground">{t('result_generating')}</p>
+                          </div>
+                        ) : (
+                          <>
+                            <div className="flex h-14 w-14 items-center justify-center rounded-full bg-primary/20 text-primary shadow-[0_0_20px_var(--glow)] ring-1 ring-primary/40 mb-3 animate-pulse">
+                              <Upload className="h-6 w-6" />
+                            </div>
+                            <p className="text-sm font-semibold text-foreground">{t('gallery_upload_product')}</p>
+                            <p className="text-[11px] text-muted-foreground mt-1 max-w-[80%] leading-relaxed">{t('gallery_upload_desc')}</p>
+                            <button
+                              type="button"
+                              className="mt-4 rounded-full bg-primary px-5 py-2 text-xs font-semibold text-primary-foreground hover:bg-primary/90 transition-colors shadow-elegant"
+                            >
+                              {t('gallery_browse')}
+                            </button>
+                          </>
+                        )}
+                      </motion.div>
                     ) : (
-                      <>
-                        <div className="flex h-14 w-14 items-center justify-center rounded-full bg-primary/20 text-primary shadow-[0_0_20px_var(--glow)] ring-1 ring-primary/40 mb-3 animate-pulse">
-                          <Upload className="h-6 w-6" />
-                        </div>
-                        <p className="text-sm font-semibold text-foreground">{t('gallery_upload_product')}</p>
-                        <p className="text-[11px] text-muted-foreground mt-1 max-w-[80%] leading-relaxed">{t('gallery_upload_desc')}</p>
-                        <button
-                          type="button"
-                          className="mt-4 rounded-full bg-primary px-5 py-2 text-xs font-semibold text-primary-foreground hover:bg-primary/90 transition-colors shadow-elegant"
-                        >
-                          {t('gallery_browse')}
-                        </button>
-                      </>
+                      <motion.div
+                        key="info-overlay"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        className="absolute inset-0 z-10 pointer-events-none"
+                      >
+                        {/* Centered Select Button */}
+
+
+                        {/* Bottom Info */}
+
+                      </motion.div>
                     )}
-                  </motion.div>
-                ) : (
-                  <motion.div
-                    key="info-overlay"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    className="absolute inset-0 z-10 pointer-events-none"
-                  >
-                    {/* Centered Select Button */}
-
-
-                    {/* Bottom Info */}
-
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </motion.div>
-          )})}
+                  </AnimatePresence>
+                </motion.div>
+              )
+            })}
           </div>
 
           {/* Gradient Fade Overlay (when collapsed) */}
@@ -537,11 +538,10 @@ Ultra realistic product photography.`,
                           }
                         }}
                         disabled={isSaving || isSavedToHistory || !resultData.generationId}
-                        className={`flex h-12 w-12 items-center justify-center rounded-full transition-all duration-300 ${
-                          isSavedToHistory
+                        className={`flex h-12 w-12 items-center justify-center rounded-full transition-all duration-300 ${isSavedToHistory
                             ? 'bg-green-500 text-white shadow-[0_0_20px_rgba(34,197,94,0.4)]'
                             : 'bg-white/20 text-white backdrop-blur-md hover:bg-primary hover:shadow-glow hover:scale-105'
-                        } disabled:opacity-70`}
+                          } disabled:opacity-70`}
                         title={isSavedToHistory ? t('dash_saved') : t('gallery_save_to_history')}
                       >
                         {isSaving ? (
@@ -571,13 +571,13 @@ Ultra realistic product photography.`,
         {/* Limit Reached Modal */}
         <AnimatePresence>
           {showLimitModal && (
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               className="fixed inset-0 z-50 flex items-center justify-center bg-background/80 backdrop-blur-sm p-4"
             >
-              <motion.div 
+              <motion.div
                 initial={{ scale: 0.9, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
                 exit={{ scale: 0.9, opacity: 0 }}
@@ -586,7 +586,7 @@ Ultra realistic product photography.`,
                 <div className="absolute inset-0 bg-gradient-to-br from-primary/10 to-transparent pointer-events-none" />
                 <div className="relative z-10 flex flex-col items-center text-center">
                   <div className="w-16 h-16 rounded-2xl bg-destructive/10 text-destructive flex items-center justify-center mb-6 shadow-[0_0_30px_rgba(255,0,0,0.15)] ring-1 ring-destructive/30">
-                     <Lock className="w-8 h-8" />
+                    <Lock className="w-8 h-8" />
                   </div>
                   <h2 className="text-2xl font-bold mb-2">{t('modal_limit_headline')}</h2>
                   <p className="text-muted-foreground mb-8 leading-relaxed">
@@ -594,55 +594,55 @@ Ultra realistic product photography.`,
                     {planKey !== 'free' && ` (${planName} — ${currentLimit} ${t('limit_remaining_n')})`}
                   </p>
                   <div className="flex flex-col w-full gap-3">
-                     {!user ? (
-                       <Link
-                         to="/login"
-                         className="w-full py-3 rounded-full bg-accent-gradient text-primary-foreground font-semibold hover:opacity-95 transition-all shadow-glow flex items-center justify-center gap-2"
-                       >
-                          {t('nav_signin')}
-                          <LogIn className="h-4 w-4" />
-                       </Link>
-                     ) : nextPlan ? (
-                       <button
-                         type="button"
-                         onClick={async () => {
-                           if (!nextPlan || !nextUpgrade) return;
-                           const nextTierConfig = PLAN_CONFIG[nextUpgrade];
-                           if (nextTierConfig && nextTierConfig.priceId) {
-                             try {
-                               await openTapCheckout(nextTierConfig.priceId, user?.id || "", user?.email || "", activeCurrency);
-                             } catch (err: any) {
-                               console.error("Checkout error:", err);
-                               toast.error(err.message || "Failed to open checkout.");
-                             }
-                           } else {
-                             toast.error("Upgrade not available yet.");
-                           }
-                         }}
-                         className="w-full py-3 rounded-full bg-accent-gradient text-primary-foreground font-semibold hover:opacity-95 transition-all shadow-glow flex items-center justify-center gap-2"
-                       >
-                          {t('modal_btn_upgrade')} — {nextPlan.name} ({activeCurrency === "KWD" ? `${nextPlan.prices.KWD} KWD` : `$${nextPlan.prices.USD}`}/{t('pricing_mo')})
-                          <ArrowUpRight className="h-4 w-4" />
-                       </button>
-                     ) : (
-                       <button 
-                          type="button"
-                          onClick={() => window.open("mailto:namadhejai@proton.me", "_blank")}
-                          className="w-full py-3 rounded-full bg-primary text-primary-foreground font-semibold hover:bg-primary/90 transition-colors shadow-elegant"
-                        >
-                           {t('modal_btn_contact')}
-                        </button>
-                      )}
-                     <button 
-                       type="button"
-                       onClick={() => setShowLimitModal(false)}
-                       className="w-full py-3 rounded-full glass border border-white/10 font-semibold hover:bg-white/5 transition-colors"
-                     >
-                        {t('modal_btn_contact')}
-                     </button>
-                     <button onClick={() => window.location.reload()} className="text-xs text-muted-foreground hover:text-foreground mt-4 transition-colors">
-                        {t('modal_btn_refresh')}
+                    {!user ? (
+                      <Link
+                        to="/login"
+                        className="w-full py-3 rounded-full bg-accent-gradient text-primary-foreground font-semibold hover:opacity-95 transition-all shadow-glow flex items-center justify-center gap-2"
+                      >
+                        {t('nav_signin')}
+                        <LogIn className="h-4 w-4" />
+                      </Link>
+                    ) : nextPlan ? (
+                      <button
+                        type="button"
+                        onClick={async () => {
+                          if (!nextPlan || !nextUpgrade) return;
+                          const nextTierConfig = PLAN_CONFIG[nextUpgrade];
+                          if (nextTierConfig && nextTierConfig.priceId) {
+                            try {
+                              await openTapCheckout(nextTierConfig.priceId, user?.id || "", user?.email || "", activeCurrency);
+                            } catch (err: any) {
+                              console.error("Checkout error:", err);
+                              toast.error(err.message || "Failed to open checkout.");
+                            }
+                          } else {
+                            toast.error("Upgrade not available yet.");
+                          }
+                        }}
+                        className="w-full py-3 rounded-full bg-accent-gradient text-primary-foreground font-semibold hover:opacity-95 transition-all shadow-glow flex items-center justify-center gap-2"
+                      >
+                        {t('modal_btn_upgrade')} — {nextPlan.name} ({activeCurrency === "KWD" ? `${nextPlan.prices.KWD} KWD` : `$${nextPlan.prices.USD}`}/{t('pricing_mo')})
+                        <ArrowUpRight className="h-4 w-4" />
                       </button>
+                    ) : (
+                      <button
+                        type="button"
+                        onClick={() => window.open("mailto:namadhejai@proton.me", "_blank")}
+                        className="w-full py-3 rounded-full bg-primary text-primary-foreground font-semibold hover:bg-primary/90 transition-colors shadow-elegant"
+                      >
+                        {t('modal_btn_contact')}
+                      </button>
+                    )}
+                    <button
+                      type="button"
+                      onClick={() => setShowLimitModal(false)}
+                      className="w-full py-3 rounded-full glass border border-white/10 font-semibold hover:bg-white/5 transition-colors"
+                    >
+                      {t('modal_btn_contact')}
+                    </button>
+                    <button onClick={() => window.location.reload()} className="text-xs text-muted-foreground hover:text-foreground mt-4 transition-colors">
+                      {t('modal_btn_refresh')}
+                    </button>
                   </div>
                 </div>
               </motion.div>
