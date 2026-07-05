@@ -420,6 +420,16 @@ function SettingsPage() {
               )}
             </div>
 
+            {/* Non-recurring Subscription Note */}
+            {isSubscribed && (
+              <div className="text-xs text-amber-400/90 bg-white/[0.01] border border-white/5 rounded-xl p-3 flex items-start gap-2">
+                <AlertTriangle className="w-3.5 h-3.5 shrink-0 mt-0.5 text-amber-400" />
+                <p className="leading-relaxed text-[11px] text-muted-foreground">
+                  {t("settings_subscription_non_recurring_note")}
+                </p>
+              </div>
+            )}
+
             {/* Upgrade CTA */}
             {nextPlan && (
               <motion.button
