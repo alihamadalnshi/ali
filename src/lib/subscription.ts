@@ -110,11 +110,15 @@ export async function getUserPlan(): Promise<UserPlan> {
   const planKey = (planEntry?.[0] || "free") as PlanKey;
   const config = planEntry?.[1] || PLAN_CONFIG.free;
 
+  const isExpired = subscription.current_period_end
+    ? new Date(subscription.current_period_end) < new Date()
+    : false;
+
   return {
     planName: config.name,
     planKey,
-    generationLimit: config.limit,
-    isActive: ["active", "trialing"].includes(subscription.status),
+    generationLimit: isExpired ? 0 : config.limit,
+    isActive: !isExpired && ["active", "trialing"].includes(subscription.status),
     subscription,
   };
 }

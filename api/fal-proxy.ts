@@ -111,7 +111,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
           adminSupabase.from('profiles').select('generation_count').eq('id', userId).single(),
           adminSupabase
             .from('subscriptions')
-            .select('gateway_price_id, plan_name, status')
+            .select('gateway_price_id, plan_name, status, current_period_end')
             .eq('user_id', userId)
             .in('status', ['active', 'trialing'])
             .order('created_at', { ascending: false })
@@ -128,36 +128,47 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         let limit = 5; // Default free tier limit
 
         if (subRes.data) {
-          const priceId = subRes.data.gateway_price_id;
-          const planNameLower = subRes.data.plan_name?.toLowerCase() || '';
+          const isExpired = subRes.data.current_period_end
+            ? new Date(subRes.data.current_period_end) < new Date()
+            : false;
 
-          // Match Price IDs or plan names to configuration limits
-          if (
-            priceId === process.env.VITE_PADDLE_PRICE_BUSINESS || 
-            priceId === process.env.VITE_TAP_PRICE_BUSINESS ||
-            priceId === 'business' ||
-            planNameLower.includes('business')
-          ) {
-            limit = 300;
-          } else if (
-            priceId === process.env.VITE_PADDLE_PRICE_PRO || 
-            priceId === process.env.VITE_TAP_PRICE_PRO ||
-            priceId === 'pro' ||
-            planNameLower.includes('pro')
-          ) {
-            limit = 100;
-          } else if (
-            priceId === process.env.VITE_PADDLE_PRICE_BASIC || 
-            priceId === process.env.VITE_TAP_PRICE_BASIC ||
-            priceId === 'basic' ||
-            planNameLower.includes('basic')
-          ) {
-            limit = 30;
+          if (isExpired) {
+            limit = 0;
+          } else {
+            const priceId = subRes.data.gateway_price_id;
+            const planNameLower = subRes.data.plan_name?.toLowerCase() || '';
+
+            // Match Price IDs or plan names to configuration limits
+            if (
+              priceId === process.env.VITE_PADDLE_PRICE_BUSINESS || 
+              priceId === process.env.VITE_TAP_PRICE_BUSINESS ||
+              priceId === 'business' ||
+              planNameLower.includes('business')
+            ) {
+              limit = 300;
+            } else if (
+              priceId === process.env.VITE_PADDLE_PRICE_PRO || 
+              priceId === process.env.VITE_TAP_PRICE_PRO ||
+              priceId === 'pro' ||
+              planNameLower.includes('pro')
+            ) {
+              limit = 100;
+            } else if (
+              priceId === process.env.VITE_PADDLE_PRICE_BASIC || 
+              priceId === process.env.VITE_TAP_PRICE_BASIC ||
+              priceId === 'basic' ||
+              planNameLower.includes('basic')
+            ) {
+              limit = 30;
+            }
           }
         }
 
         if (used >= limit) {
-          return res.status(429).json({ error: 'Generation limit reached. Please upgrade your plan.' });
+          const errorMessage = limit === 0
+            ? 'Your subscription has expired. Please renew your subscription to continue generating images.'
+            : 'Generation limit reached. Please upgrade your plan.';
+          return res.status(429).json({ error: errorMessage });
         }
       } catch (err) {
         console.error('[fal-proxy] DB query failed during validation:', err);

@@ -130,6 +130,10 @@ function SettingsPage() {
     ? 'KWD'
     : (localStorage.getItem("preferred_currency") as "USD" | "KWD") || "USD");
 
+  const isExpired = plan?.subscription && plan.subscription.current_period_end
+    ? new Date(plan.subscription.current_period_end) < new Date()
+    : false;
+
   const handleUpgrade = async () => {
     if (!nextPlan || !user) return;
     
@@ -323,26 +327,42 @@ function SettingsPage() {
                 <div className="flex items-center gap-3">
                   <div>
                     <p className="text-sm font-semibold text-foreground flex items-center gap-2">
-                      {isSubscribed
-                        ? `${planName} ${t("settings_plan_label")}`
-                        : t("dash_settings_free_plan")}
-                      {isSubscribed && (
-                        <span
-                          className={`inline-flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full border ${getPlanColor()}`}
-                        >
-                          <CheckCircle2 className="w-3 h-3" />
-                          {t("dash_settings_active")}
-                        </span>
+                      {isExpired ? (
+                        <>
+                          {planName} {t("settings_plan_label")}
+                          <span className="inline-flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full border text-red-400 bg-red-400/10 border-red-400/20">
+                            <XCircle className="w-3 h-3 text-red-400" />
+                            {i18n.language === "ar" ? "منتهي" : "Expired"}
+                          </span>
+                        </>
+                      ) : isSubscribed ? (
+                        <>
+                          {planName} {t("settings_plan_label")}
+                          <span
+                            className={`inline-flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full border ${getPlanColor()}`}
+                          >
+                            <CheckCircle2 className="w-3 h-3" />
+                            {t("dash_settings_active")}
+                          </span>
+                        </>
+                      ) : (
+                        t("dash_settings_free_plan")
                       )}
                     </p>
                     <p className="text-xs text-muted-foreground mt-0.5">
-                      {isSubscribed
-                        ? `${t("settings_gen_limit")}: ${generationLimit} ${t("settings_per_period")}`
-                        : t("dash_settings_free_plan_desc")}
+                      {isExpired ? (
+                        i18n.language === "ar"
+                          ? "انتهت صلاحية اشتراكك. يرجى الترقية أو تجديد الاشتراك للمتابعة."
+                          : "Your subscription has expired. Please upgrade or renew to continue."
+                      ) : isSubscribed ? (
+                        `${t("settings_gen_limit")}: ${generationLimit} ${t("settings_per_period")}`
+                      ) : (
+                        t("dash_settings_free_plan_desc")
+                      )}
                     </p>
                   </div>
                 </div>
-                {!isSubscribed && (
+                {!isSubscribed && !isExpired && (
                   <span className="text-[10px] font-bold uppercase tracking-wider text-primary bg-primary/10 px-3 py-1 rounded-full border border-primary/20">
                     {t("dash_settings_active")}
                   </span>
@@ -350,7 +370,7 @@ function SettingsPage() {
               </div>
 
               {/* Usage Bar */}
-              {usage && (
+              {usage && !isExpired && (
                 <div className="space-y-2">
                   <div className="flex items-center justify-between text-xs">
                     <span className="text-muted-foreground">
@@ -428,6 +448,47 @@ function SettingsPage() {
                   {t("settings_subscription_non_recurring_note")}
                 </p>
               </div>
+            )}
+
+            {/* Renew CTA */}
+            {isExpired && (
+              <motion.button
+                onClick={async () => {
+                  try {
+                    const currentPlanConfig = PLAN_CONFIG[planKey];
+                    if (currentPlanConfig && currentPlanConfig.priceId) {
+                      await openTapCheckout(currentPlanConfig.priceId, user?.id || "", user?.email || "", activeCurrency);
+                    }
+                  } catch (err: any) {
+                    console.error("Renewal error:", err);
+                    toast.error(err.message || "Failed to initiate renewal.");
+                  }
+                }}
+                whileHover={{ scale: 1.01 }}
+                whileTap={{ scale: 0.99 }}
+                className="w-full flex items-center justify-between rounded-xl bg-accent-gradient text-primary-foreground p-4 text-left hover:opacity-95 transition-all duration-300 group shadow-glow"
+              >
+                <div className="flex items-center gap-3">
+                  <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-white/20">
+                    <ArrowUpRight className="h-4 w-4 text-white" />
+                  </div>
+                  <div>
+                    <p className="text-sm font-semibold text-white">
+                      {i18n.language === "ar" ? `تجديد خطة ${planName}` : `Renew ${planName}`}
+                    </p>
+                    <p className="text-xs text-white/80">
+                      {activeCurrency === "KWD"
+                        ? i18n.language === "ar"
+                          ? `احصل على ${PLAN_CONFIG[planKey].limit} توليد مقابل ${PLAN_CONFIG[planKey].prices.KWD} د.ك/شهر`
+                          : `Get ${PLAN_CONFIG[planKey].limit} generations for ${PLAN_CONFIG[planKey].prices.KWD} KWD/mo`
+                        : i18n.language === "ar"
+                          ? `احصل على ${PLAN_CONFIG[planKey].limit} توليد مقابل $${PLAN_CONFIG[planKey].prices.USD}/شهر`
+                          : `Get ${PLAN_CONFIG[planKey].limit} generations for $${PLAN_CONFIG[planKey].prices.USD}/mo`}
+                    </p>
+                  </div>
+                </div>
+                <ArrowUpRight className="h-4 w-4 text-white/80 group-hover:text-white transition-colors" />
+              </motion.button>
             )}
 
             {/* Upgrade CTA */}
