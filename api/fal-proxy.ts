@@ -125,7 +125,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         }
 
         const used = profileRes.data?.generation_count ?? 0;
-        let limit = 5; // Default free tier limit
+        let limit = 3; // Default free tier limit
 
         if (subRes.data) {
           const isExpired = subRes.data.current_period_end

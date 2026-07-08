@@ -4,7 +4,7 @@ export const PLAN_CONFIG = {
   free: {
     id: "free",
     name: "Free",
-    limit: 5,
+    limit: 3,
     price: 0,
     prices: { USD: 0, KWD: 0 },
     priceId: "",
