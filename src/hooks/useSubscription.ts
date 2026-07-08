@@ -70,7 +70,7 @@ export function useSubscription(): UseSubscriptionReturn {
     plan,
     planName: plan?.planName || "Free",
     planKey: plan?.planKey || "free",
-    generationLimit: plan?.generationLimit || 5,
+    generationLimit: plan?.generationLimit || 3,
     isSubscribed: plan?.isActive || false,
     loading,
     usage,
