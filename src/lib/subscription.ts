@@ -133,15 +133,34 @@ export async function canUserGenerate(): Promise<{
   planName: string;
   planKey: PlanKey;
 }> {
-  const [plan, profileResult] = await Promise.all([
-    getUserPlan(),
-    supabase.from("profiles").select("generation_count").single(),
-  ]);
+  const plan = await getUserPlan();
+  let used = 0;
 
-  const used = profileResult.data?.generation_count ?? 0;
+  if (plan.subscription) {
+    const subStart = plan.subscription.current_period_start || plan.subscription.created_at;
+    if (subStart) {
+      const { count } = await supabase
+        .from("generations")
+        .select("id", { count: "exact", head: true })
+        .gte("created_at", subStart);
+
+      if (typeof count === "number") {
+        used = count;
+      } else {
+        const profileResult = await supabase.from("profiles").select("generation_count").single();
+        used = profileResult.data?.generation_count ?? 0;
+      }
+    } else {
+      const profileResult = await supabase.from("profiles").select("generation_count").single();
+      used = profileResult.data?.generation_count ?? 0;
+    }
+  } else {
+    const profileResult = await supabase.from("profiles").select("generation_count").single();
+    used = profileResult.data?.generation_count ?? 0;
+  }
 
   return {
-    canGenerate: used < plan.generationLimit,
+    canGenerate: plan.generationLimit > 0 && used < plan.generationLimit,
     used,
     limit: plan.generationLimit,
     planName: plan.planName,

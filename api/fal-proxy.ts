@@ -111,7 +111,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
           adminSupabase.from('profiles').select('generation_count').eq('id', userId).single(),
           adminSupabase
             .from('subscriptions')
-            .select('gateway_price_id, plan_name, status, current_period_end')
+            .select('gateway_price_id, plan_name, status, current_period_start, current_period_end, created_at')
             .eq('user_id', userId)
             .in('status', ['active', 'trialing'])
             .order('created_at', { ascending: false })
@@ -124,7 +124,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
           return res.status(500).json({ error: 'Failed to verify user profile' });
         }
 
-        const used = profileRes.data?.generation_count ?? 0;
+        let used = profileRes.data?.generation_count ?? 0;
         let limit = 0; // Default free tier limit
 
         if (subRes.data) {
@@ -160,6 +160,20 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
               planNameLower.includes('basic')
             ) {
               limit = 30;
+            }
+
+            // Calculate actual usage during active subscription period
+            const subStart = subRes.data.current_period_start || subRes.data.created_at;
+            if (subStart) {
+              const { count } = await adminSupabase
+                .from('generations')
+                .select('id', { count: 'exact', head: true })
+                .eq('user_id', userId)
+                .gte('created_at', subStart);
+
+              if (typeof count === 'number') {
+                used = count;
+              }
             }
           }
         }
