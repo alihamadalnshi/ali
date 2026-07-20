@@ -12,46 +12,13 @@ import { toast } from "sonner";
  * @param userId - Your internal user ID (passed to metadata for webhook linking)
  * @param email - User's email
  */
-export async function openTapCheckout(priceId: string, userId: string, email: string, currency: string = "USD"): Promise<void> {
-  const toastId = "tap-checkout-toast";
-  toast.loading(
-    document.documentElement.lang === "ar" 
-      ? "جاري توجيهك لبوابة الدفع..." 
-      : "Redirecting you to the secure checkout...", 
-    { id: toastId }
+export async function openTapCheckout(_priceId: string, _userId: string, _email: string, _currency: string = "USD"): Promise<void> {
+  const isAr = document.documentElement.lang === "ar";
+  toast.error(
+    isAr
+      ? "عمليات الاشتراك والدفع متوقفة مؤقتاً في الوقت الحالي. يرجى التواصل معنا للمزيد من التفاصيل."
+      : "Subscriptions and payments are temporarily paused. Please contact support for assistance.",
+    { duration: 5000 }
   );
-
-  try {
-    const response = await fetch("/api/create-tap-checkout", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        priceId,
-        userId,
-        email,
-        currency,
-      }),
-    });
-
-    const data = await response.json();
-
-    if (!response.ok || !data.redirectUrl) {
-      throw new Error(data.error || "Failed to initiate checkout");
-    }
-
-    toast.dismiss(toastId);
-    // Redirect user to Tap's secure hosted payment page
-    window.location.href = data.redirectUrl;
-  } catch (err: any) {
-    console.error("Tap checkout error:", err);
-    toast.error(
-      document.documentElement.lang === "ar"
-        ? "فشل بدء عملية الدفع. يرجى المحاولة مرة أخرى."
-        : `Checkout initialization failed: ${err.message || "Please try again."}`,
-      { id: toastId }
-    );
-    throw err;
-  }
+  throw new Error("Payments are temporarily paused.");
 }

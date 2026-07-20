@@ -125,7 +125,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         }
 
         const used = profileRes.data?.generation_count ?? 0;
-        let limit = 3; // Default free tier limit
+        let limit = 0; // Default free tier limit
 
         if (subRes.data) {
           const isExpired = subRes.data.current_period_end
@@ -166,7 +166,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
         if (used >= limit) {
           const errorMessage = limit === 0
-            ? 'Your subscription has expired. Please renew your subscription to continue generating images.'
+            ? (subRes.data && subRes.data.current_period_end && new Date(subRes.data.current_period_end) < new Date()
+              ? 'Your subscription has expired. Please renew your subscription to continue generating images.'
+              : 'A paid subscription is required to generate images. Free generations are currently disabled.')
             : 'Generation limit reached. Please upgrade your plan.';
           return res.status(429).json({ error: errorMessage });
         }
